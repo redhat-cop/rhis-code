@@ -1,0 +1,65 @@
+---
+- name: Create IDM Replicas
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: true
+
+  pre_tasks:
+    - name: Get IP - "{{ groups.ipaserver | first }}"
+      ansible.builtin.setup:
+      delegate_to: "{{ groups.ipaserver | first }}"
+      register: __ipaserver_facts
+
+    - name: Set ipaclient_dns_servers
+      ansible.builtin.set_fact:
+        ipaclient_dns_servers: "{{ __ipaserver_facts.ansible_facts.ansible_default_ipv4.address }}"
+
+    - name: Set reverse zone
+      ansible.builtin.set_fact:
+        ipareplica_reverse_zones: "{{ (ipaclient_dns_servers | ansible.utils.ipaddr('revdns') | split('.') | map('trim'))[1:] | join('.') }}"
+
+    # as of 30.08.2024 there is a bug in the RHIdM installation when using
+    # the latest version of bind-dyndb-ldap package.
+    # https://issues.redhat.com/browse/FREEIPA-11485
+    - name: Install bind-dyndb-ldap.x86_64 version 11.9-9
+      become: true
+      ansible.builtin.dnf:
+        name: bind-dyndb-ldap-11.9-9.el9_4.x86_64
+        state: present
+
+  roles:
+    - role: redhat.rhel_idm.ipareplica
+      state: present # noqa var-naming[no-role-prefix]
+      when: create_ipareplicas | bool()
+      become: true
+
+  post_tasks:
+    - name: Replace the content of /etc/named/ipa-options-ext.conf
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/named/ipa-options-ext.conf
+        mode: "0640"
+        content: |
+          allow-recursion { trusted_network; };
+          allow-query-cache { trusted_network; };
+          listen-on-v6 { any; };
+          dnssec-validation yes;
+
+    - name: Replace the content of /etc/named/ipa-ext.conf
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/named/ipa-ext.conf
+        mode: "0640"
+        content: |
+          acl "trusted_network" {
+           localnets;
+           localhost;
+          {% for network in azure_networks %}
+           {{ network.subnet }};
+          {% endfor %}
+          };
+
+    - name: Restart ipa service
+      become: true
+      ansible.builtin.systemd:
+        name: ipa
+        state: restarted

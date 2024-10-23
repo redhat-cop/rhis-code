@@ -1,0 +1,23 @@
+---
+- name: Create CA
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: pki_rootca
+      when: pki_rootca | bool()
+      tags: pki_rootca
+      become: true
+
+    - role: vault_string
+      when: vault_string | bool()
+      tags: vault_string
+      vars:
+        vault_string_filepath: "{{ __rootca_cert_path  }}"
+
+    - role: git_repo_commit
+      when: git_repo_commit | bool()
+      tags: git_repo_commit
+      vars:
+        git_repo_commit_repository: "{{ github_inventory_repo_path }}"
+        git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: "group_vars/all/" }

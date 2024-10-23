@@ -1,0 +1,60 @@
+---
+site_name: Showroom docs
+repo_url: https://github.com/showroom-project/showroom-code
+theme:
+  name: material
+  logo: images/showroom.png
+  favicon: images/showroom.png
+  icon:
+    repo: fontawesome/brands/git-alt
+  features:
+    - navigation.footer
+    # - content.action.edit
+    # - content.action.view
+    - content.code.copy
+    - navigation.indexes
+    - toc.follow
+    - navigation.top
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+nav:
+  - Home:
+    - index.md
+    - where_to_start.md
+  - Infrastructure:
+    - Identity Management: idm_architecture.md
+    - Ansible Automation Platform: aap_architecture.md
+    - Red Hat Satellite: satellite_architecture.md
+  - RHEL:
+    - live_kernel.md
+  - Ansible:
+    - ansible_practices.md
+    - manage_credentials.md
+    - gitops_ansible.md
+    - azure_ansible_integration.md
+  - Azure:
+    - network_design.md
+    - cost_estimation.md
+    - azure_rhib_integration.md
+    - azure_start_stop_function.md
+  - General:
+    - general_guidelines.md
+    - onboarding.md
+    - subscriptions.md
+    - git_cheat_sheet.md
+    - github_user.md
+    - sign_commits.md
+    - branch_standards.md
+    - naming_scheme.md
+    - configure_workstation_for_bastion.md
+    - slack_integration.md

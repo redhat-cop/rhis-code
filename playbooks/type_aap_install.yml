@@ -1,0 +1,14 @@
+---
+- name: "AAP - Generate Host Certificates"
+  ansible.builtin.import_playbook: function_idm_generate_certs.yml
+  vars:
+    host: aap_intra
+  tags:
+    - aap_cert_generate
+
+- name: "AAP - Install"
+  ansible.builtin.import_playbook: function_aap_install.yml
+  vars:
+    host: bastion
+  tags:
+    - aap_install

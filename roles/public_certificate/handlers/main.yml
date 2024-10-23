@@ -1,0 +1,15 @@
+---
+- name: Public_certificate_dns_revert
+  azure.azcollection.azure_rm_dnsrecordset:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg }}"
+    relative_name: "{{ public_certificate_acme_challenge_subdomain }}"
+    zone_name: "{{ azure_dns_zone }}"
+    time_to_live: 60
+    record_type: TXT
+    state: absent
+  delegate_to: localhost
+  become: false

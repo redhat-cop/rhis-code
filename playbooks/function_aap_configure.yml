@@ -1,0 +1,19 @@
+---
+- name: Configure AAP
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  pre_tasks:
+    - name: Wait for Controller to come up
+      ansible.builtin.uri:
+        url: "https://{{ groups.aap_controller | first }}/api/v2/ping"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 20
+      delay: 30
+
+  roles:
+    - role: aap_config
+      tags: aap_config
+      when: aap_config | bool()

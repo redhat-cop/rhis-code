@@ -1,0 +1,11 @@
+---
+- name: Shutdown and Lock VM
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: azure_vm_lock
+      when:
+        - azure_vm_lock | bool()
+      tags: azure_vm_lock
+      delegate_to: localhost

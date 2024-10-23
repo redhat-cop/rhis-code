@@ -1,0 +1,145 @@
+---
+- name: "Ensure hammer configuration"
+  ansible.builtin.include_tasks: "satellite_configure_hammer.yml"
+
+- name: "Ensure manifest uploaded to Satellite"
+  ansible.builtin.import_role:
+    name: redhat.satellite.manifest
+  when: satellite_manifest_uuid is defined
+
+- name: "Ensure defined repositories enabled"
+  ansible.builtin.import_role:
+    name: redhat.satellite.repositories
+  when: satellite_products is defined
+
+- name: "Ensure content credentials are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.content_credentials
+  when: "satellite_content_credentials is defined"
+
+- name: "Ensure the state of the specified custom products"
+  ansible.builtin.include_tasks: "satellite_ensure_custom_product.yml"
+  loop: "{{ satellite_config_custom_products }}"
+  loop_control:
+    loop_var: custom_product
+  when: "satellite_config_custom_products is defined"
+
+- name: "Sync repositories"
+  ansible.builtin.include_tasks: "satellite_sync_repositories.yml"
+  when: satellite_config_sync | bool()
+
+- name: "Ensure sync plans are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.sync_plans
+  when: satellite_sync_plans is defined
+
+- name: "Ensure lifecycle environments are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.lifecycle_environments
+  when: satellite_lifecycle_environments is defined
+
+- name: "Ensure content views and composite content views are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.content_views
+  when: satellite_content_views is defined
+
+- name: "Ensure content views and composite content views are published"
+  ansible.builtin.import_role:
+    name: redhat.satellite.content_view_publish
+  when: satellite_content_views is defined
+
+- name: "Ensure all locations are presented"
+  ansible.builtin.import_role:
+    name: redhat.satellite.locations
+  when: satellite_locations is defined
+
+- name: "Ensure the state of the specified partition tables"
+  ansible.builtin.include_tasks: "satellite_partition_tables.yml"
+  when: "satellite_config_partition_tables is defined"
+
+- name: "Ensure the state of the provisioning templates"
+  ansible.builtin.import_role:
+    name: redhat.satellite.provisioning_templates
+  when: "satellite_provisioning_templates is defined"
+
+- name: "Ensure operatingsystems are configured"
+  ansible.builtin.include_tasks: "satellite_operatingsystems.yml"
+  when: "satellite_config_operatingsystems is defined"
+
+- name: "Ensure activation keys are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.activation_keys
+  when: "satellite_activation_keys is defined"
+
+- name: "Ensure domains are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.domains
+  when: "satellite_domains is defined"
+
+- name: "Ensure realms are configured"
+  ansible.builtin.include_tasks: "satellite_realms.yml"
+  when: "satellite_config_realms is defined"
+
+- name: "Ensure subnets are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.subnets
+  when: "satellite_subnets is defined"
+
+- name: "Ensure compute resources are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.compute_resources
+  when: "satellite_compute_resources is defined"
+
+- name: "Ensure compute profiles are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.compute_profiles
+  when: "satellite_compute_profiles is defined"
+
+- name: "Ensure satellite ansible roles are configured"
+  ansible.builtin.include_tasks: "satellite_ansible_roles.yml"
+  when: "satellite_config_ansible_roles is defined"
+
+- name: "Ensure host groups are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.hostgroups
+  when: "satellite_hostgroups is defined"
+
+- name: "Ensure satellite scap content are configured"
+  ansible.builtin.include_tasks: "satellite_scap_contents.yml"
+  when: "satellite_scap_contents is defined"
+  loop: "{{ satellite_scap_contents }}"
+  loop_control:
+    loop_var: scap_content
+
+- name: "Ensure satellite scap tailoring files are configured"
+  ansible.builtin.include_tasks: "satellite_scap_tailoring_files.yml"
+  when: "satellite_scap_tailoring_files is defined"
+  loop: "{{ satellite_scap_tailoring_files }}"
+  loop_control:
+    loop_var: scap_tailoring_file
+
+- name: "Ensure satellite scap policies are configured"
+  ansible.builtin.include_tasks: "satellite_scap_policies.yml"
+  when: "satellite_scap_policies is defined"
+
+- name: "Ensure discovery rules are configured"
+  ansible.builtin.include_tasks: "satellite_discovery_rules.yml"
+  when: "satellite_config_discovery_rules is defined"
+  loop: "{{ satellite_config_discovery_rules }}"
+  loop_control:
+    loop_var: discovery_rule
+
+- name: "Ensure global parameters are configured"
+  ansible.builtin.include_tasks: "satellite_global_parameters.yml"
+  when: "satellite_config_global_parameters is defined"
+  loop: "{{ satellite_config_global_parameters }}"
+  loop_control:
+    loop_var: global_parameter
+
+- name: "Ensure user and groups are configured"
+  ansible.builtin.include_tasks: "satellite_manage_users.yml"
+
+- name: "Ensure settings are configured"
+  ansible.builtin.import_role:
+    name: redhat.satellite.settings
+  when: "satellite_settings is defined"

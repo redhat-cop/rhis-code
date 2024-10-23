@@ -1,0 +1,11 @@
+---
+- name: Include configure_nginx.yml
+  ansible.builtin.include_tasks: configure_nginx.yml
+  tags: configure_nginx
+
+- name: Include configure_azure.yml
+  ansible.builtin.include_tasks: configure_azure.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  tags: configure_azure

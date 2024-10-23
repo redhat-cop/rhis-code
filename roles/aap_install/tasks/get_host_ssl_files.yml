@@ -1,0 +1,39 @@
+---
+- name: Handle SSL certificates
+  become: true
+  block:
+    - name: "Ensure the destination directory exists"
+      ansible.builtin.file:
+        path: "{{ aap_install_certs_dir }}"
+        state: directory
+        owner: "{{ vm_user }}"
+        group: "{{ vm_user }}"
+        mode: "0750"
+
+    - name: Read host SSL cert
+      ansible.builtin.slurp:
+        src: "/etc/ipa/private/{{ delegated_host }}.crt"
+      delegate_to: "{{ delegated_host }}"
+      register: __host_ssl_cert
+
+    - name: Write host SSL cert
+      ansible.builtin.copy:
+        content: "{{ __host_ssl_cert.content | b64decode }}"
+        dest: "{{ aap_install_certs_dir }}/{{ delegated_host }}.crt"
+        owner: "{{ vm_user }}"
+        group: "{{ vm_user }}"
+        mode: "0640"
+
+    - name: Read host SSL key
+      ansible.builtin.slurp:
+        src: "/etc/ipa/private/{{ delegated_host }}.key"
+      delegate_to: "{{ delegated_host }}"
+      register: __host_ssl_key
+
+    - name: Write host SSL key
+      ansible.builtin.copy:
+        content: "{{ __host_ssl_key.content | b64decode }}"
+        dest: "{{ aap_install_certs_dir }}/{{ delegated_host }}.key"
+        owner: "{{ vm_user }}"
+        group: "{{ vm_user }}"
+        mode: "0640"

@@ -1,0 +1,45 @@
+---
+- name: Ensure squid package is installed
+  ansible.builtin.dnf:
+    name:
+      - squid
+      - httpd-tools
+    state: "present"
+
+- name: Add squid admin to a password file and ensure permissions are set
+  ansible.builtin.command: "htpasswd -c -B -b  /etc/squid/passwd {{ manage_squid_admin_username }} {{ manage_squid_admin_password }}"
+  register: __return
+  failed_when: __return.failed
+  changed_when: __return.changed
+  no_log: true
+
+- name: Add squid user to a password file and ensure permissions are set
+  ansible.builtin.command: "htpasswd -B -b /etc/squid/passwd {{ user.name }} {{ user.password }}"
+  loop: "{{ showroom_users }}"
+  loop_control:
+    loop_var: user
+  when: showroom_users is defined
+  register: __return
+  failed_when: __return.failed
+  changed_when: __return.changed
+  no_log: true
+
+- name: Configure squid.conf file
+  ansible.builtin.template:
+    src: squid.conf.j2
+    dest: /etc/squid/squid.conf
+    mode: "0640"
+  notify: Manage_squid_reload_squid
+
+- name: Start and enable squid service
+  ansible.builtin.service:
+    name: squid
+    state: "started"
+    enabled: true
+
+- name: Ensure squid is allowed on firewall
+  ansible.posix.firewalld:
+    service: squid
+    permanent: true
+    state: enabled
+  notify: Manage_squid_reload_firewall

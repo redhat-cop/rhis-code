@@ -1,0 +1,12 @@
+---
+- name: Populate inventory file from template
+  ansible.builtin.template:
+    src: inventory.j2
+    dest: "{{ __aap_setup_prep_setup_dir }}/inventory"
+    mode: "0640"
+
+- name: Populate extra ldap file from template
+  ansible.builtin.template:
+    src: ldapextras.yml.j2
+    dest: "{{ __aap_setup_prep_setup_dir }}/ldapextras.yml"
+    mode: "0640"

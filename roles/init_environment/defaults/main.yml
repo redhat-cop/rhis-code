@@ -1,0 +1,13 @@
+---
+init_environment_set: false
+
+init_environment_collection_install_force: false
+
+init_environment_ansible_cfg_path_collection_dir: imported/collections
+init_environment_ansible_cfg_path_roles_dir: imported/roles
+init_environment_ansible_cfg_path_requirements_dir: collections
+init_environment_ansible_cfg_vault_password_file: .vault-password
+
+init_environment_hub_auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+init_environment_hub_published_url: https://console.redhat.com/api/automation-hub/content/published/
+init_environment_hub_validated_url: https://console.redhat.com/api/automation-hub/content/validated/

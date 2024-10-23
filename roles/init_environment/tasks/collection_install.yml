@@ -1,0 +1,20 @@
+---
+- name: "Install requirements file based collections {{ 'forcefully' if init_environment_collection_install_force }}"
+  ansible.builtin.command:
+    cmd: "ansible-galaxy collection install {{ '--force' if init_environment_collection_install_force }} -r {{ init_environment_ansible_cfg_path_requirements_dir }}/requirements.yml" # noqa yaml[line-length]
+    chdir: "../"
+  environment:
+    ANSIBLE_CONFIG: "./ansible.cfg"
+  register: __collection_install
+  changed_when: "'Nothing to do' not in __collection_install.stdout"
+  failed_when: __collection_install.rc not in [0]
+
+- name: "Install requirements file based roles {{ 'forcefully' if init_environment_collection_install_force }}"
+  ansible.builtin.command:
+    cmd: "ansible-galaxy role install {{ '--force' if init_environment_collection_install_force }} -p {{ init_environment_ansible_cfg_path_roles_dir }} -r {{ init_environment_ansible_cfg_path_requirements_dir }}/requirements.yml" # noqa yaml[line-length]
+    chdir: "../"
+  environment:
+    ANSIBLE_CONFIG: "./ansible.cfg"
+  register: __role_install
+  changed_when: "'already installed' not in __role_install.stderr"
+  failed_when: __role_install.rc not in [0]

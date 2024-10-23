@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Showroom Project Team
+  description: This roles creates custom images using RH image builder API if it's not already in Azure resource group.
+  company: Red Hat, Inc.
+  license: GPL-3.0-only
+  min_ansible_version: "2.13"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags: []
+dependencies: []
+collections:
+  - azure.azcollection

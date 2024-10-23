@@ -1,0 +1,20 @@
+{
+  "image_name": "{{ image.image_name }}",
+  "distribution": "{{ image.distribution }}",
+  "customizations": {
+    {% if imagebuilder_packages is defined -%}{%- include "imagebuilder_packages.j2" -%}{%- endif %}
+    {% if imagebuilder_filesystem is defined -%}{%- include "imagebuilder_filesystem.j2" -%}{%- endif %}
+    {% if rh_organization_number is defined and rh_activation_key is defined -%}{%- include "imagebuilder_rh_subscriptions.j2" -%}{%- endif %}
+    {% if imagebuilder_timezone is defined -%}{%- include "imagebuilder_timezone.j2" -%}{%- endif %}
+    "fips": {
+      "enabled": true
+    }
+  },
+  "image_requests": [
+    {
+      "image_type": "{{ __imagebuilder_image_type }}",
+      "architecture": "x86_64",
+      "upload_request": { {% if __imagebuilder_image_type == 'azure' -%}{%- include "imagebuilder_azure_upload_request.j2" -%}{%-  endif %} }
+    }
+  ]
+}

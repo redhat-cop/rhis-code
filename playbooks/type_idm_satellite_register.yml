@@ -1,0 +1,38 @@
+---
+- name: "Management Tools - Register to IdM"
+  ansible.builtin.import_playbook: function_idm_register.yml
+  vars:
+    host: misc:aap_intra
+  tags:
+    - mgmt_tools_register
+
+- name: "Management Tools - Register to Satellite"
+  ansible.builtin.import_playbook: function_satellite_register.yml
+  vars:
+    host: misc:aap_intra:idm
+  tags:
+    - mgmt_tools_register
+
+- name: "Bastion - Register to IdM"
+  ansible.builtin.import_playbook: function_idm_register.yml
+  vars:
+    host: bastion
+  tags:
+    - bastion_register
+
+- name: "Bastion - Register to Satellite"
+  ansible.builtin.import_playbook: function_satellite_register.yml
+  vars:
+    host: bastion
+  tags:
+    - bastion_register
+
+- name: "Azure private DNS clean up"
+  ansible.builtin.import_playbook: function_azure_private_dns_clean.yml
+  vars:
+    host: all:!rootca
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  tags:
+    - bastion_register

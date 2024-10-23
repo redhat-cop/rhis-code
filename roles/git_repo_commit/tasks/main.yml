@@ -1,0 +1,66 @@
+---
+- name: "Set Repo absolute path"
+  ansible.builtin.set_fact:
+    __repo_absolute_path: "{{ git_repo_commit_repo_path }}/{{ git_repo_commit_repository }}"
+
+- name: Ensure required packages are installed
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - git
+      - pinentry
+    state: "present"
+  when: ansible_distribution == "RedHat"
+
+- name: Ensure the repository is cloned
+  ansible.builtin.git:
+    repo: "https://{{ git_repo_commit_github_pat }}@github.com/{{ git_repo_commit_repository }}"
+    dest: "{{ __repo_absolute_path }}"
+    version: "{{ git_repo_commit_branch }}"
+    update: true
+    force: true
+
+- name: Include git_config.yml
+  ansible.builtin.include_tasks: git_config.yml
+
+- name: Copy file to repository
+  ansible.builtin.copy:
+    src: "{{ git_repo_commit_file.src }}"
+    dest: "{{ __repo_absolute_path }}/{{ git_repo_commit_file.dest }}"
+    mode: "0644"
+    remote_src: true
+
+- name: Stage files # noqa: command-instead-of-module
+  ansible.builtin.command: "git add -A"
+  args:
+    chdir: "{{ __repo_absolute_path }}"
+  register: __return
+  failed_when: __return.failed
+  changed_when: __return.changed
+
+- name: Commit changes # noqa: command-instead-of-module
+  ansible.builtin.command: "git commit -S -m '{{ git_repo_commit_commit_message }}'"
+  args:
+    chdir: "{{ __repo_absolute_path }}"
+  register: __return
+  failed_when: __return.failed
+  changed_when: __return.changed
+
+- name: Push changes # noqa: command-instead-of-module
+  ansible.builtin.command: "git push"
+  args:
+    chdir: "{{ __repo_absolute_path }}"
+  register: __return
+  failed_when: __return.failed
+  changed_when: __return.changed
+
+- name: Remove pushed files from local
+  become: true
+  ansible.builtin.file:
+    path: "{{ __var_path }}"
+    state: absent
+  loop:
+    - "{{ git_repo_commit_file.src }}"
+    - "{{ __repo_absolute_path }}"
+  loop_control:
+    loop_var: __var_path

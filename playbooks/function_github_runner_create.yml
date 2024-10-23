@@ -1,0 +1,86 @@
+---
+- name: Create Github Runner
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: true
+
+  roles:
+    - role: monolithprojects.github_actions_runner
+      when: create_github_runner | bool()
+      tags: create_github_runner
+      become: true
+
+  post_tasks:
+    - name: Install container-tools
+      become: true
+      ansible.builtin.dnf:
+        name: container-tools
+        state: present
+
+    - name: Enable and start podman service
+      become: true
+      ansible.builtin.systemd:
+        name: podman
+        enabled: true
+        state: started
+
+    - name: Create .bashrc.d directory if it doesn't exist
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.bashrc.d"
+        state: directory
+        mode: "0755"
+
+    - name: Set XDG_RUNTIME_DIR in systemd file
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/.bashrc.d/systemd"
+        mode: "0640"
+        content: |
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          export DOCKER_HOST="unix:$XDG_RUNTIME_DIR/podman/podman.sock"
+
+    - name: Source the new environment variable file
+      ansible.builtin.shell: source ~/.bashrc.d/systemd
+      args:
+        executable: /bin/bash
+      changed_when: false
+
+    - name: Enable and start podman.socket for user
+      ansible.builtin.systemd:
+        name: podman.socket
+        enabled: true
+        state: started
+        scope: user
+
+    - name: Remove /var/run/docker.sock if it exists
+      become: true
+      ansible.builtin.file:
+        path: /var/run/docker.sock
+        state: absent
+
+    - name: Create symlink for podman socket
+      become: true
+      ansible.builtin.file:
+        src: "{{ ansible_env.XDG_RUNTIME_DIR }}/podman/podman.sock"
+        dest: /var/run/docker.sock
+        state: link
+        mode: "0640"
+
+    - name: Create script to create Docker socket link
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/create-docker-sock-link.sh"
+        content: |
+          #!/bin/bash
+
+          # Remove the existing symbolic link if it exists
+          if [ -L /var/run/docker.sock ]; then
+              sudo rm /var/run/docker.sock
+          fi
+
+          # Create a new symbolic link to the correct Podman socket
+          sudo ln -s $XDG_RUNTIME_DIR/podman/podman.sock /var/run/docker.sock
+        mode: "0750"
+
+    - name: Create cron job to ensure Docker socket link at boot
+      ansible.builtin.cron:
+        name: "Ensure Docker socket link at boot"
+        special_time: reboot
+        job: "{{ ansible_env.HOME }}/create-docker-sock-link.sh"

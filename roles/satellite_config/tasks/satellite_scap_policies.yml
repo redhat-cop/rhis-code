@@ -1,0 +1,14 @@
+---
+# - name: "Ensure the scap policy is mapped"
+#   redhat.satellite.scap_policy:
+#     username: "{{ satellite_username }}"
+#     password: "{{ satellite_password }}"
+#     server_url: "{{ satellite_server_url }}"
+#     name: "{{ scap_policies.name }}"
+#     scap_file: "{{ scap_policies.scap_file | defautl(omit) }}"
+#     locations: "{{ scap_policies.locations | default(omit) }}"
+#     organizations: "{{ scap_policies.organizations | default(omit) }}"
+#     updated_name: "{{ scap_policies.updated_name | default(omit) }}"
+#   loop: "{{ satellite_scap_policies }}"
+#   loop_control:
+#      loop_var: scap_policies

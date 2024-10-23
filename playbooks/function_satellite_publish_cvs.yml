@@ -1,0 +1,10 @@
+---
+- name: RH Satellite - Publish CVs
+  hosts: "satellite"
+  gather_facts: false
+
+  tasks:
+    - name: Include Task - Satellite Publish CVs
+      ansible.builtin.include_role:
+        name: satellite_config
+        tasks_from: satellite_publish_cvs.yml

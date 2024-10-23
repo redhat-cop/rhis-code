@@ -1,0 +1,27 @@
+---
+- name: Deploy httpd
+  become: true
+  block:
+    - name: Install httpd package
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Start and enable httpd service
+      ansible.builtin.service:
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: Allow http in the firewall
+      ansible.posix.firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+
+    - name: Create a custom index.html file
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: "{{ post_config_httpd_content }}"
+        mode: "0644"

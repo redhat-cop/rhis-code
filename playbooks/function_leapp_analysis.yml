@@ -1,0 +1,21 @@
+---
+- name: Leapp Analysis
+  hosts: "{{ host | default('localhost') }}"
+  become: true
+  strategy: free # noqa run-once[play]
+  force_handlers: true
+  gather_facts: true
+
+  tasks:
+    - name: Perform OS Analysis
+      ansible.builtin.import_role:
+        name: infra.leapp.analysis
+
+    - name: Fail if inhibitors found
+      ansible.builtin.fail:
+        msg: |
+          Inhibitor found and upgrade terminated. Review the tasks or the result file at /var/log/leapp/leapp-report.txt
+          Please use 'Leapp 8.10 to 9.4 - Remediate' job template to remediate inhibitors or investigate and remediate manually.
+      when:
+        - results_inhibitors is defined
+        - results_inhibitors.stdout_lines | length > 0

@@ -1,0 +1,16 @@
+---
+- name: "Ensure discovery rules"
+  redhat.satellite.discovery_rule:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organizations: "{{ discovery_rule.organizations | default(omit) }}"
+    locations: "{{ discovery_rule.locations | default(omit) }}"
+    name: "{{ discovery_rule.name }}"
+    search: "{{ discovery_rule.search | default(omit) }}"
+    hostgroup: "{{ discovery_rule.hostgroup | default(omit) }}"
+    hostname: "{{ discovery_rule.hostname_pattern | default(omit) }}"
+    max_count: "{{ discovery_rule.max_count | default(omit) }}"
+    priority: "{{ discovery_rule.priority | default(omit) }}"
+    enabled: "{{ discovery_rule.enabled | default(omit) }}"
+    state: "{{ discovery_rule.state | default(omit) }}"

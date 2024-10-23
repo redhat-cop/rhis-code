@@ -1,0 +1,3 @@
+---
+- name: "Phase 0 - Initialize Local Environment"
+  ansible.builtin.import_playbook: function_init_environment.yml

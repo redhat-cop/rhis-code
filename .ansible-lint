@@ -1,0 +1,11 @@
+---
+offline: false
+
+exclude_paths:
+  - .github/
+  - docs
+  - mkdocs.yml
+
+warn_list:
+  - name[template]
+  - run-once[play]

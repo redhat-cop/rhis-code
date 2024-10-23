@@ -1,0 +1,59 @@
+---
+- name: Create Public IP for the VM
+  when: manage_public_ip | bool()
+  block:
+    - name: Create Public IP if needed
+      ansible.builtin.include_tasks: manage_public_ip.yml
+
+    - name: Create a Virtual Network Interface Card
+      azure.azcollection.azure_rm_networkinterface:
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        resource_group: "{{ azure_rg | default(omit) }}"
+        name: "{{ azure_nic_name | default(omit) }}"
+        virtual_network: "{{ azure_vnet | default(omit) }}"
+        subnet_name: "{{ azure_subnet | default(omit) }}"
+        ip_configurations:
+          - name: "{{ azure_public_ip.config_name | default(omit) }}"
+            public_ip_address_name: "{{ azure_public_ip.name | default(omit) }}"
+        security_group: "{{ azure_subnet_nsg | default(omit) }}"
+
+- name: Create a Virtual Network Interface Card
+  azure.azcollection.azure_rm_networkinterface:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_nic_name | default(omit) }}"
+    virtual_network: "{{ azure_vnet | default(omit) }}"
+    subnet_name: "{{ azure_subnet | default(omit) }}"
+    security_group: "{{ azure_subnet_nsg | default(omit) }}"
+  when: not manage_public_ip | bool()
+
+- name: Create the VM
+  azure.azcollection.azure_rm_virtualmachine:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ inventory_hostname }}"
+    vm_size: "{{ azure_vm_deploy_vm_size }}"
+    admin_username: "{{ azure_vm_deploy_user }}"
+    image:
+      name: "{{ azure_vm_deploy_image_name }}"
+      resource_group: "{{ azure_rg }}"
+    os_disk_caching: ReadWrite
+    os_disk_name: "{{ inventory_hostname }}-os-disk"
+    network_interface_names:
+      - "{{ azure_nic_name | default(omit) }}"
+    availability_set: null
+    ssh_public_keys:
+      - path: /home/{{ azure_vm_deploy_user }}/.ssh/authorized_keys
+        key_data: "{{ azure_vm_deploy_user_public_key }}"
+    ssh_password_enabled: false
+    tags: "{{ azure_vm_deploy_tags }}"
+  register: __vm_info

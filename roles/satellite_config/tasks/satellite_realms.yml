@@ -1,0 +1,15 @@
+---
+- name: "Create realm"
+  redhat.satellite.realm:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organizations: "{{ satellite_organization | default(omit) }}"
+    locations: "{{ realm.locations | default(omit) }}"
+    name: "{{ realm.name }}"
+    realm_proxy: "{{ realm.realm_proxy }}"
+    realm_type: "{{ realm.realm_type }}"
+    state: "{{ realm.state }}"
+  loop: "{{ satellite_config_realms }}"
+  loop_control:
+    loop_var: realm

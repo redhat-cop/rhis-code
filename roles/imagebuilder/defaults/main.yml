@@ -1,0 +1,51 @@
+---
+# defaults file for imagebuilder
+# variable to run role
+# imagebuilder: true
+
+imagebuilder_auth_url: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
+imagebuilder_url: "https://console.redhat.com/api/image-builder/v1/compose"
+imagebuilder_status_url: "https://console.redhat.com/api/image-builder/v1/composes/"
+
+imagebuilder_bootstrap_target: "{{ bootstrap_target }}"
+imagebuilder_image_extension: "{% if bootstrap_target == 'azure' %}vhd{% elif bootstrap_target == 'aws' %}ami{% elif bootstrap_target == 'vsphere' %}vmdk{% elif bootstrap_target == 'gcp' %}img{% elif bootstrap_target == 'edge-installer' %}iso{% endif %}" # noqa yaml[line-length]
+
+# type             extension
+# vsphere          vmdk
+# aws              ami
+# image-installer  iso
+# guest-image      qcow2
+# azure            vhd
+# gcp              img
+# edge-commit
+# edge-installer   iso
+
+# you can use the API url to pull a current list of available distributions
+imagebuilder_images:
+  - distribution: "rhel-94"
+    image_name: "image-rhel-94"
+imagebuilder_activation_key: "{{ rh_activation_key }}"
+
+# what we will call the image and where we put it
+imagebuilder_file_directory: "/tmp"
+imagebuilder_image_definition_file: "request-base-image.json"
+imagebuilder_image_file_name: "{{ builder_image_name }}.{{ image_extension }}"
+imagebuilder_image_file_path: "{{ imagebuilder_file_directory }}/{{ imagebuilder_image_file_name }}"
+
+# Custom packages to include in image. Example as follow;
+# imagebuilder_packages:
+#  - firewalld
+#  - gdisk
+#  - git-all
+
+# Image definition volume sizes in bytes
+imagebuilder_filesystem:
+  slash_size: 10737418240
+  home_size: 10737418240
+  var_size: 10737418240
+  tmp_size: 2147483648
+  var_tmp_size: 2147483648
+  var_log_size: 4294967296
+  var_log_audit_size: 2147483648
+
+imagebuilder_timezone: "Europe/Berlin"
