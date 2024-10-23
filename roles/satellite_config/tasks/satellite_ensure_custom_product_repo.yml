@@ -1,0 +1,16 @@
+---
+- name: "Ensure the state of repository - {{ custom_product_repository.name }}"
+  redhat.satellite.repository:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ satellite_organization }}"
+    name: "{{ custom_product_repository.name }}"
+    description: "{{ custom_product_repository.description | default(omit) }}"
+    content_type: "{{ custom_product_repository.content_type }}"
+    product: "{{ custom_product.name }}"
+    url: "{{ custom_product_repository.url }}"
+    mirror_on_sync: "{{ custom_product_repository.mirror_on_sync | default(omit) }}"
+    download_policy: "{{ custom_product_repository.download_policy | default(omit) }}"
+    gpg_key: "{{ custom_product_repository.gpg_key | default(omit) }}"
+    state: "{{ custom_product_repository.state | default(omit) }}"

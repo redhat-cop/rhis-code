@@ -1,0 +1,8 @@
+---
+git_repo_commit_repo_path: /tmp
+git_repo_commit_git_username: "{{ git_username }}"
+git_repo_commit_git_email: "{{ git_email }}"
+git_repo_commit_signing_key: "{{ gpg_signingkey_id }}"
+git_repo_commit_commit_message: "Git repo commit by bot: {{ git_repo_commit_git_username }}"
+git_repo_commit_branch: devel
+git_repo_commit_github_pat: "{{ github_pat }}"

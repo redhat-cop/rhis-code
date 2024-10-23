@@ -1,0 +1,47 @@
+---
+- name: Gather facts
+  ansible.builtin.setup:
+
+- name: Deploy SSH private key to VM
+  become: false
+  ansible.builtin.copy:
+    content: "{{ vm_user_private_key }}"
+    dest: ~/.ssh/id_rsa
+    owner: "{{ vm_user }}"
+    group: "{{ vm_user }}"
+    mode: "0600"
+  when: post_config_priv_key | bool()
+
+- name: Update /etc/hosts with template etc_hosts.j2
+  become: true
+  ansible.builtin.template:
+    dest: /etc/hosts
+    src: etc_hosts.j2
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+
+- name: Install required packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ post_config_packages }}"
+    state: present
+  when: post_config_packages is defined
+
+- name: "Configure kernel parameters" # noqa var-naming[no-role-prefix]
+  become: true
+  ansible.builtin.import_role:
+    name: redhat.rhel_system_roles.kernel_settings
+  when: kernel_settings_sysctl is defined
+
+- name: "Configure Cron for RH Offline Token Refresh"
+  ansible.builtin.include_tasks: refresh_token.yml
+  loop: "{{ rh_offline_tokens }}"
+  loop_control:
+    loop_var: token
+  when: rh_offline_tokens is defined
+
+- name: "Configure httpd"
+  ansible.builtin.include_tasks: httpd_deploy.yml
+  when: httpd_deploy | bool()

@@ -1,0 +1,8 @@
+---
+# defaults file for post_config
+post_config_priv_key: false
+# to install custom packages define this var in the inventory
+# post_config_packages:
+#   - git
+#   - ansible-core
+post_config_httpd_content: This page created with ansible

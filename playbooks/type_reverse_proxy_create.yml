@@ -1,0 +1,15 @@
+---
+- name: "Bastion VM - Create Public Trusted SSL Certificate"
+  ansible.builtin.import_playbook: function_public_certificate_create.yml
+  vars:
+    host: bastion
+  tags:
+    - bastion_vm_public_certificate
+    - bastion_vm_conf_nginx
+
+- name: "Bastion VM - Configure Nginx"
+  ansible.builtin.import_playbook: function_reverse_proxy_configure.yml
+  vars:
+    host: bastion
+  tags:
+    - bastion_vm_conf_nginx

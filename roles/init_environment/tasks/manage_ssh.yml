@@ -1,0 +1,48 @@
+---
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  community.crypto.openssh_keypair:
+    path: ~/.ssh/id_rsa_{{ vm_user }}
+
+- name: Add include showroom-config
+  ansible.builtin.lineinfile:
+    path: ~/.ssh/config
+    line: "Include showroom-config"
+    regexp: "^Include showroom-config"
+    mode: "0644"
+    insertbefore: BOF
+    state: present
+    create: true
+
+- name: Populate and configure local SSH config Bastion
+  ansible.builtin.template:
+    src: config.j2
+    dest: ~/.ssh/showroom-config
+    mode: "0644"
+
+- name: Import vault_string
+  ansible.builtin.import_role:
+    name: vault_string
+  vars:
+    vault_string_filepath: "~/.ssh/id_rsa_{{ vm_user }}"
+    vault_string_variable_name: "vm_user_private_key"
+
+- name: Import git_repo_commit
+  ansible.builtin.import_role:
+    name: git_repo_commit
+  vars:
+    git_repo_commit_repository: "{{ github_inventory_repo_path }}"
+    git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: "group_vars/all/" }
+
+- name: Import vault_string
+  ansible.builtin.import_role:
+    name: vault_string
+  vars:
+    vault_string_filepath: "~/.ssh/id_rsa_{{ vm_user }}.pub"
+    vault_string_variable_name: "vm_user_public_key"
+
+- name: Import git_repo_commit
+  ansible.builtin.import_role:
+    name: git_repo_commit
+  vars:
+    git_repo_commit_repository: "{{ github_inventory_repo_path }}"
+    git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: "group_vars/all/" }

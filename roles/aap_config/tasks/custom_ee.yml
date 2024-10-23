@@ -1,0 +1,49 @@
+---
+- name: Create Custom EE
+  become: true
+  block:
+    - name: Enable AAP repository
+      community.general.rhsm_repository:
+        name: "ansible-automation-platform-2.4-for-rhel-9-x86_64-rpms"
+        state: enabled
+
+    - name: Ensure ansible-builder and podman installed
+      ansible.builtin.dnf:
+        name:
+          - podman
+          - ansible-builder
+        state: present
+
+- name: Configure podman
+  when: ee_podman_config is defined
+  block:
+    - name: Update /etc/subuid
+      become: true
+      ansible.builtin.lineinfile:
+        line: "{{ ee_podman_config }}"
+        dest: /etc/subuid
+
+    - name: Update /etc/subgid
+      become: true
+      ansible.builtin.lineinfile:
+        line: "{{ ee_podman_config }}"
+        dest: /etc/subgid
+
+    - name: Gather facts
+      ansible.builtin.gather_facts:
+      when: ansible_user_uid is not defined
+
+    - name: Run loginctl enable-linger
+      ansible.builtin.command: "loginctl enable-linger {{ ansible_user_uid }}"
+      register: __cmd_out
+      changed_when: __cmd_out.changed
+
+- name: Login to registry.redhat.io
+  containers.podman.podman_login:
+    username: "{{ ee_base_registry_username }}"
+    password: "{{ ee_base_registry_password }}"
+    registry: lachesis.internal.showroom.run
+
+- name: Create Custom EE
+  ansible.builtin.import_role:
+    name: infra.ee_utilities.ee_builder

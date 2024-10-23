@@ -1,0 +1,20 @@
+# Showroom Bastion SSH Jumphost
+Host {{ hostvars[groups.bastion | first]['ansible_host'] }}
+ User {{ vm_user }}
+ IdentityFile ~/.ssh/id_rsa_{{ vm_user }}
+ HostName {{ hostvars[groups.bastion | first]['ansible_host'] }}
+ Port 22
+ UserKnownHostsFile /dev/null
+ StrictHostKeyChecking no
+ ServerAliveInterval 300
+ ServerAliveCountMax 2
+
+# Showroom SSH Clients
+Host *.{{ azure_dns_private_dns_zone }}
+ ProxyJump {{ hostvars[groups.bastion | first]['ansible_host'] }}
+ User {{ vm_user }}
+ IdentityFile ~/.ssh/id_rsa_{{ vm_user }}
+ UserKnownHostsFile /dev/null
+ StrictHostKeyChecking no
+ ServerAliveInterval 300
+ ServerAliveCountMax 2

@@ -1,0 +1,16 @@
+---
+- name: "Create a Partition Template from a file and modify with parameter(s)"
+  redhat.satellite.partition_table:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ partition_table.name }}"
+    state: "{{ partition_table.state | default(omit) }}"
+    locations: "{{ partition_table.locations | default(omit) }}"
+    organizations: "{{ partition_table.organization | default(satellite_organization) }}"
+    os_family: "{{ partition_table.os_family | default('Redhat') }}"
+    locked: "{{ partition_table.is_template_locked | default(omit) }}"
+    layout: "{{ partition_table.layout }}"
+  loop: "{{ satellite_config_partition_tables }}"
+  loop_control:
+    loop_var: partition_table

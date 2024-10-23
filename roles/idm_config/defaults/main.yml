@@ -1,0 +1,5 @@
+---
+# defaults file for idm_config
+idm_config_reverse_dns_networks: ""
+idm_config_allow_sync_ptr: true
+idm_config_dynamic_update: true

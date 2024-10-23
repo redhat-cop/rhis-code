@@ -1,0 +1,10 @@
+---
+- name: Configure Nginx
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: manage_reverse_proxy
+      become: true
+      when: manage_reverse_proxy | bool()
+      tags: manage_reverse_proxy

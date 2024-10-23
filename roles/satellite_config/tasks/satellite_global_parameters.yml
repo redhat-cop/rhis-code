@@ -1,0 +1,11 @@
+---
+- name: "Ensure the state of global parameter - {{ global_parameter.name }}"
+  redhat.satellite.global_parameter:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ global_parameter.name }}"
+    value: "{{ global_parameter.value }}"
+    parameter_type: "{{ global_parameter.parameter_type }}"
+    hidden_value: "{{ global_parameter.hidden_value | default(omit) }}"
+    state: "{{ global_parameter.state | default(omit) }}"

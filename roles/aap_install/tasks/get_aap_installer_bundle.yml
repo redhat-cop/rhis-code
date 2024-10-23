@@ -1,0 +1,68 @@
+---
+- name: "Get the file repository info"
+  redhat.satellite.repository_info:
+    username: "{{ hostvars[groups.satellite | first]['satellite_username'] }}"
+    password: "{{ hostvars[groups.satellite | first]['satellite_password'] }}"
+    server_url: "https://{{ groups.satellite | first }}"
+    organization: "{{ hostvars[groups.satellite | first]['satellite_initial_organization'] }}"
+    name: "{{ aap_install_repo_name }}"
+    product: "{{ aap_install_product }}"
+  register: __result
+
+- name: "Determine the base url"
+  ansible.builtin.set_fact:
+    __software_baseurl: "{{ __result.repository.full_path }}"
+
+- name: "Get the name of the bundle file"
+  redhat.satellite.resource_info:
+    username: "{{ hostvars[groups.satellite | first]['satellite_username'] }}"
+    password: "{{ hostvars[groups.satellite | first]['satellite_password'] }}"
+    server_url: "https://{{ groups.satellite | first }}"
+    organization: "{{ hostvars[groups.satellite | first]['satellite_initial_organization'] }}"
+    resource: file_units
+    search: "{{ aap_install_search_param }}"
+  register: __files
+
+- name: "Set the path for the download"
+  ansible.builtin.set_fact:
+    __download_path: "{{ __software_baseurl }}/{{ __files.resources[0].name }}"
+
+- name: "Ensure the destination directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "{{ aap_install_destination_dir }}"
+    state: directory
+    owner: "{{ vm_user }}"
+    group: "{{ vm_user }}"
+    mode: "0750"
+
+- name: "Clean up any failed downloads"
+  ansible.builtin.file:
+    path: "{{ aap_install_destination_dir }}/{{ aap_install_aap_bundle_file }}"
+    state: absent
+
+- name: Downloading the latest installer of type
+  ansible.builtin.get_url:
+    url: "{{ __download_path }}"
+    dest: "{{ aap_install_destination_dir }}/{{ aap_install_aap_bundle_file }}"
+    owner: "{{ vm_user }}"
+    group: "{{ vm_user }}"
+    mode: "0644"
+  register: __aap_setup_down_downloads
+
+- name: Extract the name of the downloaded installer to aap_setup_down_installer_file
+  ansible.builtin.set_fact:
+    __aap_setup_down_installer_file: "{{ __aap_setup_down_downloads.dest }}"
+
+- name: Extract the given installer tarball
+  ansible.builtin.unarchive:
+    src: "{{ __aap_setup_down_installer_file }}"
+    dest: "{{ aap_install_destination_dir }}"
+    list_files: true
+    remote_src: true
+    exclude: inventory
+  register: __aap_setup_prep_extract
+
+- name: Set aap_setup_prep_setup_dir
+  ansible.builtin.set_fact:
+    __aap_setup_prep_setup_dir: "{{ aap_install_destination_dir }}/{{ __aap_setup_prep_extract.files[0] }}"

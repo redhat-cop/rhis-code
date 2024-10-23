@@ -1,0 +1,36 @@
+---
+- name: "RootCA VM - Create"
+  ansible.builtin.import_playbook: function_azure_vm_create.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: rootca
+  tags:
+    - rootca_vm_create
+    - rootca_vm_post_conf
+    - rootca_vm_create_ca
+
+- name: "RootCA VM - Check if Reachable"
+  ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
+  vars:
+    host: rootca
+  tags:
+    - rootca_vm_create
+    - rootca_vm_post_conf
+    - rootca_vm_conf_squid
+
+- name: "RootCA VM - Post Configure"
+  ansible.builtin.import_playbook: function_vm_post_configure.yml
+  vars:
+    host: rootca
+  tags:
+    - rootca_vm_post_conf
+    - rootca_vm_create_ca
+
+- name: "RootCA VM - Create CA"
+  ansible.builtin.import_playbook: function_ca_create.yml
+  vars:
+    host: rootca
+  tags:
+    - rootca_vm_create_ca

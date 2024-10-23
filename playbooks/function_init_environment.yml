@@ -1,0 +1,9 @@
+---
+- name: Initialize Environment
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - role: roles/init_environment # noqa role-name[path]
+      tags: init_environment
+      when: init_environment | bool()

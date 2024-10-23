@@ -1,0 +1,45 @@
+[defaults]
+
+ansible_managed = Please do not change this file directly since it is managed by Ansible and will be overwritten.
+collections_path = {{ init_environment_ansible_cfg_path_collection_dir }}
+roles_path = ./roles:{{ init_environment_ansible_cfg_path_collection_dir }}/roles
+log_path = $HOME/ansible.log
+
+forks = 20
+host_key_checking = false
+gathering = smart
+fact_caching = jsonfile
+fact_caching_connection = $HOME/ansible/facts
+fact_caching_timeout = 7200
+nocows = true
+callbacks_enabled = timer, profile_tasks
+display_skipped_hosts = false
+remote_user = {{ vm_user }}
+ansible_ssh_private_key_file = ~/.ssh/id_rsa
+
+vault_password_file = {{ init_environment_ansible_cfg_vault_password_file }}
+
+[ssh_connection]
+control_path = %(directory)s/%%h-%%r-%%p
+ssh_args = -o ControlMaster=auto -o ControlPersist=600s
+pipelining = true
+
+[inventory]
+ignore_patterns = id_rsa*, SSH_keys
+unparsed_is_failed = true
+
+[galaxy]
+server_list = automation_hub_published, automation_hub_validated, galaxy
+
+[galaxy_server.automation_hub_published]
+url={{ init_environment_hub_published_url }}
+auth_url={{ init_environment_hub_auth_url }}
+token={{ rh_automation_hub_offline_token }}
+
+[galaxy_server.automation_hub_validated]
+url= {{ init_environment_hub_validated_url }}
+auth_url={{ init_environment_hub_auth_url }}
+token={{ rh_automation_hub_offline_token }}
+
+[galaxy_server.galaxy]
+url=https://galaxy.ansible.com/

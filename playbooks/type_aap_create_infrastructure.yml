@@ -1,0 +1,41 @@
+---
+- name: "AAP VMs - Create"
+  ansible.builtin.import_playbook: function_azure_vm_create.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: aap_intra
+  tags:
+    - aap_vm_create
+
+- name: "AAP VM - Check if Reachable"
+  ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
+  vars:
+    host: aap_intra
+  tags:
+    - aap_vm_create
+
+- name: "AAP VM - Post Configure"
+  ansible.builtin.import_playbook: function_vm_post_configure.yml
+  vars:
+    host: aap_intra
+  tags:
+    - aap_vm_post_conf
+
+- name: "AAP VM - Create Managed Disk"
+  ansible.builtin.import_playbook: function_azure_managed_disk_create.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: aap_intra
+  tags:
+    - aap_vm_post_conf
+
+- name: "AAP VM - Run RHEL Storage"
+  ansible.builtin.import_playbook: function_rhel_managed_disk_configure.yml
+  vars:
+    host: aap_intra
+  tags:
+    - aap_vm_post_conf

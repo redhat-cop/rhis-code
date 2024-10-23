@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Showroom Project Team
+  description: This roles gets Let's Encrypt signed SSL certificate for the given host.
+  company: Red Hat, Inc.
+  license: GPL-3.0-only
+  min_ansible_version: "2.14"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags: []
+dependencies: []
+collections: []
