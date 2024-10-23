@@ -1,0 +1,44 @@
+---
+- name: Configure IdM Users
+  ansible.builtin.include_tasks:
+    file: idm_manage_users.yml
+  when: idm_users is defined or showroom_users is defined
+
+- name: Configure IdM User Groups
+  ansible.builtin.include_tasks:
+    file: idm_manage_user_groups.yml
+  when: idm_user_groups is defined or idm_group_users is defined or showroom_group_users is defined or idm_group_groups is defined
+
+- name: Configure IdM Host Groups
+  ansible.builtin.include_tasks:
+    file: idm_manage_host_groups.yml
+  when: idm_host_groups is defined
+
+- name: Configure IdM HBAC rules
+  ansible.builtin.include_tasks:
+    file: idm_manage_hbac_rules.yml
+  when: idm_hbac_rules is defined
+
+- name: Configure IdM sudo commands
+  ansible.builtin.include_tasks:
+    file: idm_manage_sudo_command.yml
+  when: idm_sudo_commands is defined
+
+- name: Configure IdM sudo rules
+  ansible.builtin.include_tasks:
+    file: idm_manage_sudo_rules.yml
+  when: idm_sudo_rules is defined
+
+- name: Configure IdM reverse DNS zones
+  ansible.builtin.include_tasks:
+    file: idm_manage_dns.yml
+  when: idm_config_reverse_dns_networks | length()
+
+- name: Configure IdM password policies
+  ansible.builtin.include_tasks:
+    file: idm_manage_pwpolicy.yml
+  when: idm_password_policy | length()
+
+- name: Configure IdM Reverse Records for the existing A Records
+  ansible.builtin.include_tasks:
+    file: idm_manage_record.yml

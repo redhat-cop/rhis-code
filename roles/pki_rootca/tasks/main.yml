@@ -1,0 +1,65 @@
+---
+- name: Ensure python3-cryptography package is installed
+  become: true
+  ansible.builtin.dnf:
+    name: python3-cryptography
+    state: "present"
+
+- name: Create CA root path
+  ansible.builtin.file:
+    path: "{{ pki_rootca_root_path }}"
+    state: directory
+    mode: "0755"
+
+- name: Check whether certificate exists
+  ansible.builtin.stat:
+    path: "{{ pki_rootca_root_path }}/{{ pki_rootca_cert }}"
+  register: __certificate_exists
+
+- name: Check whether private key exists
+  ansible.builtin.stat:
+    path: "{{ pki_rootca_root_path }}/{{ pki_rootca_cert }}"
+  register: __key_exists
+
+- name: Create CA
+  when: not __certificate_exists.stat.exists and not __key_exists.stat.exists
+  block:
+    - name: Create private key with password protection
+      community.crypto.openssl_privatekey:
+        path: "{{ pki_rootca_root_path }}/{{ pki_rootca_key }}"
+        passphrase: "{{ pki_rootca_passphrase_secret }}"
+        cipher: auto
+        format: pkcs8
+
+    - name: Create certificate signing request (CSR) for RootCA certificate
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "{{ pki_rootca_root_path }}/{{ pki_rootca_key }}"
+        privatekey_passphrase: "{{ pki_rootca_passphrase_secret }}"
+        common_name: "{{ pki_rootca_ca_common_name | default(omit) }}"
+        use_common_name_for_san: false
+        basic_constraints:
+          - 'CA:TRUE'
+        basic_constraints_critical: true
+        key_usage:
+          - keyCertSign
+        key_usage_critical: true
+      register: __root_ca_csr
+
+    - name: Create self-signed CA certificate from CSR
+      community.crypto.x509_certificate:
+        path: "{{ pki_rootca_root_path }}/{{ pki_rootca_cert }}"
+        csr_content: "{{ __root_ca_csr.csr }}"
+        privatekey_path: "{{ pki_rootca_root_path }}/{{ pki_rootca_key }}"
+        privatekey_passphrase: "{{ pki_rootca_passphrase_secret }}"
+        provider: selfsigned
+        mode: "0644"
+
+- name: "Set RootCA cert path"
+  ansible.builtin.set_fact:
+    vault_string: false
+    git_repo_commit: false
+  when: __certificate_exists.stat.exists and __key_exists.stat.exists
+
+- name: "Set RootCA cert path"
+  ansible.builtin.set_fact:
+    __rootca_cert_path: "{{ pki_rootca_root_path }}/{{ pki_rootca_cert }}"

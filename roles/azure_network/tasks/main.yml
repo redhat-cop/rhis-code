@@ -1,0 +1,23 @@
+---
+- name: Include manage_vnet.yml
+  ansible.builtin.include_tasks: manage_vnet.yml
+  when: manage_vnet | bool()
+  tags: manage_vnet
+
+- name: Include manage_vnet_peering.yml
+  ansible.builtin.include_tasks: manage_vnet_peering.yml
+  when: vnet_peering | bool()
+  loop: "{{ vnet_peers }}"
+  loop_control:
+    loop_var: vnet_peer_var
+  tags: vnet_peering
+
+- name: Include manage_nsg.yml
+  ansible.builtin.include_tasks: manage_nsg.yml
+  when: manage_nsg | bool()
+  tags: manage_nsg
+
+- name: Include manage_subnet.yml
+  ansible.builtin.include_tasks: manage_subnet.yml
+  when: manage_subnet | bool()
+  tags: manage_subnet

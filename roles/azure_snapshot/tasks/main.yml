@@ -1,0 +1,73 @@
+---
+# tasks file for azure_snapshot
+- name: Get facts by name
+  azure.azcollection.azure_rm_virtualmachine_info:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ inventory_hostname_short }}"
+  register: __output
+
+- name: Create snapshot by copying an existing managed disk.
+  when: (azure_snapshot_state is not defined) or (azure_snapshot_state is defined and azure_snapshot_state == 'present')
+  block:
+    - name: Create for Data disks
+      azure.azcollection.azure_rm_snapshot:
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        resource_group: "{{ azure_rg | default(omit) }}"
+        name: "{{ data_disk.name | lower }}-snapshot"
+        location: "{{ azure_region | default(omit) | lower }}"
+        state: "{{ azure_snapshot_state | default(omit) | lower }}"
+        incremental: true
+        creation_data:
+          create_option: Copy
+          source_id: "{{ data_disk.managed_disk_id | lower }}"
+      loop: "{{ __output.vms[0].data_disks }}"
+      loop_control:
+        loop_var: data_disk
+
+    - name: Create for OS disk
+      azure.azcollection.azure_rm_snapshot:
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        resource_group: "{{ azure_rg | default(omit) }}"
+        name: "{{ inventory_hostname_short }}-osdisk-snapshot"
+        location: "{{ azure_region | default(omit) }}"
+        state: "{{ azure_snapshot_state | default(omit) }}"
+        incremental: true
+        creation_data:
+          create_option: Copy
+          source_id: /subscriptions/{{ azure_subscription_id }}/resourceGroups/{{ azure_rg }}/providers/Microsoft.Compute/disks/{{ inventory_hostname_short }}-osdisk  # noqa yaml[line-length]
+
+- name: Delete the snapshots
+  when: azure_snapshot_state is defined and azure_snapshot_state == 'absent'
+  block:
+    - name: Delete OS disk snapshot
+      azure.azcollection.azure_rm_snapshot:
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        resource_group: "{{ azure_rg | default(omit) }}"
+        name: "{{ inventory_hostname_short }}-osdisk-snapshot"
+        state: "{{ azure_snapshot_state }}"
+
+    - name: Delete Data disk snapshot
+      azure.azcollection.azure_rm_snapshot:
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        resource_group: "{{ azure_rg | default(omit) }}"
+        name: "{{ data_disk.name }}-snapshot"
+        state: "{{ azure_snapshot_state }}"
+      loop: "{{ __output.vms[0].data_disks }}"
+      loop_control:
+        loop_var: data_disk

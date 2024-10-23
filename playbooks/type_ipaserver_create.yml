@@ -1,0 +1,59 @@
+---
+- name: "IDM ipaserver VM - Create"
+  ansible.builtin.import_playbook: function_azure_vm_create.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: ipaserver
+  tags:
+    - idm_vm_create
+
+- name: "IDM VM - Check if Reachable"
+  ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
+  vars:
+    host: ipaserver
+  tags:
+    - idm_vm_create
+
+- name: "IDM VM - Post Configure"
+  ansible.builtin.import_playbook: function_vm_post_configure.yml
+  vars:
+    host: ipaserver
+  tags:
+    - idm_vm_post_conf
+
+- name: "IDM VM - IDM Create Certificate Sign Request"
+  ansible.builtin.import_playbook: function_idm_csr_create.yml
+  vars:
+    host: ipaserver
+  tags:
+    - idm_install
+    - idm_create_csr
+
+- name: "RootCA VM - Sign CSR"
+  ansible.builtin.import_playbook: function_idm_sign_csr.yml
+  vars:
+    host: "{{ groups.rootca | first }}"
+  tags:
+    - idm_install
+    - idm_sign_csr
+
+- name: "IDM VM - Install IDM with Signed Certificate"
+  ansible.builtin.import_playbook: function_idm_ipaserver_install.yml
+  vars:
+    host: ipaserver
+  tags:
+    - idm_install
+    - idm_install_server
+
+- name: "Root VM - Shutdown and Lock VM"
+  ansible.builtin.import_playbook: function_azure_lock_vm.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: "{{ groups.rootca | first }}"
+  tags:
+    - idm_install
+    - shutdown_rootca

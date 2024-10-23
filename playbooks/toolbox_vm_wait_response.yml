@@ -1,0 +1,11 @@
+---
+- name: Check VM is reachable
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  tasks:
+    - name: Wait until the host is reachable
+      become: false
+      ansible.builtin.wait_for_connection:
+        timeout: 600
+        sleep: 5

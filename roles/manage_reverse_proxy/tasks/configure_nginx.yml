@@ -1,0 +1,45 @@
+---
+- name: Ensure nginx package is installed
+  ansible.builtin.dnf:
+    name:
+      - nginx
+    state: "present"
+
+- name: Get IP - "{{ groups.ipaserver | first }}"
+  ansible.builtin.setup:
+  delegate_to: "{{ groups.ipaserver | first }}"
+  register: __ipaserver_facts
+
+- name: Set resolver_ips
+  ansible.builtin.set_fact:
+    resolver_ips: "{{ [__ipaserver_facts.ansible_facts.ansible_default_ipv4.address] }}"
+
+- name: Get IP - "{{ groups.ipareplicas | first }}"
+  ansible.builtin.setup:
+  delegate_to: "{{ groups.ipareplicas | first }}"
+  register: __ipareplica_facts
+
+- name: Set resolver_ips
+  ansible.builtin.set_fact:
+    resolver_ips: "{{ resolver_ips + [__ipareplica_facts.ansible_facts.ansible_default_ipv4.address] }}"
+
+- name: Populate and configure Nginx config
+  ansible.builtin.template:
+    src: reverse_proxy.j2
+    dest: /etc/nginx/conf.d/reverse-proxy.conf
+    mode: "0644"
+  notify: Manage_reverse_proxy_restart_nginx
+
+- name: Add HTTP service to firewalld
+  ansible.posix.firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Add HTTPS service to firewalld
+  ansible.posix.firewalld:
+    service: https
+    permanent: true
+    state: enabled
+    immediate: true

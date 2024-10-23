@@ -1,0 +1,32 @@
+---
+- name: "Fetch CCV info"
+  redhat.satellite.content_view_info:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ satellite_organization }}"
+    name: "{{ satellite_config_ccv_name }}"
+  register: __result
+
+- name: "Ensure CV is published"
+  redhat.satellite.content_view_version:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ satellite_organization }}"
+    content_view: "{{ component.content_view.name }}"
+    description: "{{ now(utc=true, fmt='%Y-%m-%d %H:%M:%S') }}"
+  loop: "{{ __result.content_view.components }}"
+  loop_control:
+    loop_var: component
+
+- name: "Ensure CCV is promoted to lifecycle"
+  redhat.satellite.content_view_version:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ satellite_organization }}"
+    content_view: "{{ satellite_config_ccv_name }}"
+    description: "{{ now(utc=true, fmt='%Y-%m-%d %H:%M:%S') }}"
+    lifecycle_environments:
+      - "Dev"

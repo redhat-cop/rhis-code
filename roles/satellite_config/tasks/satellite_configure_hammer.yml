@@ -1,0 +1,39 @@
+---
+- name: Block for hammer configuration
+  become: true
+  block:
+    - name: "Create a directory for the hammer config for the root user"
+      ansible.builtin.file:
+        dest: "/root/.hammer/cli.modules.d/"
+        owner: root
+        group: root
+        mode: "0600"
+        state: "directory"
+
+    - name: "Create the configuration file"
+      ansible.builtin.template:
+        src: "foreman.yml.j2"
+        owner: root
+        group: root
+        mode: "0600"
+        dest: "/root/.hammer/cli.modules.d/foreman.yml"
+
+    - name: "Check hammer"
+      ansible.builtin.command: "hammer ping"
+      register: __output
+      changed_when: __output.changed
+      failed_when: __output.failed
+
+    - name: "Success check of hammer"
+      ansible.builtin.fail:
+      when: "'Status:          ok' not in __output.stdout"
+
+    - name: "Check health"
+      ansible.builtin.command: "satellite-maintain health check --label server-ping"
+      register: __output_health
+      changed_when: __output_health.changed
+      failed_when: __output_health.failed
+
+    - name: "Success check of satellite health check"
+      ansible.builtin.fail:
+      when: "'[OK]' not in __output_health.stdout"

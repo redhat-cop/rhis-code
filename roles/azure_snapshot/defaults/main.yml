@@ -1,0 +1,3 @@
+---
+# defaults file for azure_snapshot
+# azure_snapshot_state: [present|absent]

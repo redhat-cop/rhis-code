@@ -1,0 +1,14 @@
+---
+- name: "Create reverse DNS zones"
+  redhat.rhel_idm.ipadnszone:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    allow_sync_ptr: "{{ idm_config_allow_sync_ptr }}"
+    dynamic_update: "{{ idm_config_dynamic_update }}"
+    name_from_ip: "{{ subnets_var.subnet }}"
+    state: present
+    update_policy: "{{ idm_config_update_policy | default(omit) }}"
+  loop: "{{ idm_config_reverse_dns_networks }}"
+  loop_control:
+    loop_var: subnets_var
+  when: idm_config_reverse_dns_networks | length()

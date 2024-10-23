@@ -1,0 +1,9 @@
+---
+- name: Satellite - Register Host
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: satellite_register
+      when: satellite_register | bool()
+      become: true

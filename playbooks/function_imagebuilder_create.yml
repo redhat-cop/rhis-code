@@ -1,0 +1,16 @@
+---
+- name: Create VM Images
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: azure_resource_group
+      when:
+        - azure_resource_group | bool()
+      tags: azure_resource_group
+      delegate_to: localhost
+
+    - role: imagebuilder
+      when: imagebuilder | bool()
+      tags: imagebuilder
+      delegate_to: localhost

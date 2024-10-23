@@ -1,0 +1,34 @@
+---
+- name: Create VM
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: azure_resource_group
+      when:
+        - azure_resource_group | bool()
+      tags: azure_resource_group
+      delegate_to: localhost
+
+    - role: imagebuilder
+      when: imagebuilder | bool()
+      tags: imagebuilder
+      delegate_to: localhost
+
+    - role: azure_network
+      when:
+        - azure_network | bool()
+      tags: azure_network
+      delegate_to: localhost
+
+    - role: azure_vm_deploy
+      when:
+        - azure_vm_deploy | bool()
+      tags: azure_vm_deploy
+      delegate_to: localhost
+
+    - role: azure_dns
+      when:
+        - azure_dns | bool()
+      tags: azure_dns
+      delegate_to: localhost

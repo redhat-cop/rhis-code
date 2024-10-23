@@ -1,0 +1,9 @@
+---
+- name: Leapp Upgrade
+  hosts: "{{ host | default('localhost') }}"
+  become: true
+  strategy: free # noqa run-once[play]
+  force_handlers: true
+
+  roles:
+    - role: infra.leapp.upgrade

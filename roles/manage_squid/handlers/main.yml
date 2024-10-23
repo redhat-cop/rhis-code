@@ -1,0 +1,10 @@
+---
+- name: Manage_squid_reload_firewall
+  ansible.builtin.service:
+    name: firewalld
+    state: reloaded
+
+- name: Manage_squid_reload_squid
+  ansible.builtin.service:
+    name: squid
+    state: reloaded

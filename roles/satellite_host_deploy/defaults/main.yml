@@ -1,0 +1,8 @@
+---
+# defaults file for satellite_host_deploy
+# satellite_host_deploy: [ true|false ]
+# satellite_host_deploy_organization: ""
+# satellite_host_deploy_location: ""
+# satellite_host_deploy_hostgroup: ""
+# satellite_host_deploy_compute_resource: ""
+# satellite_host_deploy_image: ""

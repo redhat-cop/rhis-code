@@ -1,0 +1,10 @@
+---
+- name: RH Satellite - Promote CCV to Lifecycle
+  hosts: "satellite"
+  gather_facts: false
+
+  tasks:
+    - name: Include Task - Satellite Promote CCVs
+      ansible.builtin.include_role:
+        name: satellite_config
+        tasks_from: satellite_promote_ccv.yml

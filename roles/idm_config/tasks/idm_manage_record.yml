@@ -1,0 +1,13 @@
+---
+- name: Retrieve all values from all nameservers for two DNS names
+  community.dns.nameserver_record_info:
+    name:
+      - "{{ idm_default_dns_zone }}"
+    type: A
+  register: __a_records
+
+- name: Configure PTR records
+  ansible.builtin.include_tasks: idm_ensure_records.yml
+  loop: "{{ __a_records.results[0].result }}"
+  loop_control:
+    loop_var: __a_records_var

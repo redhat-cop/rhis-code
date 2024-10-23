@@ -1,0 +1,6 @@
+---
+- name: Include satellite_get_ccv_cvs.yml
+  ansible.builtin.include_tasks: satellite_get_ccv_cvs.yml
+  loop: "{{ satellite_config_ccvs }}"
+  loop_control:
+    loop_var: satellite_config_ccv_name

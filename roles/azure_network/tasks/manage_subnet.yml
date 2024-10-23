@@ -1,0 +1,13 @@
+---
+- name: Create a subnet
+  azure.azcollection.azure_rm_subnet:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_network_subnet_state }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    virtual_network_name: "{{ azure_vnet | default(omit) }}"
+    name: "{{ azure_subnet | default(omit) }}"
+    address_prefix: "{{ azure_subnet_address_prefix | default(omit) }}"
+    security_group: "{{ azure_subnet_nsg | default(omit) }}"

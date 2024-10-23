@@ -1,0 +1,21 @@
+---
+- name: "Copy the ipa ca-certificates to the trust directory"
+  ansible.builtin.copy:
+    src: "{{ pki_idm_generate_certs_ipa_server_ca_path }}"
+    dest: "{{ pki_idm_generate_certs_ipa_client_trust_path }}"
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: "Enable the trust"
+  ansible.builtin.command: "update-ca-trust enable"
+  register: __result
+  changed_when: __result.changed
+  failed_when: __result.failed
+
+- name: "Update the trust"
+  ansible.builtin.command: "update-ca-trust"
+  register: __result
+  changed_when: __result.changed
+  failed_when: __result.failed

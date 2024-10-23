@@ -1,0 +1,12 @@
+---
+- name: Manage Virtual Network
+  azure.azcollection.azure_rm_virtualnetwork:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_network_vnet_state }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_vnet | default(omit) }}"
+    dns_servers: "{{ azure_vnet_dns_servers | default(omit) }}"
+    address_prefixes: "{{ azure_vnet_address_prefix | default(omit) }}"

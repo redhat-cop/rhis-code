@@ -1,0 +1,15 @@
+---
+- name: Get AAP installer bundle
+  ansible.builtin.include_tasks: get_aap_installer_bundle.yml
+
+- name: Get host SSL files
+  ansible.builtin.include_tasks: get_host_ssl_files.yml
+  loop: "{{ groups.aap_intra }}"
+  loop_control:
+    loop_var: delegated_host
+
+- name: Populate inventory
+  ansible.builtin.include_tasks: populate_installer_inventory.yml
+
+- name: Run AAP installation
+  ansible.builtin.include_tasks: launch_setup.yml

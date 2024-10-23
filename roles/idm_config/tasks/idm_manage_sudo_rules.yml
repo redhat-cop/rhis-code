@@ -1,0 +1,18 @@
+---
+- name: "Create defined sudo rules in IdM"
+  redhat.rhel_idm.ipasudorule:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ idmsudo_var.name }}"
+    description: "{{ idmsudo_var.description | default(omit) }}"
+    state: "{{ idmsudo_var.state }}"
+    cmdcategory: "{{ idmsudo_var.cmdcategory | default(omit) }}"
+    hostcategory: "{{ idmsudo_var.hostcategory | default(omit) }}"
+    group: "{{ idmsudo_var.group | default(omit) }}"
+    user: "{{ idmsudo_var.user | default(omit) }}"
+    allow_sudocmd: "{{ idmsudo_var.allow_sudocmd | default(omit) }}"
+    sudooption: "{{ idmsudo_var.sudooption | default(omit) }}"
+  loop: "{{ idm_sudo_rules }}"
+  loop_control:
+    loop_var: idmsudo_var
+  when: idm_sudo_rules is defined

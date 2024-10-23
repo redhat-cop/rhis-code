@@ -1,0 +1,23 @@
+---
+- name: Create a Public DNS zone
+  azure.azcollection.azure_rm_dnszone:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_dns_zone_state }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_dns_zone | default(omit) }}"
+  when: azure_dns_zone is defined
+
+- name: Create Private DNS Zone
+  ansible.builtin.include_tasks: private_dns_zone.yml
+  when: azure_dns_private_dns_zone is defined
+
+- name: Create Private DNS record
+  ansible.builtin.include_tasks: private_dns_zone_link.yml
+  when: azure_dns_private_dns_zone is defined
+
+- name: Create Public DNS record
+  ansible.builtin.include_tasks: public_dnsrecord.yml
+  when: __public_ip is defined
