@@ -10,7 +10,7 @@
 
 <!-- Paste links to related MRs or remove this section. -->
 
-* showroom-inventory!xxx
+* rhis-inventory!xxx
 
 ## Functional test
 

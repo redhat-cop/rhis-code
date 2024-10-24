@@ -4,25 +4,25 @@ company: Red Hat, Inc.
 license: GPL-3.0-only
 ////
 
-:subject: Showroom Code
-:description: This document explains Showroom Project
+:subject: RHIS Code
+:description: This document explains RHIS Code
 :doctype: book
 :chapter-label:
 :imagesdir: ./images
 :encoding: UTF-8
 :lang: en
 :autofit-option:
-:url-org: https://github.com/showroom-project
-:url-repo: {url-org}/showroom-code
-:url-inventory-repo: {url-org}/showroom-inventory
+:url-org: https://github.com/redhat-cop
+:url-repo: {url-org}/rhis-code
+:url-inventory-repo: {url-org}/rhis-inventory
 
 = {subject}
 
-image:https://github.com/showroom-project/showroom-code/actions/workflows/ansible-lint.yml/badge.svg[Ansible Code Lint Status (GitHub Actions),link={url-repo}/actions/workflows/ansible-lint.yml] image:https://img.shields.io/badge/slack-channel-tech?logo=slack[Slack Channel,link=https://redhat.enterprise.slack.com/archives/C06UNKD7813] image:https://img.shields.io/badge/miro-workspace-board?logo=miro[Miro Workspace,link=https://miro.com/app/board/uXjVKUIlyW8=/] image:https://img.shields.io/badge/JIRA-Board-Workspace?logo=slack[JIRA Board,link=https://issues.redhat.com/secure/RapidBoard.jspa]
+image:https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml/badge.svg[Ansible Code Lint Status (GitHub Actions),link={url-repo}/actions/workflows/ansible-lint.yml] image:https://img.shields.io/badge/slack-channel-tech?logo=slack[Slack Channel,link=https://redhat.enterprise.slack.com/archives/C06UNKD7813]
 
-This repository is intended to contain ansible automation code. All documents are stored on https://github.com/showroom-project/showroom-code[Showroom Code] repository.
+This repository is intended to contain ansible automation code. All documents are stored on https://github.com/redhat-cop/rhis-code[RHIS Code] repository.
 
-The goal of this project is to build a Red Hat based environment suitable for a showroom project by an *enterprise* ready approach an opinionated Red Hat infrastructure that implements several Standard Operating Environments for Red Hat Enterprise Linux using Red Hat Management tools (Red Hat Infrastructure Standard Adoption Model).
+The goal of this project is to build a Red Hat based environment by an *enterprise* ready approach an opinionated Red Hat infrastructure that implements several Standard Operating Environments for Red Hat Enterprise Linux using Red Hat Management tools (Red Hat Infrastructure Standard Adoption Model).
 
 The Red Hat Infrastructure Standard (*RH-IS*)footnote:disclaimer[https://github.com/redhat-cop/rhis-builder[RHIS Builder Repository]] is a framework for using integrated Red Hat technologies to build, manage, automate, optimize, and maintain Red Hat Enterprise Linux at scale in a hybrid multi-cloud.
 One of the fundamental principles of the *RH-ISAM* is to strive towards “*_everything as code_*”. The goal is repeatability, consistency, and stability and being modular.
@@ -47,18 +47,18 @@ There are also external tools used to to simulate integration points such as
 * RootCA based on OpenSSL
 
 == where to start
-Current https://github.com/showroom-project/showroom-code[showroom-code] consumes https://github.com/showroom-project/showroom-inventory[showroom-inventory] repository for the credentials and configurable variables. Duplicate `showroom-inventory` repository as your own inventory to use if you plan to deploy environment on your own and update definitions based on your own.
+Current https://github.com/redhat-cop/rhis-code[rhis-code] consumes https://github.com/redhat-cop/rhis-inventory[rhis-inventory] repository for the credentials and configurable variables. Duplicate `rhis-inventory` repository as your own inventory to use if you plan to deploy environment on your own and update definitions based on your own.
 
 First you can initialize your local environment by running link:playbooks/landscape_init.yml[`landscape_init.yml`]. This playbook will create an SSH Key pair and configuration for the generic SSH that enables access using Bastion. SSH public key will encrypted and pushed to the inventory repository.
 
 ```bash
-ansible-playbook -i showroom-inventory/inventory.yml showroom-code/playbooks/landscape_init.yml --ask-vault-pass -e init_environment_set=true
+ansible-playbook -i rhis-inventory/inventory.yml rhis-code/playbooks/landscape_init.yml --ask-vault-pass -e init_environment_set=true
 ```
 
 link:playbooks/landscape_site.yml[`landscape_site.yml`] is the main Ansible playbook to trigger everything from scratch for a Big Bang.
 
 ```bash
-ansible-playbook -i showroom-inventory/inventory.yml showroom-code/playbooks/landscape_site.yml --ask-vault-pass
+ansible-playbook -i rhis-inventory/inventory.yml rhis-code/playbooks/landscape_site.yml --ask-vault-pass
 ```
 
 Refer to link:docs/where_to_start.md[where to start documentation] for more information.

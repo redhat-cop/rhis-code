@@ -52,9 +52,9 @@ project could not exposed on Internet which you can not directly access
 without using the configuration steps below.
 
 1. Deploy browser extension named [`Switchy Omega Extension`](https://github.com/FelisCatus/SwitchyOmega).
-2. Open the extension Options to configure a new profile with a name `showroom-bastion` and `Proxy Profile` option.
+2. Open the extension Options to configure a new profile with a name `rhis-bastion` and `Proxy Profile` option.
 3. Navigate to the newly created profile and add `_<bastion_vm_fqdn>_` to the servers list with a proxy port number `3128` for HTTP access in default scheme.
-4. Navigate to the ˙auto switch˙ profile and add add switch rules to use with `Condition Type` equal `Host Wildcard`, `Condition Details` equal `_<project_fqdn>_` and `profile` equal to `showroom-bastion`.
+4. Navigate to the ˙auto switch˙ profile and add add switch rules to use with `Condition Type` equal `Host Wildcard`, `Condition Details` equal `_<project_fqdn>_` and `profile` equal to `rhis-bastion`.
 5. Ensure from the browser extension that `auto switch` profile set as default.
 
-This setup will allow you to access WebUI's of the any application on the showroom project.
+This setup will allow you to access WebUI's of the any application on the project.
