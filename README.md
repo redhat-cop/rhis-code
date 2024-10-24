@@ -1,6 +1,6 @@
 # RHIS-code
 
-[![Ansible Lint](https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml/badge.svg) [![Slack Channel](https://img.shields.io/badge/slack-channel-tech?logo=slack)](https://redhat.enterprise.slack.com/archives/C07TAP5PJ8K)
+[![Ansible Lint](https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml) [![Slack Channel](https://img.shields.io/badge/slack-channel-tech?logo=slack)](https://redhat.enterprise.slack.com/archives/C07TAP5PJ8K)
 
 
 This repository is intended to contain ansible automation code. All documents are stored on [docs](https://github.com/redhat-cop/rhis-code/docs).
