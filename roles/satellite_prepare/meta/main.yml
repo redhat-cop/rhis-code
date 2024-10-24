@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Showroom Project Team
+  description: This roles prepares host to Red Hat Satellite installation.
+  company: Red Hat, Inc.
+  license: GPL-3.0-only
+  min_ansible_version: "2.14"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags: []
+dependencies: []
+collections:
+  - community.crypto
+  - community.general
+  - redhat.rhel_idm

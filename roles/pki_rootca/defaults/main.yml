@@ -1,0 +1,7 @@
+---
+pki_rootca_root_path: /etc/ssl/ca
+pki_rootca_key: rootca_certificate.key
+pki_rootca_cert: rootca_certificate.crt
+
+pki_rootca_passphrase_secret: "{{ ca_root_passphrase_secret }}"
+pki_rootca_ca_common_name: "{{ ca_common_name }}"

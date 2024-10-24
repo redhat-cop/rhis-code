@@ -1,0 +1,13 @@
+---
+- name: Configure Local SSH
+  ansible.builtin.include_tasks:
+    file: manage_ssh.yml
+  when: vm_user_private_key is not defined
+
+- name: Configure Local Ansible Config
+  ansible.builtin.include_tasks:
+    file: ansible_config.yml
+
+- name: Install Ansible Collections and Roles to Local
+  ansible.builtin.include_tasks:
+    file: collection_install.yml

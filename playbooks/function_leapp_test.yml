@@ -1,0 +1,10 @@
+---
+- name: Test after Leapp upgrade
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  tasks:
+    - name: Check that you can connect (GET) to a page and it returns a status 200
+      ansible.builtin.uri:
+        url: "http://{{ host }}"
+      delegate_to: "{{ groups.aap_controller[0] }}"

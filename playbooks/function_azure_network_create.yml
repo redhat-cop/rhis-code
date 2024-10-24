@@ -1,0 +1,43 @@
+---
+- name: Create Azure Network
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  pre_tasks:
+    - name: Get IdM DNS IPs
+      run_once: true # noqa run-once[task]
+      block:
+        - name: Get IP - "{{ groups.ipaserver | first }}"
+          ansible.builtin.setup:
+          delegate_to: "{{ groups.ipaserver | first }}"
+          register: __ipaserver_facts
+
+        - name: Set ipaclient_dns_servers
+          ansible.builtin.set_fact:
+            ipaclient_dns_servers: "{{ [__ipaserver_facts.ansible_facts.ansible_default_ipv4.address] }}"
+
+        - name: Get IP - "{{ groups.ipareplicas | first }}"
+          ansible.builtin.setup:
+          delegate_to: "{{ groups.ipareplicas | first }}"
+          register: __ipareplica_facts
+
+        - name: Set ipaclient_dns_servers
+          ansible.builtin.set_fact:
+            ipaclient_dns_servers: "{{ ipaclient_dns_servers + [__ipareplica_facts.ansible_facts.ansible_default_ipv4.address] }}"
+
+        - name: Set ipaclient_dns_servers to azure_vnet_dns_servers
+          ansible.builtin.set_fact:
+            azure_vnet_dns_servers: "{{ ipaclient_dns_servers }}"
+
+  roles:
+    - role: azure_resource_group
+      when:
+        - azure_resource_group | bool()
+      tags: azure_resource_group
+      delegate_to: localhost
+
+    - role: azure_network
+      when:
+        - azure_network | bool()
+      tags: azure_network
+      delegate_to: localhost

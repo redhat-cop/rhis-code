@@ -1,0 +1,60 @@
+---
+# synchronization of repositories
+- name: "Sync repositories"
+  block:
+    - name: "Set or increment retry count"
+      ansible.builtin.set_fact:
+        sync_retry_count: "{{ 0 if sync_retry_count is undefined else sync_retry_count | int + 1 }}"
+
+    - name: "Get the unique list of Red Hat products"
+      ansible.builtin.set_fact:
+        __rh_products_to_sync: "{{ satellite_products | map(attribute='name') | list | unique }}"
+
+    - name: "List the products to be synchronized"
+      ansible.builtin.debug:
+        var: __rh_products_to_sync
+
+    - name: "Sync the Red Hat products with the CDN"
+      redhat.satellite.repository_sync:
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        server_url: "{{ satellite_server_url }}"
+        organization: "{{ satellite_organization }}"
+        product: "{{ rh_product }}"
+      loop: "{{ __rh_products_to_sync }}"
+      loop_control:
+        loop_var: rh_product
+      async: "{{ async_timeout }}"
+      poll: "{{ async_delay }}"
+      register: async_update
+
+    - name: "Get the unique list of custom products"
+      ansible.builtin.set_fact:
+        __custom_products_to_sync: "{{ satellite_config_custom_products | map(attribute='name') | list | unique }}"
+
+    - name: "Sync the custom products"
+      redhat.satellite.repository_sync:
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        server_url: "{{ satellite_server_url }}"
+        organization: "{{ satellite_organization }}"
+        product: "{{ custom_products }}"
+      loop: "{{ __custom_products_to_sync }}"
+      loop_control:
+        loop_var: custom_products
+      async: "{{ async_timeout }}"
+      poll: "{{ async_delay }}"
+      register: async_update
+
+  rescue:
+    - name: "Retry count exceeded, failing"
+      ansible.builtin.fail:
+        msg: "Maximum retry count exceeded, have tried {{ sync_retry_count }} times"
+      when: sync_retry_count|int == 4
+
+    - name: "Retrying"
+      ansible.builtin.debug:
+        msg: "Retrying, retry count {{ sync_retry_count }} of 4..."
+
+    - name: "Retry"
+      ansible.builtin.include_tasks: satellite_sync_repositories.yml

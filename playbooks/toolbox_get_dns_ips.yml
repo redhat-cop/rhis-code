@@ -1,0 +1,23 @@
+---
+- name: Get IdM DNS IPs
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Get IP - "{{ groups.ipaserver | first }}"
+      ansible.builtin.setup:
+      delegate_to: "{{ groups.ipaserver | first }}"
+      register: __ipaserver_facts
+
+    - name: Set ipaclient_dns_servers
+      ansible.builtin.set_fact:
+        ipaclient_dns_servers: "{{ [__ipaserver_facts.ansible_facts.ansible_default_ipv4.address] }}"
+
+    - name: Get IP - "{{ groups.ipareplicas | first }}"
+      ansible.builtin.setup:
+      delegate_to: "{{ groups.ipareplicas | first }}"
+      register: __ipareplica_facts
+
+    - name: Set ipaclient_dns_servers
+      ansible.builtin.set_fact:
+        ipaclient_dns_servers: "{{ ipaclient_dns_servers + [__ipareplica_facts.ansible_facts.ansible_default_ipv4.address] }}"

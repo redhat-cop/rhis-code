@@ -1,0 +1,23 @@
+---
+- name: Create managed disk
+  azure.azcollection.azure_rm_manageddisk:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_managed_disk_state }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_managed_disk_name | default(omit) }}"
+    disk_size_gb: "{{ azure_managed_disk_size | default(omit) }}"
+    storage_account_type: "{{ azure_managed_disk_storage_account_type | default(omit) }}"
+
+- name: Mount the managed disk to VM
+  azure.azcollection.azure_rm_manageddisk:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_managed_disk_name | default(omit) }}"
+    disk_size_gb: "{{ azure_managed_disk_size | default(omit) }}"
+    managed_by: "{{ inventory_hostname }}"

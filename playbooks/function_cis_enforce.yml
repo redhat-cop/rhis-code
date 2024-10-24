@@ -1,0 +1,10 @@
+---
+- name: Enforce CIS
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: true
+
+  roles:
+    - role: RedHatOfficial.rhel9_cis
+      when: enforce_cis | bool()
+      tags: enforce_cis
+      become: true

@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Showroom Project Team
+  description: This role configures Red Hat Ansible Automation Platform.
+  company: Red Hat, Inc.
+  license: GPL-3.0-only
+  min_ansible_version: "2.14"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags: []
+dependencies: []
+collections:
+  - ansible.controller
+  - infra.controller_configuration
+  - infra.ee_utilities
+  - infra.ah_configuration

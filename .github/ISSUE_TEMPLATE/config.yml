@@ -1,0 +1,10 @@
+---
+# Ref: https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
+blank_issues_enabled: false # default is true
+contact_links:
+  - name: 📝 Ansible Community Code of Conduct
+    url: https://docs.ansible.com/ansible/latest/community/code_of_conduct.html
+    about: Be nice to other members of the community. Behave.
+  - name: 💬 Talk to Steering Committee
+    url: https://redhat.enterprise.slack.com/archives/C06VCEWRQE4
+    about: Reach out to the Red Hat Community

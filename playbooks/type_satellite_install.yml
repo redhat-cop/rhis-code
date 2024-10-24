@@ -1,0 +1,65 @@
+---
+- name: "Satellite VM - Create"
+  ansible.builtin.import_playbook: function_azure_vm_create.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: satellite
+  tags:
+    - satellite_vm_create
+
+- name: "Satellite VM - Check if Reachable"
+  ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_vm_create
+
+- name: "Satellite VM - Post Configure"
+  ansible.builtin.import_playbook: function_vm_post_configure.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_vm_post_conf
+
+- name: "Satellite VM - Create Managed Disk"
+  ansible.builtin.import_playbook: function_azure_managed_disk_create.yml
+  when:
+    - bootstrap_target is defined
+    - bootstrap_target == "azure"
+  vars:
+    host: satellite
+  tags:
+    - satellite_vm_managed_disk
+
+- name: "Satellite VM - Run RHEL Storage"
+  ansible.builtin.import_playbook: function_rhel_managed_disk_configure.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_vm_managed_disk
+
+- name: "Satellite VM - Register IdM"
+  ansible.builtin.import_playbook: function_idm_register.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_vm_register_idm
+
+- name: "Satellite VM  - Generate Host Certificates"
+  ansible.builtin.import_playbook: function_idm_generate_certs.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_cert_generate
+    - satellite_install
+    - satellite_install_server
+
+- name: "Satellite VM - Install Satellite"
+  ansible.builtin.import_playbook: function_satellite_install.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_install
+    - satellite_install_server

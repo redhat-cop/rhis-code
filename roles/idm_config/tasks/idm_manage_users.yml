@@ -1,0 +1,27 @@
+---
+- name: "Add defined users on IdM"
+  redhat.rhel_idm.ipauser:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ idmuser_var.name }}"
+    first: "{{ idmuser_var.first }}"
+    last: "{{ idmuser_var.last }}"
+    city: "{{ idmuser_var.city | default(omit) }}"
+    displayname: "{{ idmuser_var.first }} {{ idmuser_var.last }}"
+    departmentnumber: "{{ idmuser_var.departmentnumber | default(omit) }}"
+    email: "{{ idmuser_var.email | default(omit) }}"
+    employeenumber: "{{ idmuser_var.employeenumber | default(omit) }}"
+    employeetype: "{{ idmuser_var.employeetype | default(omit) }}"
+    title: "{{ idmuser_var.title | default(omit) }}"
+    userstate: "{{ idmuser_var.userstate | default(omit) }}"
+    password: "{{ idmuser_var.password | default(omit) }}"
+    state: "{{ idmuser_var.state }}"
+    shell: "{{ idmuser_var.shell | default('/bin/bash') }}"
+    homedir: "{{ idmuser_var.homedir | default(omit) }}"
+    sshpubkey: "{{ idmuser_var.sshpubkey | default(omit) }}"
+    update_password: "{{ idmuser_var.update_password | default(omit) }}"
+    passwordexpiration: "{{ idmuser_var.passwordexpiration | default(omit) }}"
+  loop: "{{ idm_users + showroom_users }}"
+  loop_control:
+    loop_var: idmuser_var
+  no_log: true

@@ -1,0 +1,8 @@
+---
+- name: Enforce CIS on all hosts
+  ansible.builtin.import_playbook: function_cis_enforce.yml
+  when: enforce_cis | bool()
+  vars:
+    host: all
+  tags:
+    - enforce_cis

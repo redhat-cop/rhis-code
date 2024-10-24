@@ -1,0 +1,7 @@
+---
+ldap_extra_settings:
+  AUTH_LDAP_USER_FLAGS_BY_GROUP: '{"is_superuser": "cn=aapgroup-administrator,cn=groups,cn=accounts,{{ ldap_domain_map }}",}'
+  AUTH_LDAP_REQUIRE_GROUP: 'cn=aapgroup-user,cn=groups,cn=accounts,{{ ldap_domain_map }}'
+  AUTH_LDAP_USER_ATTR_MAP: '{"first_name": "givenName", "last_name": "sn", "email": "mail",}'
+  GALAXY_LDAP_LOGGING: True
+  AUTH_LDAP_MIRROR_GROUPS: True

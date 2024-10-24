@@ -1,0 +1,10 @@
+---
+- name: Run Storage Role
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: true
+
+  roles:
+    - role: redhat.rhel_system_roles.storage
+      when: run_rhel_storage | bool()
+      tags: run_rhel_storage
+      become: true

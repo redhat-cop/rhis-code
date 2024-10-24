@@ -1,0 +1,13 @@
+---
+- name: Ensure a public "A" record set for VM
+  azure.azcollection.azure_rm_dnsrecordset:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg }}"
+    relative_name: "{{ inventory_hostname | split('.') | first | lower }}"
+    zone_name: "{{ azure_dns_zone }}"
+    record_type: A
+    records:
+      - entry: "{{ __public_ip.state.ip_address }}"

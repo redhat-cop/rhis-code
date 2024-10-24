@@ -1,0 +1,11 @@
+---
+- name: Create a public IP address
+  azure.azcollection.azure_rm_publicipaddress:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    allocation_method: "{{ azure_vm_deploy_public_ip_allocation_method | default(omit) }}"
+    name: "{{ azure_public_ip.name | default(omit) }}"
+  register: __public_ip

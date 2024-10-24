@@ -1,0 +1,7 @@
+---
+- name: "AAP Configuration"
+  ansible.builtin.import_playbook: function_aap_configure.yml
+  vars:
+    host: aap_controller
+  tags:
+    - aap_config

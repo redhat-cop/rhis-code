@@ -1,0 +1,30 @@
+    "filesystem": [
+      {
+        "min_size": {{ imagebuilder_filesystem.slash_size }},
+        "mountpoint": "/"
+      },
+      {
+        "min_size": {{ imagebuilder_filesystem.home_size }},
+        "mountpoint": "/home"
+      },
+      {
+        "min_size": {{ imagebuilder_filesystem.tmp_size }},
+        "mountpoint": "/tmp"
+      },
+      {
+        "min_size": {{ imagebuilder_filesystem.var_size }},
+        "mountpoint": "/var"
+      },
+      {
+        "min_size": {{ imagebuilder_filesystem.var_tmp_size }},
+        "mountpoint": "/var/tmp"
+      },
+      {
+        "min_size": {{ imagebuilder_filesystem.var_log_size }},
+        "mountpoint": "/var/log"
+      },
+      {
+        "min_size": {{ imagebuilder_filesystem.var_log_audit_size }},
+        "mountpoint": "/var/log/audit"
+      }
+    ],

@@ -1,0 +1,22 @@
+---
+- name: Create IDM CSR
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: true
+
+  pre_tasks:
+  # as of 30.08.2024 there is a bug in the RHIdM installation when using
+  # the latest version of bind-dyndb-ldap package.
+  # https://issues.redhat.com/browse/FREEIPA-11485
+    - name: Install bind-dyndb-ldap.x86_64 version 11.9
+      become: true
+      ansible.builtin.dnf:
+        name: bind-dyndb-ldap-11.9-9.el9_4.x86_64
+        state: present
+
+  roles:
+    - role: redhat.rhel_idm.ipaserver
+      state: present # noqa var-naming[no-role-prefix]
+      when: create_ipaserver| bool()
+      become: true
+      vars:
+        ipaserver_external_ca: true

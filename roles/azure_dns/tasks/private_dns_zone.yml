@@ -1,0 +1,12 @@
+---
+- name: Create a Private DNS zone
+  azure.azcollection.azure_rm_privatednszone:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_dns_private_dns_zone_state | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_dns_private_dns_zone | default(omit) }}"
+  register: __output
+  failed_when: "__output.msg is defined and 'Another operation is pending for requested object.' not in __output.msg"

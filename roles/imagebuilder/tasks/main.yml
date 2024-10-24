@@ -1,0 +1,7 @@
+---
+- name: "Create image"
+  ansible.builtin.include_tasks:
+    file: create_image.yml
+  loop: "{{ imagebuilder_images }}"
+  loop_control:
+    loop_var: image

@@ -1,0 +1,11 @@
+---
+- name: Create Resource Group
+  azure.azcollection.azure_rm_resourcegroup:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_resource_group_state }}"
+    force_delete_nonempty: "{{ azure_resource_group_teardown }}"
+    name: "{{ azure_rg | default(omit) }}"
+    location: "{{ azure_region | default(omit) }}"

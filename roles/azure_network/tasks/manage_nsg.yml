@@ -1,0 +1,12 @@
+---
+- name: Manage Network Security Group for Subnet
+  azure.azcollection.azure_rm_securitygroup:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_network_subnet_state }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_subnet_nsg | default(omit) }}"
+    rules: "{{ azure_subnet_nsg_rules | default(omit) }}"
+    purge_rules: "{{ azure_network_purge_rules }}"

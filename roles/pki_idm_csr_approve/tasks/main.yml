@@ -1,0 +1,39 @@
+---
+- name: Read CSR
+  ansible.builtin.slurp:
+    src: "{{ pki_idm_csr_approve_csr_path_idm }}"
+  register: __ipa_csr
+  delegate_to: "{{ groups.ipaserver | first }}"
+
+- name: Copy CSR to rootCA VM
+  ansible.builtin.copy:
+    content: "{{ __ipa_csr.content | b64decode }}"
+    dest: "{{ pki_idm_csr_approve_csr_path_rootca }}"
+    mode: "0644"
+
+- name: Generate an OpenSSL certificate signed with your own CA certificate
+  community.crypto.x509_certificate:
+    path: "{{ pki_idm_csr_approve_crt_path_rootca }}"
+    csr_path: "{{ pki_idm_csr_approve_csr_path_rootca }}"
+    ownca_path: "{{ pki_idm_csr_approve_root_path }}/{{ pki_idm_csr_approve_cert }}"
+    ownca_privatekey_path: "{{ pki_idm_csr_approve_root_path }}/{{ pki_idm_csr_approve_key }}"
+    ownca_privatekey_passphrase: "{{ ca_root_passphrase_secret }}"
+    provider: ownca
+
+- name: Get RootCA certificate
+  ansible.builtin.slurp:
+    src: "{{ pki_idm_csr_approve_root_path }}/{{ pki_idm_csr_approve_cert }}"
+  register: __rootca_content
+
+- name: Get Intermediate certificate
+  ansible.builtin.slurp:
+    src: "{{ pki_idm_csr_approve_crt_path_rootca }}"
+  register: __signed_sub_ca_content
+
+- name: Chain certificates
+  ansible.builtin.copy:
+    content: "{{ __signed_sub_ca_content.content | b64decode }}{{ __rootca_content.content | b64decode }}"
+    dest: "{{ pki_idm_csr_approve_crt_path_idm }}"
+    remote_src: true
+    mode: "0644"
+  delegate_to: "{{ groups.ipaserver | first }}"

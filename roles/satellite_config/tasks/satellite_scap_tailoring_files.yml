@@ -1,0 +1,21 @@
+---
+- name: "Copy the scap tailoring file to target"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ scap_tailoring_file.scap_file }}"
+    dest: "{{ scap_tailoring_file.scap_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: "Ensure the scap tailoring file is loaded"
+  redhat.satellite.scap_tailoring_file:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ scap_tailoring_file.name }}"
+    scap_file: "{{ scap_tailoring_file.scap_file | default(omit) }}"
+    locations: "{{ scap_tailoring_file.locations | default(omit) }}"
+    organizations: "{{ scap_tailoring_file.organizations | default(omit) }}"
+    updated_name: "{{ scap_tailoring_file.updated_name | default(omit) }}"
+    state: "{{ scap_tailoring_file.state | default(omit) }}"

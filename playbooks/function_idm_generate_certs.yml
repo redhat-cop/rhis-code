@@ -1,0 +1,9 @@
+---
+- name: Create IDM CSR
+  hosts: "{{ host | default('localhost') }}"
+  gather_facts: false
+
+  roles:
+    - role: pki_idm_generate_certs
+      when: pki_idm_generate_certs | bool()
+      become: true

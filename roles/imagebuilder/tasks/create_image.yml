@@ -1,0 +1,20 @@
+---
+- name: Check if image already exist
+  block:
+    - name: List images by resource group
+      azure.azcollection.azure_rm_image_info:
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        name: "{{ image.image_name }}"
+        resource_group: "{{ azure_rg }}"
+
+  rescue:
+    - name: Show fail message
+      ansible.builtin.debug:
+        msg: "Image {{ image.image_name }} doesn't exist in {{ azure_rg }}, creating new image..."
+
+    - name: "Create image"
+      ansible.builtin.include_tasks:
+        file: deploy_image.yml

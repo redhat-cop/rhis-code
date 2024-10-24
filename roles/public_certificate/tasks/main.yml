@@ -1,0 +1,89 @@
+---
+- name: "Create let's encrypt directory"
+  ansible.builtin.file:
+    path: "{{ public_certificate_letsencrypt_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Generate let's encrypt account key
+  community.crypto.openssl_privatekey:
+    path: "{{ public_certificate_letsencrypt_account_key_path }}"
+    format: pkcs8
+    size: 4096
+    cipher: auto
+    passphrase: "{{ letsencrypt_account_key_passphrase }}"
+
+- name: Generate let's encrypt private key
+  community.crypto.openssl_privatekey:
+    path: "{{ public_certificate_letsencrypt_ssl_key_path }}"
+    format: pkcs8
+    size: 4096
+
+- name: Generate an OpenSSL Certificate Signing Request
+  community.crypto.openssl_csr:
+    path: "{{ public_certificate_letsencrypt_csr_path }}"
+    privatekey_path: "{{ public_certificate_letsencrypt_ssl_key_path }}"
+    common_name: "{{ public_certificate_common_name }}"
+
+- name: "Begin Let's Encrypt challenges"
+  community.crypto.acme_certificate:
+    acme_directory: "{{ public_certificate_acme_directory }}"
+    acme_version: "{{ public_certificate_acme_version }}"
+    account_key_src: "{{ public_certificate_letsencrypt_account_key_path }}"
+    account_email: "{{ public_certificate_acme_email }}"
+    terms_agreed: true
+    challenge: "{{ public_certificate_acme_challenge_type }}"
+    account_key_passphrase: "{{ letsencrypt_account_key_passphrase }}"
+    csr: "{{ public_certificate_letsencrypt_csr_path }}"
+    cert: "{{ public_certificate_letsencrypt_crt_path }}"
+    fullchain_dest: "{{ public_certificate_letsencrypt_fullchain_path }}"
+  register: __acme_challenge_result
+
+- name: Get signed certificates
+  when: __acme_challenge_result.cert_days < 0
+  block:
+    - name: Set ACME challenge variables
+      ansible.builtin.set_fact:
+        __challenge_url: "{{ __acme_challenge_result.challenge_data_dns.keys() | list | first }}"
+
+    - name: Set ACME challenge variables
+      ansible.builtin.set_fact:
+        __challenge_token: "{{ __acme_challenge_result.challenge_data_dns[__challenge_url][0] }}"
+
+    - name: Ensure a public "TXT" record set for challenge
+      azure.azcollection.azure_rm_dnsrecordset:
+        subscription_id: "{{ azure_subscription_id | default(omit) }}"
+        tenant: "{{ azure_tenant_id | default(omit) }}"
+        client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+        secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+        resource_group: "{{ azure_rg }}"
+        relative_name: "{{ public_certificate_acme_challenge_subdomain }}"
+        zone_name: "{{ azure_dns_zone }}"
+        time_to_live: 60
+        record_type: TXT
+        records:
+          - entry: "{{ __challenge_token }}"
+      delegate_to: localhost
+      become: false
+      when:
+        - bootstrap_target is defined
+        - bootstrap_target == "azure"
+
+    - name: "Complete Let's Encrypt challenges"
+      community.crypto.acme_certificate:
+        acme_directory: "{{ public_certificate_acme_directory }}"
+        acme_version: "{{ public_certificate_acme_version }}"
+        account_key_src: "{{ public_certificate_letsencrypt_account_key_path }}"
+        account_email: "{{ public_certificate_acme_email }}"
+        challenge: "{{ public_certificate_acme_challenge_type }}"
+        account_key_passphrase: "{{ letsencrypt_account_key_passphrase }}"
+        csr: "{{ public_certificate_letsencrypt_csr_path }}"
+        cert: "{{ public_certificate_letsencrypt_crt_path }}"
+        chain_dest: "{{ public_certificate_letsencrypt_chain_path }}"
+        fullchain_dest: "{{ public_certificate_letsencrypt_fullchain_path }}"
+        data: "{{ __acme_challenge_result }}"
+      retries: 60
+      delay: 10
+      notify: Public_certificate_dns_revert

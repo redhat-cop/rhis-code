@@ -1,0 +1,12 @@
+---
+- name: Run Setup Ansible Automation Platform
+  ansible.builtin.shell: "./setup.sh -e @ldapextras.yml" # noqa: command-instead-of-shell
+  environment:
+    ANSIBLE_BECOME_METHOD: "sudo"
+    ANSIBLE_BECOME: "true"
+    ANSIBLE_HOST_KEY_CHECKING: "false"
+  args:
+    chdir: "{{ __aap_setup_prep_setup_dir }}"
+  register: __aap_install_result
+  changed_when: __aap_install_result.changed
+  failed_when: __aap_install_result.failed

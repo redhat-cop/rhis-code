@@ -1,0 +1,18 @@
+---
+- name: "Create defined HBAC rules in IdM"
+  redhat.rhel_idm.ipahbacrule:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ idmhbac_var.name }}"
+    description: "{{ idmhbac_var.description | default(omit) }}"
+    state: "{{ idmhbac_var.state }}"
+    hostgroup: "{{ idmhbac_var.hostgroup | default(omit) }}"
+    hostcategory: "{{ idmhbac_var.hostcategory | default(omit) }}"
+    servicecategory: "{{ idmhbac_var.servicecategory | default(omit) }}"
+    group: "{{ idmhbac_var.group | default(omit) }}"
+    user: "{{ idmhbac_var.user | default(omit) }}"
+    hbacsvc: "{{ idmhbac_var.hbacsvc | default(omit) }}"
+  loop: "{{ idm_hbac_rules }}"
+  loop_control:
+    loop_var: idmhbac_var
+  when: idm_hbac_rules is defined

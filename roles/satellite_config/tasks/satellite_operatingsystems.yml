@@ -1,0 +1,32 @@
+---
+- name: Block for operating system creation
+  block:
+    - name: Create OS
+      redhat.satellite.operatingsystem:
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        server_url: "{{ satellite_server_url }}"
+        name: "{{ operating_system.name }}"
+        description: "{{ operating_system.description | default(omit) }}"
+        major: "{{ operating_system.major }}"
+        minor: "{{ operating_system.minor | default(omit) }}"
+        family: "{{ operating_system.family }}"
+        password_hash: "{{ operating_system.password_hash }}"
+        architectures: "{{ operating_system.architectures | default(omit) }}"
+        ptables: "{{ operating_system.ptables | default(omit) }}"
+        provisioning_templates: "{{ operating_system.provisioning_templates | default(omit) }}"
+      loop: "{{ satellite_config_operatingsystems }}"
+      loop_control:
+        loop_var: operating_system
+
+    - name: Add default provisioning_template type provision to the OS Object
+      redhat.satellite.os_default_template:
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        server_url: "{{ satellite_server_url }}"
+        operatingsystem: "{{ operating_system_templates.description }}"
+        template_kind: "provision"
+        provisioning_template: "{{ operating_system_templates.os_default_templates.provision }}"
+      loop: "{{ satellite_config_operatingsystems }}"
+      loop_control:
+        loop_var: operating_system_templates

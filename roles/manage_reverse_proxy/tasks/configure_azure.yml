@@ -1,0 +1,57 @@
+---
+- name: Get public IP addresses
+  azure.azcollection.azure_rm_publicipaddress_info:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg }}"
+    name: "{{ azure_public_ip.name }}"
+  register: __public_ip_addresses
+  delegate_to: localhost
+  become: false
+
+- name: Ensure a public wildcard DNS record exists for reverse proxy
+  azure.azcollection.azure_rm_dnsrecordset:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg }}"
+    relative_name: "{{ reverse_proxy_dns_record }}"
+    zone_name: "{{ azure_dns_zone }}"
+    record_type: A
+    records:
+      - entry: "{{ __public_ip_addresses.publicipaddresses[0].ip_address }}"
+  delegate_to: localhost
+  become: false
+
+- name: Manage Network Security Group for Subnet
+  azure.azcollection.azure_rm_securitygroup:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ azure_subnet_nsg | default(omit) }}"
+    rules:
+      - name: "AllowHTTPInBound"
+        protocol: Tcp
+        direction: Inbound
+        priority: 400
+        access: Allow
+        source_address_prefix: "Internet"
+        source_port_range: "*"
+        destination_address_prefix: "{{ azure_vnet_address_prefix }}"
+        destination_port_range: "80"
+      - name: "AllowHTTPSInbound"
+        protocol: Tcp
+        direction: Inbound
+        priority: 401
+        access: Allow
+        source_address_prefix: "Internet"
+        source_port_range: "*"
+        destination_address_prefix: "{{ azure_vnet_address_prefix }}"
+        destination_port_range: "443"
+  delegate_to: localhost
+  become: false

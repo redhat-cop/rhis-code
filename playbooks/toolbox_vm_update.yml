@@ -1,0 +1,31 @@
+---
+- name: Update VM packages
+  hosts: "{{ host | default('localhost') }}"
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Update all VM packages # noqa package-latest
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      register: __update_result
+
+    - name: Check if we need to reboot
+      ansible.builtin.command: dnf needs-restarting -r
+      ignore_errors: true
+      register: __reboot_hint
+      changed_when: false
+      failed_when: __reboot_hint.rc not in [0, 1]
+
+    - name: Reboot the machine if required
+      ansible.builtin.reboot:
+        reboot_timeout: 1200
+      when: __reboot_hint.rc | int == 1
+
+    - name: Wait for the server to come back online
+      ansible.builtin.wait_for_connection:
+        delay: 10
+        timeout: 600
+        sleep: 5
+      when: __reboot_hint.rc | int == 1

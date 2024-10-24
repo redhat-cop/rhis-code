@@ -1,0 +1,40 @@
+---
+- name: Copy GPG signing key to VM
+  ansible.builtin.copy:
+    content: "{{ gpg_secret_key }}"
+    dest: ~/.gpg_secret.key
+    mode: "0600"
+
+- name: Import GPG key # noqa: command-instead-of-module
+  ansible.builtin.command: gpg --import ~/.gpg_secret.key
+  register: __return
+  failed_when: false
+  changed_when: __return.changed
+
+- name: Add user.name setting to local gitconfig
+  community.general.git_config:
+    name: user.name
+    scope: local
+    repo: "{{ __repo_absolute_path }}"
+    value: "{{ git_repo_commit_git_username }}"
+
+- name: Add user.email setting to local gitconfig
+  community.general.git_config:
+    name: user.email
+    scope: local
+    repo: "{{ __repo_absolute_path }}"
+    value: "{{ git_repo_commit_git_email }}"
+
+- name: Add a user.signingkey setting to local gitconfig
+  community.general.git_config:
+    name: user.signingkey
+    scope: local
+    repo: "{{ __repo_absolute_path }}"
+    value: "{{ git_repo_commit_signing_key }}"
+
+- name: Add a commit.gpgsign setting to local gitconfig
+  community.general.git_config:
+    name: commit.gpgsign
+    scope: local
+    repo: "{{ __repo_absolute_path }}"
+    value: true

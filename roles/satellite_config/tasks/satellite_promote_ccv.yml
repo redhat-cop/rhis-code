@@ -1,0 +1,12 @@
+---
+- name: "Ensure CCV is promoted to lifecycle"
+  redhat.satellite.content_view_version:
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ satellite_organization }}"
+    content_view: "{{ satellite_config_ccv_name }}"
+    description: "{{ now(utc=true, fmt='%Y-%m-%d %H:%M:%S') }}"
+    current_lifecycle_environment: "Dev"
+    lifecycle_environments:
+      - "{{ lifecycle_environment }}"

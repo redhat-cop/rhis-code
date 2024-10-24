@@ -1,0 +1,26 @@
+---
+pki_idm_generate_certs_ssl_certs_dir: "/etc/ipa/private/"
+pki_idm_generate_certs_ssl_crt_path: "{{ pki_idm_generate_certs_ssl_certs_dir }}{{ inventory_hostname }}.crt"
+pki_idm_generate_certs_ssl_key_path: "{{ pki_idm_generate_certs_ssl_certs_dir }}{{ inventory_hostname }}.key"
+pki_idm_generate_certs_ssl_csr_path: "{{ pki_idm_generate_certs_ssl_certs_dir }}{{ inventory_hostname }}.csr"
+pki_idm_generate_certs_ssl_rsa_key_pass: ""
+
+pki_idm_generate_certs_ipa_server_ca_path: "{{ ipa_server_ca_path }}"
+pki_idm_generate_certs_ipa_client_trust_path: "{{ ipa_client_trust_path }}"
+
+pki_idm_generate_certs_crt_service_type: "HTTP"
+pki_idm_generate_certs_crt_force_regen: true
+
+pki_idm_generate_certs_ssl_private_key_cipher: "auto"
+pki_idm_generate_certs_ssl_private_key_size: 4096
+pki_idm_generate_certs_ssl_private_key_format: "pkcs8"
+
+pki_idm_generate_certs_csr_digest: ""
+pki_idm_generate_certs_csr_common_name: ""
+pki_idm_generate_certs_csr_organization_name: ""
+pki_idm_generate_certs_csr_organization_unit_name: ""
+pki_idm_generate_certs_csr_locality_name: ""
+pki_idm_generate_certs_csr_state_or_province_name: ""
+pki_idm_generate_certs_csr_country_name: ""
+pki_idm_generate_certs_csr_email_address: ""
+pki_idm_generate_certs_csr_subject_alt_name: ""

@@ -1,0 +1,7 @@
+---
+- name: "Satellite VM - Configure Satellite"
+  ansible.builtin.import_playbook: function_satellite_configure.yml
+  vars:
+    host: satellite
+  tags:
+    - satellite_install_configure

@@ -1,0 +1,25 @@
+---
+- name: "Create Password Policies"
+  redhat.rhel_idm.ipapwpolicy:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ idmpwpolicy_var.name | default(omit) }}"
+    state: "{{ idmpwpolicy_var.state | default(omit) }}"
+    history: "{{ idmpwpolicy_var.history | default(omit) }}"
+    maxlife: "{{ idmpwpolicy_var.maxlife | default(omit) }}"
+    minlife: "{{ idmpwpolicy_var.minlife | default(omit) }}"
+    minclasses: "{{ idmpwpolicy_var.minclasses | default(omit) }}"
+    minlength: "{{ idmpwpolicy_var.minlength | default(omit) }}"
+    maxfail: "{{ idmpwpolicy_var.maxfail | default(omit) }}"
+    failinterval: "{{ idmpwpolicy_var.failinterval | default(omit) }}"
+    lockouttime: "{{ idmpwpolicy_var.lockouttime | default(omit) }}"
+    maxrepeat: "{{ idmpwpolicy_var.maxrepeat | default(omit) }}"
+    maxsequence: "{{ idmpwpolicy_var.maxsequence | default(omit) }}"
+    dictcheck: "{{ idmpwpolicy_var.dictcheck | default(omit) }}"
+    usercheck: "{{ idmpwpolicy_var.usercheck | default(omit) }}"
+    gracelimit: "{{ idmpwpolicy_var.gracelimit | default(omit) }}"
+    priority: "{{ idmpwpolicy_var.priority | default(omit) }}"
+  loop: "{{ idm_password_policy }}"
+  loop_control:
+    loop_var: idmpwpolicy_var
+  when: idm_password_policy is defined

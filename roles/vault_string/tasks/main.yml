@@ -1,0 +1,28 @@
+---
+- name: Slurp hosts file
+  ansible.builtin.slurp:
+    src: "{{ vault_string_filepath }}"
+  register: slurpfile
+
+- name: Set file content to fact
+  ansible.builtin.set_fact:
+    file_content: "{{ slurpfile['content'] | b64decode }}"
+
+- name: Set file name to fact
+  ansible.builtin.set_fact:
+    vault_string_variable_name: "{{ vault_string_filepath | basename | split('.') | first }}"
+  when: vault_string_variable_name is not defined
+
+- name: Encrypt and write it to a file
+  ansible.builtin.copy:
+    content: "{{ vault_string_variable_name }}: !vault |\n{{ file_content | vault(passphrase) | indent(width=2, first=True) }}"
+    dest: "{{ vault_string_filepath | dirname }}/vault_{{ vault_string_variable_name }}.yml"
+    mode: "0644"
+  vars:
+    passphrase: "{{ vault_password }}"
+  become: true
+  register: __return
+
+- name: "Set encrypted file path"
+  ansible.builtin.set_fact:
+    __path_file_encrypted: "{{ __return.dest }}"

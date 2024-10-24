@@ -1,0 +1,22 @@
+---
+- name: Power off VM
+  azure.azcollection.azure_rm_virtualmachine:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    resource_group: "{{ azure_rg | default(omit) }}"
+    name: "{{ inventory_hostname }}"
+    started: false
+  register: __vm_info
+
+- name: Create a lock for the VM
+  azure.azcollection.azure_rm_lock:
+    subscription_id: "{{ azure_subscription_id | default(omit) }}"
+    tenant: "{{ azure_tenant_id | default(omit) }}"
+    client_id: "{{ techuser_ansible_client_id | default(omit) }}"
+    secret: "{{ techuser_ansible_secret_value | default(omit) }}"
+    state: "{{ azure_vm_lock_state }}"
+    managed_resource_id: "{{ __vm_info.ansible_facts.azure_vm.id }}"
+    name: "{{ azure_vm_lock_name }}"
+    level: read_only
