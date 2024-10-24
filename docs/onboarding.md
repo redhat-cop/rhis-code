@@ -44,8 +44,8 @@ from the outset.
 
 Following channels are used in Slack:
 
-1.  [proj-showroom-tech](https://redhat.enterprise.slack.com/archives/C06UNKD7813) : Technical Project Channel
-2.  [proj-showroom](https://redhat.enterprise.slack.com/archives/C06MJEWA7UN) : Main Project Channel
+1.  [cop-rhis-steeringcommittee](https://redhat.enterprise.slack.com/archives/C07TDC6QUCU) : RHIS Technical Steering Committee Channel
+2.  [cop-rhis-general](https://redhat.enterprise.slack.com/archives/C07TAP5PJ8K) : Main RHIS Channel
 3.  [cop-rhis-notifications](https://redhat.enterprise.slack.com/archives/C06VCEWRQE4) : Notifications Channel only
 
 ## Cloud Resources

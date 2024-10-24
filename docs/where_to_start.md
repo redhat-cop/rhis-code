@@ -1,13 +1,13 @@
 # where to start?
 `playbooks/landscape_site.yml` is the main Ansible playbook to trigger everything from scratch for a Big Bang. Current `rhis-code` consumes `rhis-inventory` repository for the credentials and configurable variables. Duplicate `rhis-inventory` repository as your own inventory to use if you plan to deploy environment on your own and update definitions based on your own.
 
-1. Please read and understand the [High Level Architecture](https://docs.showroom.run/network_design/) for the project.
+1. Please read and understand the [High Level Architecture](https://redhat-cop.github.io/rhis-code/network_design/) for the project.
 
 2. Register a new domain or use your existing domain, define it in the https://github.com/redhat-cop/rhis-inventory/blob/devel/group_vars/all/azure_infra.yml file. Setup Azure Nameservers for your public DNS records if you are not using Azure to host your public domain name.
 
 3. Change the subnet definitions in https://github.com/redhat-cop/rhis-inventory/blob/devel/group_vars/all/azure_network.yml if you consider to use a different subnets.
 
-4. Define git username, and email address in [GitHub User](https://github.com/redhat-cop/rhis-inventory/blob/devel/group_vars/all/git_repo_commit.yml). Read [documentation](https://docs.showroom.run/github_user/) for more details. This user needs to have `commit`to the relevant branch.
+4. Define git username, and email address in [GitHub User](https://github.com/redhat-cop/rhis-inventory/blob/devel/group_vars/all/git_repo_commit.yml). Read [documentation](https://redhat-cop.github.io/rhis-code/github_user/) for more details. This user needs to have `commit`to the relevant branch.
 
 5. Define IdM LDAP bind name in the file https://github.com/redhat-cop/rhis-inventory/blob/devel/group_vars/all/idm_config.yml based your preferred domain name.
 
@@ -33,7 +33,7 @@
 
 16. Define RootCA passphrase in https://github.com/redhat-cop/rhis-inventory/blob/devel/group_vars/rootca/vault_rootca_key_passphrase.yml
 
-17. Create Azure RH Image Integration based on the [Azure RH Image Integration](https://docs.showroom.run/azure_rhib_integration/) document.
+17. Create Azure RH Image Integration based on the [Azure RH Image Integration](https://redhat-cop.github.io/rhis-code/azure_rhib_integration/) document.
 
 18. Create private and public SSH key pair(Azure compatible) for local user to be able deploy the environment from scratch. This information should be encrypted and stored as `vm_user`, `vm_user_public_key` and `vm_user_private_key` This can be configure automatically after you define `vm_user` in the inventory and running link:playbooks/landscape_init.yml[`landscape_init.yml`] playbook to initialize your local environment in the beginning.
 
