@@ -4,7 +4,7 @@
   block:
     - name: Enable AAP repository
       community.general.rhsm_repository:
-        name: "ansible-automation-platform-2.4-for-rhel-9-x86_64-rpms"
+        name: ansible-automation-platform-2.4-for-rhel-9-x86_64-rpms
         state: enabled
 
     - name: Ensure ansible-builder and podman installed
@@ -34,7 +34,7 @@
       when: ansible_user_uid is not defined
 
     - name: Run loginctl enable-linger
-      ansible.builtin.command: "loginctl enable-linger {{ ansible_user_uid }}"
+      ansible.builtin.command: loginctl enable-linger {{ ansible_user_uid }}
       register: __cmd_out
       changed_when: __cmd_out.changed
 

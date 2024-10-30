@@ -1,11 +1,11 @@
 ---
-- name: "Create defined host groups on IdM"
-  redhat.rhel_idm.ipahostgroup:
-    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
-    ipaadmin_password: "{{ ipaadmin_password }}"
-    name: "{{ idmhostgroups_var.name }}"
-    description: "{{ idmhostgroups_var.desc }}"
+- name: Create defined host groups on IdM
   loop: "{{ idm_host_groups }}"
   loop_control:
     loop_var: idmhostgroups_var
   when: idm_host_groups is defined
+  freeipa.ansible_freeipa.ipahostgroup:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ idmhostgroups_var.name }}"
+    description: "{{ idmhostgroups_var.desc }}"

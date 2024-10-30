@@ -1,6 +1,10 @@
 ---
-- name: "Create defined HBAC rules in IdM"
-  redhat.rhel_idm.ipahbacrule:
+- name: Create defined HBAC rules in IdM
+  loop: "{{ idm_hbac_rules }}"
+  loop_control:
+    loop_var: idmhbac_var
+  when: idm_hbac_rules is defined
+  freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ idmhbac_var.name }}"
@@ -12,7 +16,3 @@
     group: "{{ idmhbac_var.group | default(omit) }}"
     user: "{{ idmhbac_var.user | default(omit) }}"
     hbacsvc: "{{ idmhbac_var.hbacsvc | default(omit) }}"
-  loop: "{{ idm_hbac_rules }}"
-  loop_control:
-    loop_var: idmhbac_var
-  when: idm_hbac_rules is defined

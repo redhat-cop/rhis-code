@@ -1,5 +1,5 @@
 ---
-- name: "Ensure Satellite system registered to CDN"
+- name: Ensure Satellite system registered to CDN
   community.general.redhat_subscription:
     activationkey: "{{ rh_activation_key }}"
     org_id: "{{ rh_organization_number }}"

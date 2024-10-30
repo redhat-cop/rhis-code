@@ -1,5 +1,5 @@
 ---
-- name: "Copy the scap tailoring file to target"
+- name: Copy the scap tailoring file to target
   become: true
   ansible.builtin.copy:
     src: "{{ scap_tailoring_file.scap_file }}"
@@ -8,8 +8,8 @@
     group: root
     mode: "0644"
 
-- name: "Ensure the scap tailoring file is loaded"
-  redhat.satellite.scap_tailoring_file:
+- name: Ensure the scap tailoring file is loaded
+  theforeman.foreman.scap_tailoring_file:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"

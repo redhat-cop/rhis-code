@@ -1,37 +1,37 @@
 ---
-- name: "Create a secure directory"
+- name: Create a secure directory
   ansible.builtin.file:
     path: "{{ pki_idm_generate_certs_ssl_certs_dir }}"
-    state: "directory"
-    owner: "root"
-    group: "root"
+    state: directory
+    owner: root
+    group: root
     mode: "0600"
 
-- name: "Set target service name"
+- name: Set target service name
   ansible.builtin.set_fact:
     __target_service: "{{ pki_idm_generate_certs_crt_service_type }}/{{ inventory_hostname }}"
 
-- name: "Ensure target service is present"
-  redhat.rhel_idm.ipaservice:
+- name: Ensure target service is present
+  freeipa.ansible_freeipa.ipaservice:
     name: "{{ __target_service }}"
     state: present
     ipaadmin_password: "{{ ipaadmin_password }}"
 
-- name: "Check for an existing certificate file"
+- name: Check for an existing certificate file
   ansible.builtin.stat:
     path: "{{ pki_idm_generate_certs_ssl_crt_path }}"
   register: __cert_exists
 
-- name: "Cert exists and regen requested - stop tracking and clean up"
+- name: Cert exists and regen requested - stop tracking and clean up
   when: __cert_exists.stat.exists and pki_idm_generate_certs_crt_force_regen
   block:
-    - name: "Read existing cert" # noqa: command-instead-of-module
-      ansible.builtin.shell: "sed -n 2,$(expr $(wc -l < {{ pki_idm_generate_certs_ssl_crt_path }}) - 1)p {{ pki_idm_generate_certs_ssl_crt_path }}"
+    - name: Read existing cert # noqa: command-instead-of-module
+      ansible.builtin.shell: sed -n 2,$(expr $(wc -l < {{ pki_idm_generate_certs_ssl_crt_path }}) - 1)p {{ pki_idm_generate_certs_ssl_crt_path }}
       register: __cert_info
       changed_when: __cert_info.changed
       failed_when: __cert_info.failed
 
-    - name: "Get cert serial number"
+    - name: Get cert serial number
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa cert-find --certificate='{{ __cert_info.stdout }}' | grep 'Serial number:' | cut -c18-
@@ -39,7 +39,7 @@
       changed_when: __serial_num.changed
       failed_when: __serial_num.failed
 
-    - name: "Check if certmonger is already tracking the certificate"
+    - name: Check if certmonger is already tracking the certificate
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa-getcert list -f {{ pki_idm_generate_certs_ssl_crt_path }} | grep 'status:'
@@ -47,7 +47,7 @@
       failed_when: false
       changed_when: false
 
-    - name: "Stop tracking cert with certmonger"
+    - name: Stop tracking cert with certmonger
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa-getcert stop-tracking -k {{ pki_idm_generate_certs_ssl_key_path }}
@@ -58,7 +58,7 @@
       changed_when: __stop_tracking.changed
       failed_when: __stop_tracking.failed
 
-    - name: "Remove the old cert from the service"
+    - name: Remove the old cert from the service
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa service-remove-cert {{ __target_service }} --certificate='{{ __cert_info.stdout }}'
@@ -68,7 +68,7 @@
       changed_when: __remove_service.changed
       failed_when: __remove_service.failed
 
-    - name: "Revoke the old cert with reason 6 - certificateHold - an admin can completely revoke it later"
+    - name: Revoke the old cert with reason 6 - certificateHold - an admin can completely revoke it later
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa cert-revoke {{ __serial_num.stdout_lines.1 }} --revocation-reason=6
@@ -78,7 +78,7 @@
       changed_when: __revoke_oldcert.changed
       failed_when: __revoke_oldcert.failed
 
-    - name: "Cert exists, rename old cert .revoked"
+    - name: Cert exists, rename old cert .revoked
       ansible.builtin.copy:
         src: "{{ pki_idm_generate_certs_ssl_crt_path }}"
         dest: "{{ pki_idm_generate_certs_ssl_crt_path }}.revoked"
@@ -120,7 +120,7 @@
         principal: "{{ __target_service }}"
         certificate_out: "{{ pki_idm_generate_certs_ssl_crt_path }}"
 
-    - name: "Remove passphrase from the private key"
+    - name: Remove passphrase from the private key
       ansible.builtin.command: >-
         openssl rsa -in {{ pki_idm_generate_certs_ssl_key_path }} -out {{ pki_idm_generate_certs_ssl_key_path }}
         -passin pass:{{ pki_idm_generate_certs_ssl_rsa_key_pass }}
@@ -128,7 +128,7 @@
       changed_when: __openssl_passout.changed
       failed_when: __openssl_passout.failed
 
-    - name: "Check if certmonger is already tracking the certificate"
+    - name: Check if certmonger is already tracking the certificate
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa-getcert list -f {{ pki_idm_generate_certs_ssl_crt_path }} | grep 'status:'
@@ -136,7 +136,7 @@
       changed_when: __certmonger_tracking_status.changed
       failed_when: __certmonger_tracking_status.rc not in [0, 1]
 
-    - name: "Start certmonger tracking the new certificate for autorenewals"
+    - name: Start certmonger tracking the new certificate for autorenewals
       ansible.builtin.shell: >-
         set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
         ipa-getcert start-tracking -k {{ pki_idm_generate_certs_ssl_key_path }} -f {{ pki_idm_generate_certs_ssl_crt_path }} -I {{ inventory_hostname }}

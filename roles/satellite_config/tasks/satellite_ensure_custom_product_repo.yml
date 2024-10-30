@@ -1,6 +1,6 @@
 ---
-- name: "Ensure the state of repository - {{ custom_product_repository.name }}"
-  redhat.satellite.repository:
+- name: Ensure the state of repository - {{ custom_product_repository.name }}
+  theforeman.foreman.repository:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"

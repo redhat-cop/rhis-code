@@ -12,4 +12,4 @@
     virtual_network: "{{ azure_vnet }}"
     registration_enabled: "{{ azure_dns_registration_enabled }}"
   register: __output
-  failed_when: "__output.msg is defined and 'Another operation is pending for requested object.' not in __output.msg"
+  failed_when: __output.msg is defined and 'Another operation is pending for requested object.' not in __output.msg

@@ -1,26 +1,26 @@
 ---
-- name: "Ensure facts are gathered"
+- name: Ensure facts are gathered
   ansible.builtin.setup:
 
-- name: "Ensure CDN registration"
+- name: Ensure CDN registration
   ansible.builtin.import_tasks: ensure_cdn_registration.yml
 
-- name: "Ensure satellite repositories are enabled"
+- name: Ensure satellite repositories are enabled
   ansible.builtin.import_tasks: ensure_repositories.yml
 
-- name: "Ensure satellite firewall ports are configured"
+- name: Ensure satellite firewall ports are configured
   ansible.builtin.import_tasks: ensure_firewalld_config.yml
 
-- name: "Ensure satellite binaries are installed"
+- name: Ensure satellite binaries are installed
   ansible.builtin.import_tasks: ensure_sat_binaries.yml
 
-- name: "Ensure satellite certificates are validated"
+- name: Ensure satellite certificates are validated
   ansible.builtin.import_tasks: check_certs.yml
 
-- name: "Ensure identity management realm is prepared for use with Satellite"
+- name: Ensure identity management realm is prepared for use with Satellite
   ansible.builtin.import_tasks: foreman_prepare_realm.yml
   when: not satellite_prepare_skip_prepare_realm
 
-- name: "Get existing keytab for foreman-proxy use with Realm"
+- name: Get existing keytab for foreman-proxy use with Realm
   ansible.builtin.import_tasks: get_existing_keytab.yml
   when: satellite_prepare_skip_prepare_realm

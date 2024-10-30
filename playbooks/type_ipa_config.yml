@@ -1,5 +1,5 @@
 ---
-- name: "IDM Configuration"
+- name: IDM Configuration
   ansible.builtin.import_playbook: function_idm_configuration.yml
   vars:
     host: ipahidden

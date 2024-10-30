@@ -1,12 +1,12 @@
 ---
-- name: "Write ansible.cfg"
+- name: Write ansible.cfg
   ansible.builtin.template:
     src: ansible.cfg.j2
-    dest: "../ansible.cfg"
+    dest: ../ansible.cfg
     mode: "0600"
 
 - name: Create Ansible Vault Password file
   ansible.builtin.copy:
-    dest: "../{{ init_environment_ansible_cfg_vault_password_file }}"
+    dest: ../{{ init_environment_ansible_cfg_vault_password_file }}
     content: "{{ vault_password }}"
     mode: "0600"

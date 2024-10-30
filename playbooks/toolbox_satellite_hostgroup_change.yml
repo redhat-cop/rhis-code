@@ -3,27 +3,26 @@
   hosts: "{{ host | default('localhost') }}"
   gather_facts: true
   tasks:
-
     - name: Get host's satellite information
-      redhat.satellite.host_info:
+      register: __out
+      theforeman.foreman.host_info:
         username: "{{ hostvars[groups['satellite'][0]]['satellite_username'] }}"
         password: "{{ hostvars[groups['satellite'][0]]['satellite_password'] }}"
         server_url: "{{ hostvars[groups['satellite'][0]]['satellite_server_url'] }}"
         name: "{{ host }}"
-      register: __out
 
     - name: Set new host group if it's a parent host group
       ansible.builtin.set_fact:
-        satellite_hostgroup_post: "hg_rhel{{ ansible_distribution_version }}"
-      when: ((__out.host.hostgroup_title.split('/') | map('trim'))[:-1] | join('/')) == ""
+        satellite_hostgroup_post: hg_rhel{{ ansible_distribution_version }}
+      when: ((__out.host.hostgroup_title.split('/') | map('trim'))[:-1] | join('/')) | length == 0
 
     - name: Set new host group if it's not a parent host group
       ansible.builtin.set_fact:
         satellite_hostgroup_post: "{{ (__out.host.hostgroup_title.split('/') | map('trim'))[:-1] | join('/') }}/hg_rhel{{ ansible_distribution_version }}"
-      when: ((__out.host.hostgroup_title.split('/') | map('trim'))[:-1] | join('/')) != ""
+      when: ((__out.host.hostgroup_title.split('/') | map('trim'))[:-1] | join('/')) | length > 0
 
     - name: Update satellite hostgroup
-      redhat.satellite.host:
+      awx.awx.host:
         username: "{{ hostvars[groups['satellite'][0]]['satellite_username'] }}"
         password: "{{ hostvars[groups['satellite'][0]]['satellite_password'] }}"
         server_url: "{{ hostvars[groups['satellite'][0]]['satellite_server_url'] }}"

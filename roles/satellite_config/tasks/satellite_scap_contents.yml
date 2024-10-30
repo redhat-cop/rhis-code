@@ -1,5 +1,5 @@
 ---
-- name: "Copy the scap file to target"
+- name: Copy the scap file to target
   become: true
   ansible.builtin.copy:
     src: "{{ scap_content.scap_file }}"
@@ -7,10 +7,10 @@
     owner: root
     group: root
     mode: "0644"
-  when: "scap_content.scap_file is defined"
+  when: scap_content.scap_file is defined
 
-- name: "Ensure the scap content is loaded"
-  redhat.satellite.scap_content:
+- name: Ensure the scap content is loaded
+  theforeman.foreman.scap_content:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"

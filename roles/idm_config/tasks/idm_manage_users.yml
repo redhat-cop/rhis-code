@@ -1,6 +1,10 @@
 ---
-- name: "Add defined users on IdM"
-  redhat.rhel_idm.ipauser:
+- name: Add defined users on IdM
+  loop: "{{ idm_users + showroom_users }}"
+  loop_control:
+    loop_var: idmuser_var
+  no_log: true
+  freeipa.ansible_freeipa.ipauser:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ idmuser_var.name }}"
@@ -21,7 +25,3 @@
     sshpubkey: "{{ idmuser_var.sshpubkey | default(omit) }}"
     update_password: "{{ idmuser_var.update_password | default(omit) }}"
     passwordexpiration: "{{ idmuser_var.passwordexpiration | default(omit) }}"
-  loop: "{{ idm_users + showroom_users }}"
-  loop_control:
-    loop_var: idmuser_var
-  no_log: true
