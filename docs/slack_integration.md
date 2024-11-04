@@ -8,7 +8,7 @@ events in real-time.
 
 !!! info
 
-    We use following channel for notifications on Slack. [proj-showroom-notifications](https://redhat.enterprise.slack.com/archives/C06VCEWRQE4)
+    We use following channel for notifications on Slack. [cop-rhis-notifications](https://redhat.enterprise.slack.com/archives/C06VCEWRQE4)
 
 ## GitHub Integration
 
@@ -24,11 +24,11 @@ integration, GitHub app should be installed on Slack from
     /invite @github
 
     # receive notifications only on pull request creation and workflow run
-    /github subscribe showroom-project/showroom-code pulls workflows:{event:"pull_request" branch:"main"}
-    /github unsubscribe showroom-project/showroom-code issues commits releases deployments
+    /github subscribe redhat-cop/rhis-code pulls workflows:{event:"pull_request" branch:"main"}
+    /github unsubscribe redhat-cop/rhis-code issues commits releases deployments
 
-    /github subscribe showroom-project/showroom-inventory pulls workflows:{event:"pull_request" branch:"main"}
-    /github unsubscribe showroom-project/showroom-inventory issues commits releases deployments
+    /github subscribe redhat-cop/rhis-inventory pulls workflows:{event:"pull_request" branch:"main"}
+    /github unsubscribe redhat-cop/rhis-inventory issues commits releases deployments
 
 ## Jira Integration
 

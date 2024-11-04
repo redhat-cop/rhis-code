@@ -23,7 +23,7 @@
 - name: "Phase Intermediary -  Deploy Azure Resources for Workload Intra"
   ansible.builtin.import_playbook: type_workload_intra_resources_create.yml
 
-# Showroom project currently not deploying workload resources in DMZ.
+# RHIS project currently not deploying workload resources in DMZ.
 # However, it has to capability to do that if intended to do
 # - name: "Phase Intermediary -  Deploy Azure Resources for Workload Intra"
 #   ansible.builtin.import_playbook: type_workload_dmz_resources_create.yml

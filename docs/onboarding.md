@@ -44,9 +44,9 @@ from the outset.
 
 Following channels are used in Slack:
 
-1.  [proj-showroom-tech](https://redhat.enterprise.slack.com/archives/C06UNKD7813) : Technical Project Channel
-2.  [proj-showroom](https://redhat.enterprise.slack.com/archives/C06MJEWA7UN) : Main Project Channel
-3.  [proj-showroom-notifications](https://redhat.enterprise.slack.com/archives/C06VCEWRQE4) : Notifications Channel only
+1.  [cop-rhis-steeringcommittee](https://redhat.enterprise.slack.com/archives/C07TDC6QUCU) : RHIS Technical Steering Committee Channel
+2.  [cop-rhis-general](https://redhat.enterprise.slack.com/archives/C07TAP5PJ8K) : Main RHIS Channel
+3.  [cop-rhis-notifications](https://redhat.enterprise.slack.com/archives/C06VCEWRQE4) : Notifications Channel only
 
 ## Cloud Resources
 
@@ -60,10 +60,10 @@ storage, and networking requirements. This integration facilitates
 optimized performance and cost-effective resource management, laying a
 strong foundation for the project’s success.
 
-The Showroom Project is the organizational name, and required to the
+The project is the organizational name, and required to the
 switched to the directory when an access is required.
 
-We utilize the Showroom Project organization to access Red Hat (RH)
+We utilize the project organization to access Red Hat (RH)
 resources through the Red Hat Hybrid Cloud Console. This integration
 allows us to manage and deploy Red Hat services efficiently within our
 project infrastructure. By leveraging the Hybrid Cloud Console, we
@@ -78,13 +78,13 @@ Access to the resources:
 
 ## GitHub Repositories
 
-We use the [Showroom Project](https://github.com/showroom-project)
+We use the [Red Hat CoP](https://github.com/redhat-cop)
 organization on public GitHub.
 
-1.  [Code repository](https://github.com/showroom-project/showroom-code)
-2.  [Inventory and variables repository](https://github.com/showroom-project/showroom-inventory)
+1.  [Code repository](https://github.com/redhat-cop/rhis-code)
+2.  [Inventory and variables repository](https://github.com/redhat-cop/rhis-inventory)
 
-Team information, including details about individual members, is available in the [Showroom Team](https://github.com/orgs/showroom-project/teams/showroom-team) section on GitHub.
+Team information, including details about individual members, is available in the [RHIS Code Team](https://github.com/orgs/redhat-cop/teams/rhis-code-admins) section on GitHub.
 
 ## Visual Workspace
 

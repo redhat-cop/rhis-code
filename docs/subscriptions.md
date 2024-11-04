@@ -33,7 +33,7 @@ containing accounts and groups.
 Red Hat directory granted on Azure cloud provider to allow our Red Hat
 usernames to be able to log in. It uses Red Hat organizations login page
 as default, which allows to use single sign-on with Red Hat account. OTP
-access also enabled for the Showroom project, which would ask as a token
+access also enabled for the this project, which would ask as a token
 on the next step of login. This token should be integrated with your
 account on your mobile device using one of your favorite token
 generators.
@@ -44,7 +44,7 @@ on Azure Identity Management platform.
 ### Credentials
 
 All the credentials are stored as encrypted strings in the
-[repository](https://github.com/showroom-project/showroom-inventory).
+[repository](https://github.com/redhat-cop/rhis-inventory).
 
 -   `azure_management_subscription_id`: Azure Subscription id is
     required to access subscriptions
@@ -147,7 +147,7 @@ page and also on
 ## Credentials
 
 All the credentials are stored as encrypted strings in the
-[repository](https://github.com/showroom-project/showroom-inventory).
+[repository](https://github.com/redhat-cop/rhis-inventory).
 
 -   `techuser-rhib_client_id`: Service account client identifier
 

@@ -1,6 +1,6 @@
 # Git cheat sheet
 This document helps you to get started on the version control system
-workflow of the Showroom project. In here you will find helpful commands
+workflow of the this project. In here you will find helpful commands
 and an explanation of every step from cloning the repository and finally
 adding your contents to the project.
 
@@ -10,10 +10,10 @@ to [Branch standards](branch_standards.md).
 
 ## Getting started
 
-First of all you have to clone the Showroom project to be able to start
+First of all you have to clone the this project to be able to start
 the development process. If you want to use a graphical tool for coding,
 you should have already installed one that you like. Cloning the
-Showroom project with your favorite IDE isn’t a part of this guide but
+this project with your favorite IDE isn’t a part of this guide but
 you better setup and use IDE. The cheat sheet will help you to get
 things going on the command line only.
 
@@ -24,7 +24,7 @@ using from [Git - SCM Guide](https://git-scm.com/book/en/v2/Getting-Started-What
 
 ### Prerequisites
 
-You need to have access on the dedicated Showroom Git instance. Create
+You need to have access on the dedicated Git instance. Create
 an issue on <https://github.com/redhat-cop/org/issues> if you don’t have
 an account or permission on there.
 
@@ -43,9 +43,7 @@ Open your preferred command line tool to get started.
 
 Open the link of the Git instance. You will get a list of projects where
 you are currently assigned at least as a project member. Click on the
-`showroom-code` project. This project represents the base of the
-Showroom project development. There is another repository contains
-Ansible inventories which will fed the base Showroom project with
+`rhis-code` project. This project represents the base of the project development. There is another repository contains Ansible inventories which will fed the base project with
 variables based on the surrounding data center location.
 
 Click the `Clone` button at the top right corner to retrieve the
@@ -96,7 +94,7 @@ The command fulfills two steps in one. At first git is going to create
 the branch you have requested and this branch will also be checked out
 directly so that you don’t have to switch to the branch manually.
 
-You can now modify the contents of the Showroom project within your
+You can now modify the contents of the project within your
 repository.
 
 ### Track changes
@@ -224,7 +222,7 @@ the `devel` branch. Therefore you have to create a merge request on the
 version control system. This request will be reviewed and approved by at
 least another person to ensure a good level of code quality.
 
-Open the start page of the version control system, select the Showroom
+Open the start page of the version control system, select the this
 project and click on `Pull Requests` on the left side of the page. The
 newly loaded page allows you to open a `New Pull Request` at the top
 right corner. There you have to select the source branch and target

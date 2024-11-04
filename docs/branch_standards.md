@@ -102,5 +102,5 @@ Branch rule sets are configured to align with our branching standards on
 GitHub and detailed configuration is accessible by the repository
 ruleset links below:
 
-* [showroom-code repository rulesets](https://github.com/showroom-project/showroom-code/rules)
-* [showroom-inventory repository rulesets](https://github.com/showroom-project/showroom-inventory/rules)
+* [rhis-code repository rulesets](https://github.com/redhat-cop/rhis-code/rules)
+* [rhis-inventory repository rulesets](https://github.com/redhat-cop/rhis-inventory/rules)
