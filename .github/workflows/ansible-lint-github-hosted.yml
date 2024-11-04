@@ -1,41 +1,21 @@
 ---
-name: Ansible Lint
+name: Ansible Lint on GitHub-Hosted Runner
 run-name: ansible-lint validation on PR-${{ github.event.pull_request.number }}
 on:
+  push:
+    branches:
+      - "github-actions"
   pull_request:
     branches: ["main", "devel"]
 jobs:
-  prepare-container:
-    name: Prepare for container
-    runs-on: [self-hosted]
-    steps:
-      - name: prepare environment for container
-        run: |
-          export XDG_RUNTIME_DIR=/run/user/$(id -u)
-          sudo rm -rf /opt/actions-runner/_work/_temp/_github_home/.cache/
-
   ansible-lint:
     name: Ansible Lint
     runs-on: [self-hosted]
-    needs: prepare-container
-    container:
-      image: ubuntu:22.04
-      options: --memory-swap "4g" --memory "3g" --security-opt label:disable
-      env:
-        DOCKER_HOST: unix:$XDG_RUNTIME_DIR/podman/podman.sock
     steps:
-      - name: Prepare Container
-        run: |
-          apt-get -y update
-          apt-get -y install --no-install-recommends wget
-          apt-get -y install git lsb-release
-        env:
-          DEBIAN_FRONTEND: noninteractive
-
       - name: Git checkout
         uses: actions/checkout@v4
 
-      - name: Populate ansdible config
+      - name: Populate ansible config
         run: |
           cat <<EOF > ansible.cfg
           [defaults]
@@ -61,5 +41,3 @@ jobs:
 
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
-        with:
-          working_directory: /__w/showroom-code/showroom-code

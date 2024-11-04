@@ -1,0 +1,65 @@
+---
+name: Ansible Lint on Self-Hosted Runner
+run-name: ansible-lint validation on PR-${{ github.event.pull_request.number }}
+on:
+  pull_request:
+    branches: ["main", "devel"]
+jobs:
+  prepare-container:
+    name: Prepare for container
+    runs-on: [self-hosted]
+    steps:
+      - name: prepare environment for container
+        run: |
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          sudo rm -rf /opt/actions-runner/_work/_temp/_github_home/.cache/
+
+  ansible-lint:
+    name: Ansible Lint
+    runs-on: [self-hosted]
+    needs: prepare-container
+    container:
+      image: ubuntu:22.04
+      options: --memory-swap "4g" --memory "3g" --security-opt label:disable
+      env:
+        DOCKER_HOST: unix:$XDG_RUNTIME_DIR/podman/podman.sock
+    steps:
+      - name: Prepare Container
+        run: |
+          apt-get -y update
+          apt-get -y install --no-install-recommends wget
+          apt-get -y install git lsb-release
+        env:
+          DEBIAN_FRONTEND: noninteractive
+
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Populate ansdible config
+        run: |
+          cat <<EOF > ansible.cfg
+          [defaults]
+          collections_path = ./collections:./imported/collections
+          roles_path = ./roles:./imported:./imported/roles
+
+          [galaxy]
+          server_list = automation_hub_published, automation_hub_validated, galaxy
+
+          [galaxy_server.automation_hub_published]
+          url=https://console.redhat.com/api/automation-hub/content/published/
+          auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          token=${{ secrets.RH_AUTOMATION_HUB_TOKEN }}
+
+          [galaxy_server.automation_hub_validated]
+          url=https://console.redhat.com/api/automation-hub/content/validated/
+          auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+          token=${{ secrets.RH_AUTOMATION_HUB_TOKEN }}
+
+          [galaxy_server.galaxy]
+          url=https://galaxy.ansible.com/
+          EOF
+
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@main
+        with:
+          working_directory: /__w/rhis-code/rhis-code
