@@ -4,12 +4,12 @@ hide:
   - toc
 ---
 
-# Showroom Code
+# RHIS Code
 
-This repository is intended to contain ansible automation code. All documents are stored on [Showroom Code](https://github.com/showroom-project/showroom-code) repository.
+This repository is intended to contain ansible automation code. All documents are stored on [RHIS Code](https://github.com/redhat-cop/rhis-code) repository.
 
 !!! abstract
-    The goal of this project is to build a Red Hat based environment suitable for a showroom project by an *enterprise* ready approach an opinionated Red Hat infrastructure that implements several Standard Operating Environments for Red Hat Enterprise Linux using Red Hat Management tools (Red Hat Infrastructure Standard Adoption Model).
+    The goal of this project is to build a Red Hat based environment suitable for a project by an *enterprise* ready approach an opinionated Red Hat infrastructure that implements several Standard Operating Environments for Red Hat Enterprise Linux using Red Hat Management tools (Red Hat Infrastructure Standard Adoption Model).
 
 !!! note "Red Hat Infrastructure Standard (*RH-IS*)"
 

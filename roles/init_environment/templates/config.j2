@@ -1,4 +1,4 @@
-# Showroom Bastion SSH Jumphost
+# RHIS Bastion SSH Jumphost
 Host {{ hostvars[groups.bastion | first]['ansible_host'] }}
  User {{ vm_user }}
  IdentityFile ~/.ssh/id_rsa_{{ vm_user }}
@@ -9,7 +9,7 @@ Host {{ hostvars[groups.bastion | first]['ansible_host'] }}
  ServerAliveInterval 300
  ServerAliveCountMax 2
 
-# Showroom SSH Clients
+# RHIS SSH Clients
 Host *.{{ azure_dns_private_dns_zone }}
  ProxyJump {{ hostvars[groups.bastion | first]['ansible_host'] }}
  User {{ vm_user }}

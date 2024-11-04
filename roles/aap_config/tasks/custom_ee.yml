@@ -42,7 +42,7 @@
   containers.podman.podman_login:
     username: "{{ ee_base_registry_username }}"
     password: "{{ ee_base_registry_password }}"
-    registry: lachesis.internal.showroom.run
+    registry: "{{ groups['aap_pah'] | first }}"
 
 - name: Create Custom EE
   ansible.builtin.import_role:

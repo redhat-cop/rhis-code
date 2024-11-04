@@ -1,6 +1,6 @@
 ---
-site_name: Showroom docs
-repo_url: https://github.com/showroom-project/showroom-code
+site_name: RHIS docs
+repo_url: https://github.com/redhat-cop/rhis-code
 theme:
   name: material
   logo: images/showroom.png
