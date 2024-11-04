@@ -58,7 +58,7 @@ For an in depth guide on how to contribute see [this article](https://opensource
 
 Note that we follow the [Automation Good Practices](https://redhat-cop.github.io/automation-good-practices) and so are you expected to do.
 
-Use Github [discussions](https://github.com/showroom-project/showroom-code/discussions) forum or for a live chat experience try
+Use Github [discussions](https://github.com/redhat-cop/rhis-code/discussions) forum or for a live chat experience try
 Matrix room [#aap_config_as_code:ansible.com](https://matrix.to/#/#aap_config_as_code:ansible.com).
 
 ## Code of Conduct

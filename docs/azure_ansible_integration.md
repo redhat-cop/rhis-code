@@ -10,7 +10,7 @@ minimum permissions level needed to perform its management tasks. In our
 case we need to create an custom app and grant OWNER access on
 subscription level to perform ansible tasks. (Owner role is required to
 lock the VM on Azure) These information are stored encrypted in
-showroom-inventory repo
+rhis-inventory repo
 
 ## Create Custom App
 

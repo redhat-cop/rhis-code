@@ -3,11 +3,11 @@
   community.crypto.openssh_keypair:
     path: ~/.ssh/id_rsa_{{ vm_user }}
 
-- name: Add include showroom-config
+- name: Add include rhis-config
   ansible.builtin.lineinfile:
     path: ~/.ssh/config
-    line: "Include showroom-config"
-    regexp: "^Include showroom-config"
+    line: "Include rhis-config"
+    regexp: "^Include rhis-config"
     mode: "0644"
     insertbefore: BOF
     state: present
@@ -16,7 +16,7 @@
 - name: Populate and configure local SSH config Bastion
   ansible.builtin.template:
     src: config.j2
-    dest: ~/.ssh/showroom-config
+    dest: ~/.ssh/rhis-config
     mode: "0644"
 
 - name: Import vault_string

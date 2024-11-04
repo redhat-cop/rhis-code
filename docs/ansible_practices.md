@@ -21,13 +21,13 @@ repository contains a `README.adoc` file which explains the repository
 and the sub-directories structure and/or points to more detailed
 documentation.
 
-The Showroom Project contains following repositories:
+The project contains following repositories:
 
 1.  Code repository for roles, collections, playbooks is named
-    [`showroom-code`](https://github.com/showroom-project/showroom-code)
+    [`rhis-code`](https://github.com/redhat-cop/rhis-code)
 
 2.  Inventory and variable repository is placed named
-    [`showroom-inventory`](https://github.com/showroom-project/showroom-inventory)
+    [`rhis-inventory`](https://github.com/redhat-cop/rhis-inventory)
 
 # High level hierarchy for playbooks
 

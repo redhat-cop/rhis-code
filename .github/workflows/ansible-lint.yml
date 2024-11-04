@@ -62,4 +62,4 @@ jobs:
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
         with:
-          working_directory: /__w/showroom-code/showroom-code
+          working_directory: /__w/rhis-code/rhis-code
