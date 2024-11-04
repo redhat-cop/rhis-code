@@ -10,7 +10,7 @@ on:
 jobs:
   ansible-lint:
     name: Ansible Lint
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
