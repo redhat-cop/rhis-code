@@ -46,7 +46,7 @@ Controller. The named should be include a prefix named `landscape_`.
 
 Use cases are high level collections of tasks, grouped around a specific
 type of usage - base operating system configuration, a particular server
-deployment etc. Use cases are mapped as epics in the Jira. These epics
+deployment etc. Use cases are mapped as epics. These epics
 contain user stories, tasks and bugs for specific features. These kind
 of playbooks should start with a prefix named `type_` which can be
 easily used on Ansible Automation Controller. Each type is then made of
@@ -57,7 +57,7 @@ by the same type can be re-used, written only once.
 
 Depending on the complexity and distinct requirements, a use case might
 contain one or more features. Features are generally mapped to user
-stories in a particular epic in Jira. It is preferred to create a simple
+stories in a particular epic. It is preferred to create a simple
 playbook named with a prefix named `function_` for a particular role,
 mostly to be used as a ad-hoc script.
 

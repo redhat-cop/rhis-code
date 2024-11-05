@@ -24,20 +24,8 @@ integration, GitHub app should be installed on Slack from
     /invite @github
 
     # receive notifications only on pull request creation and workflow run
-    /github subscribe redhat-cop/rhis-code pulls workflows:{event:"pull_request" branch:"main"}
+    /github subscribe redhat-cop/rhis-code workflows:{event:“pull_request”,“push” branch:“main”,“devel”}
     /github unsubscribe redhat-cop/rhis-code issues commits releases deployments
 
-    /github subscribe redhat-cop/rhis-inventory pulls workflows:{event:"pull_request" branch:"main"}
+    /github subscribe redhat-cop/rhis-inventory workflows:{event:“pull_request”,“push” branch:“main”,“devel”}
     /github unsubscribe redhat-cop/rhis-inventory issues commits releases deployments
-
-## Jira Integration
-
-In-house developed Slack integration called [Red Hat Jira
-Connector](https://source.redhat.com/personal_blogs/get_a_dm_in_slack_when_youre_mentioned_on_a_jira_issue)
-allows Jira to send notifications on certain actions. You can customize
-these notifications by navigating to Project Settings and then Slack
-Integartion tab. We have limited these actions with only the followings:
-Issue Created, Issue Resolved, Issue Closed, Issue Reopened, Issue
-Moved, In Progress, Closed New Refinement.
-
-![Jira-Slack Integration](./images/jira_slack_integration.png)

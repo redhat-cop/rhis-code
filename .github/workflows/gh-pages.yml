@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - devel
-      - github-actions
 
 permissions:
   contents: read
