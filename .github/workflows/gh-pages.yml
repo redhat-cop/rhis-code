@@ -1,5 +1,6 @@
 ---
 name: Deploy to GitHub Pages
+run-name: Deploy to GitHub Pages
 on:
   push:
     branches:
