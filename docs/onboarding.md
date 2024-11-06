@@ -13,23 +13,6 @@ new members with the necessary support for their tasks. By following
 this onboarding guide, new team members will be well-prepared to
 contribute to the project’s success from the outset.
 
-## Project Management
-
-A key component of our project management and follow-up process is the
-use of an [RH internal JIRA](https://issues.redhat.com/projects/SHWRM)
-system. This section of the document explains how JIRA is utilized to
-track project progress, manage tasks, and ensure timely completion of
-deliverables. Instructions on accessing and navigating the JIRA system,
-along with best practices for updating tasks and communicating within
-the platform, are provided to help new members quickly become proficient
-in its use. By following this onboarding guide and effectively
-leveraging JIRA, new team members will be well-prepared to contribute to
-the project’s success from the outset.
-
-It is recommended to request a user story to be onboarded from other
-team members through JIRA. Please ensure that all the necessary tools
-are accessible from your side when JIRA user story completed.
-
 ## Collaboration
 
 Slack is our main collaboration tool for real-time communication and
@@ -38,7 +21,7 @@ communications, sharing updates, and quick problem-solving. Guidelines
 on joining relevant channels, best practices for messaging, and tips for
 effective use of Slack are included to help new members integrate
 seamlessly into the team’s communication flow. By following this
-onboarding guide and effectively leveraging JIRA and Slack, new team
+onboarding guide, new team
 members will be well-prepared to contribute to the project’s success
 from the outset.
 

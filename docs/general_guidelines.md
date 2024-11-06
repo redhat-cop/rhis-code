@@ -1,4 +1,4 @@
-# Azure cost estimation
+# General Guidelines
 
 This document explains general guidelines for the project to work
 together. We all have agreed to work with Agile methodology and also
@@ -6,13 +6,6 @@ using Open Practices in the project. Social contract is the important
 part for building open framework between people in the project.
 
 ![Social Contract](./images/social_contract.jpg){ align=centre }
-
-# User Stories
-
-We use internal JIRA to follow-up user stories, tasks, epics in the
-project with agile approach. See
-[JIRA](https://issues.redhat.com/secure/RapidBoard.jspa?rapidView=19625&projectKey=SHWRM&view=planning&issueLimit=100)
-for the user stories and planning.
 
 ## Definition of Ready
 
@@ -58,51 +51,14 @@ needs. These allow your team to evaluate whether the task is complete.
 
 3.  All issues solved within Merge request Review.
 
-4.  Merge requests points jira tickets.
+4.  All pipelines passed successfully.
 
-5.  All pipelines passed successfully.
-
-6.  All Ansible code written idempotent allows same results when
+5.  All Ansible code written idempotent allows same results when
     executed more than once.
 
-7.  Test steps clearly described and proof attached.
+6.  Test steps clearly described and proof attached.
 
-8.  Documented clearly.
-
-## Backlog Guidelines
-
-1.  All "STORIES" and "TASKS" are associated with an "EPIC" type issue
-    that logically represents all that needs to be down under a specific
-    context.
-
-2.  "STORY" type issues shall be used to represent direct value to the
-    customer. As such the persona of such issue is always the customer.
-
-3.  "TASK" type issues shall be used to represent either admin-like
-    tasks or technical tasks that do not represent direct value to the
-    customer.
-
-4.  "SUB-TASK" type issues shall be used break down stories or tasks. Do
-    keep in mind they do not appear directly in the backlog. Use them as
-    a way to organize the issues you own.
-
-5.  The pre-fix \[P\] present on the name of an issue in JIRA, means
-    that the issue is "Prepared" for refinement and can thus be reviewed
-    by the team.
-
-6.  The pre-fix \[R\] present on the name of an issue in JIRA, means
-    that the issue is "Refined/Ready" to be taken into a sprint.
-
-7.  Any member of the Core Implementation team can and is encouraged to
-    add any issues that they feel relevant to the backlog for future
-    refinement.
-
-8.  Backlog Items will be estimated by complexity with the usage of the
-    Fibonacci sequence.
-
-9.  Prioritization of the backlog is of the sole responsibility of the
-    acting PO (José Costa) and the backlog should be prioritized as part
-    of the refinement and planing events.
+7.  Documented clearly.
 
 # Git Cheat Sheet
 

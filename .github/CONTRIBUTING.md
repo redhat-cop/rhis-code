@@ -1,6 +1,6 @@
 # Contributor's Guidelines
 
-Refer to the [Contributing guidelines](https://docs.ansible.com/ansible/devel/community/index.html) for basic guideline.
+Refer to the [Ansible Community Guide](https://docs.ansible.com/ansible/devel/community/index.html) for basic guideline.
 
 ## General Guidance
 When making a contribution to the repositories of the Red Hat Communities of Practice, try to utilize the following set of guidelines outlined in this section. Committers should adhere to these practices as they attempt to address many (but not all) of the primary concerns associated with open source repositories and project management:
