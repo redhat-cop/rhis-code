@@ -3,7 +3,7 @@
 [![Ansible Lint](https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/redhat-cop/rhis-code/actions/workflows/ansible-lint.yml) [![Slack Channel](https://img.shields.io/badge/slack-channel-tech?logo=slack)](https://redhat.enterprise.slack.com/archives/C07TAP5PJ8K)
 
 
-This repository is intended to contain ansible automation code. All documents are stored on [docs](https://github.com/redhat-cop/rhis-code/docs).
+This repository is intended to contain ansible automation code. All documents are stored on [docs](./docs).
 
 The goal of this project is to build a Red Hat based environment by an *enterprise* ready approach an opinionated Red Hat infrastructure that implements several Standard Operating Environments for Red Hat Enterprise Linux using Red Hat Management tools (Red Hat Infrastructure Standard Adoption Model).
 
