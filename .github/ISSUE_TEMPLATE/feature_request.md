@@ -49,3 +49,8 @@ assignees: ''
 *Add any other context or screenshots about the feature request here.*
 
 ---
+
+## Code of Conduct
+*Read the Ansible Code of Conduct first.*
+
+- [ ] I agree to follow the [Ansible Community Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)

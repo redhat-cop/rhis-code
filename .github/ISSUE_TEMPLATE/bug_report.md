@@ -86,3 +86,7 @@ Include a [minimum complete verifiable example] with:
 
 ---
 
+## Code of Conduct
+*Read the Ansible Code of Conduct first.*
+
+- [ ] I agree to follow the [Ansible Community Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)
