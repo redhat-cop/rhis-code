@@ -14,7 +14,7 @@ contains two repositories;
     parameters for infrastructure and client groups, as well as global
     parameters
 
-## Branch Naming Convention
+##t
 
 -   Feature Branches: feature-&lt;Jira ticket number&gt;
 

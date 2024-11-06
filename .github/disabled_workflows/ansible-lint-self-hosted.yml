@@ -1,5 +1,5 @@
 ---
-name: Ansible Lint
+name: Ansible Lint on Self-Hosted Runner
 run-name: ansible-lint validation on PR-${{ github.event.pull_request.number }}
 on:
   pull_request:
