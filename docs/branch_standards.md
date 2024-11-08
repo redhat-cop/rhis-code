@@ -16,13 +16,15 @@ contains two repositories;
 
 ##t
 
--   Feature Branches: feature-&lt;Jira ticket number&gt;
+-   Feature Branches: feature-issue-&lt;Issue Number&gt;
 
--   Bugfix Branches: bugfix-&lt;Jira ticket number&gt;
+-   Bugfix Branches: bugfix-issue-&lt;Issue Number&gt;
 
--   Hotfix Branches: hotfix-&lt;Jira ticket number&gt;
+-   Hotfix Branches: hotfix-issue-&lt;Issue Number&gt;
 
-Contributors create their feature branches with Jira ticket number. As
+-   Documentation Branches: documentation-issue-&lt;Issue Number&gt;
+
+Contributors create their feature branches with github issue number. As
 most features are expected to introduce new parameters in the inventory,
 the common approach is to create a similar named branch in both
 repositories (i.e. code and inventory).
@@ -49,11 +51,16 @@ In both repositories:
     development. These branches should be tested and merged into
     development branch.
 
--   hotfix branch can be created directly from the master branch in the
+-   hotfix branch can be created directly from the  branch in the
     event of a critical bug or issue in production. Hotfixes should be
     kept minimal to reduce the risk of introducing new problems. Once
-    the hotfix is completed, it should be merged into both the master
+    the hotfix is completed, it should be merged into both the main
     and development branches.
+
+-   documentation branch can be created directly from the main branch or the development regarding the need.
+    If the required updates are related to a change that should be covered with the same branch that changes are
+    applied.
+    
 
 ![gitflow](images/branch_standard.jpg)
 
