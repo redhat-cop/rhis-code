@@ -22,6 +22,8 @@ contains two repositories;
 
 -   Hotfix Branches: hotfix-&lt;Jira ticket number&gt;
 
+-   Documentation Branches: hotfix-&lt;Jira ticket number&gt;
+
 Contributors create their feature branches with Jira ticket number. As
 most features are expected to introduce new parameters in the inventory,
 the common approach is to create a similar named branch in both
@@ -49,10 +51,16 @@ In both repositories:
     development. These branches should be tested and merged into
     development branch.
 
--   hotfix branch can be created directly from the master branch in the
+-   hotfix branch can be created directly from the main branch in the
     event of a critical bug or issue in production. Hotfixes should be
     kept minimal to reduce the risk of introducing new problems. Once
-    the hotfix is completed, it should be merged into both the master
+    the hotfix is completed, it should be merged into both the main
+    and development branches.
+
+-   documentation branch can be created directly from the main branch in the
+    event of a critical bug or issue in production. Hotfixes should be
+    kept minimal to reduce the risk of introducing new problems. Once
+    the hotfix is completed, it should be merged into both the main
     and development branches.
 
 ![gitflow](images/branch_standard.jpg)
