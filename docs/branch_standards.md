@@ -22,7 +22,7 @@ contains two repositories;
 
 -   Hotfix Branches: hotfix-issue-&lt;Issue Number&gt;
 
--   Documentation Branches: documentation-issue-&lt;Issue Number&gt;
+-   Documentation Branches: docs-issue-&lt;Issue Number&gt;
 
 Contributors create their feature branches with github issue number. As
 most features are expected to introduce new parameters in the inventory,
