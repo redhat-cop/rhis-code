@@ -2,7 +2,7 @@
 
 >[!IMPORTANT]
 > For contributions please fork the project and create pull request.
-> Only internal team is allowed to creat branches.
+> Only internal team is allowed to create branches.
 
 GitHub helps us manage our codebase efficiently by employing a
 structured branch management strategy that aligns with our diverse use
