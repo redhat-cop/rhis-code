@@ -1,5 +1,5 @@
 ---
-- name: "Create image"
+- name: Create image
   ansible.builtin.include_tasks:
     file: create_image.yml
   loop: "{{ imagebuilder_images }}"

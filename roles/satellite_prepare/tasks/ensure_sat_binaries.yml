@@ -1,7 +1,7 @@
 ---
-- name: "Update the system"  # noqa: package-latest
+- name: Update the system # noqa: package-latest
   ansible.builtin.dnf:
-    name: '*'
+    name: "*"
     state: latest
 
 - name: Check if we need to reboot
@@ -16,53 +16,53 @@
     reboot_timeout: 1200
   when: __reboot_hint.rc | int == 1
 
-- name: "Check if Ruby module is enabled or installed"
-  ansible.builtin.command: "dnf module list ruby"
+- name: Check if Ruby module is enabled or installed
+  ansible.builtin.command: dnf module list ruby
   register: __ruby_module_status
   failed_when: __ruby_module_status.failed
   changed_when: __ruby_module_status.changed
 
-- name: "Reset the Ruby module"
-  ansible.builtin.command: "dnf -y module reset ruby"
+- name: Reset the Ruby module
+  ansible.builtin.command: dnf -y module reset ruby
   when: "'[e]' or '[i]' not in __ruby_module_status.stdout"
   register: __ruby_return
   failed_when: __ruby_return.failed
   changed_when: __ruby_return.changed
 
-- name: "Check if PostgreSQL module is enabled or installed"
-  ansible.builtin.command: "dnf module list postgresql"
+- name: Check if PostgreSQL module is enabled or installed
+  ansible.builtin.command: dnf module list postgresql
   register: __postgresql_module_status
   failed_when: __postgresql_module_status.failed
   changed_when: __postgresql_module_status.changed
 
-- name: "Reset the PostgreSQL module"
-  ansible.builtin.command: "dnf -y module reset postgresql"
+- name: Reset the PostgreSQL module
+  ansible.builtin.command: dnf -y module reset postgresql
   when: "'[e]' or '[i]' not in __postgresql_module_status.stdout"
   register: __postgresql_return
   failed_when: __postgresql_return.failed
   changed_when: __postgresql_return.changed
 
-- name: "Check if Satellite module is enabled or installed"
-  ansible.builtin.command: "dnf module list satellite:el8"
+- name: Check if Satellite module is enabled or installed
+  ansible.builtin.command: dnf module list satellite:el8
   register: __satellite_module_status
   failed_when: __satellite_module_status.failed
   changed_when: __satellite_module_status.changed
 
-- name: "Reset the Satellite module"
-  ansible.builtin.command: "dnf -y module reset satellite:el8"
+- name: Reset the Satellite module
+  ansible.builtin.command: dnf -y module reset satellite:el8
   when: "'[e]' or '[i]' not in __satellite_module_status.stdout"
   register: __satellite_return
   failed_when: __satellite_return.failed
   changed_when: __satellite_return.changed
 
-- name: "Enable the Satellite module"
-  ansible.builtin.command: "dnf -y module enable satellite:el8"
+- name: Enable the Satellite module
+  ansible.builtin.command: dnf -y module enable satellite:el8
   when: "'[e]' or '[i]' not in __satellite_module_status.stdout"
   register: __satellite_module_return
   failed_when: __satellite_module_return.failed
   changed_when: __satellite_module_return.changed
 
-- name: "Install the Satellite RPM packages"
+- name: Install the Satellite RPM packages
   ansible.builtin.dnf:
     name: satellite
     state: present

@@ -1,11 +1,11 @@
 ---
 yaml-files:
-  - '*.yaml'
-  - '*.yml'
-  - '.yamllint'
+  - "*.yaml"
+  - "*.yml"
+  - .yamllint
 
 rules:
   truthy:
     allowed-values:
-      - 'true'
-      - 'false'
+      - "true"
+      - "false"

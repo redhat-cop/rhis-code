@@ -1,5 +1,5 @@
 ---
-- name: "Bastion VM - Create"
+- name: Bastion VM - Create
   ansible.builtin.import_playbook: function_azure_vm_create.yml
   when:
     - bootstrap_target is defined
@@ -11,7 +11,7 @@
     - bastion_vm_post_conf
     - bastion_vm_conf_squid
 
-- name: "Bastion VM - Check if Reachable"
+- name: Bastion VM - Check if Reachable
   ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
   vars:
     host: bastion
@@ -20,7 +20,7 @@
     - bastion_vm_post_conf
     - bastion_vm_conf_squid
 
-- name: "Bastion VM - Post Configure"
+- name: Bastion VM - Post Configure
   ansible.builtin.import_playbook: function_vm_post_configure.yml
   vars:
     host: bastion
@@ -28,7 +28,7 @@
     - bastion_vm_post_conf
     - bastion_vm_conf_squid
 
-- name: "Bastion VM - Configure Squid"
+- name: Bastion VM - Configure Squid
   ansible.builtin.import_playbook: function_squid_configure.yml
   vars:
     host: bastion

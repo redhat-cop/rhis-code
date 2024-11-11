@@ -1,5 +1,5 @@
 ---
-- name: "Workload DMZ - Create Temp Host for Management"
+- name: Workload DMZ - Create Temp Host for Management
   ansible.builtin.import_playbook: toolbox_add_temp_host_to_group.yml
   vars:
     host: bastion
@@ -8,7 +8,7 @@
   tags:
     - workload_dmz_temp_host_mgmt
 
-- name: "Workload DMZ - Create Network for Management"
+- name: Workload DMZ - Create Network for Management
   ansible.builtin.import_playbook: function_azure_network_create.yml
   when:
     - bootstrap_target is defined
@@ -18,14 +18,14 @@
   tags:
     - workload_dmz_network_create_mgmt
 
-- name: "Workload DMZ - Create Images for Management"
+- name: Workload DMZ - Create Images for Management
   ansible.builtin.import_playbook: function_imagebuilder_create.yml
   vars:
     host: temp_host_mgmt_tools_dmz
   tags:
     - workload_dmz_images_create_mgmt
 
-- name: "Workload DMZ - Create Temp Host for Workloads"
+- name: Workload DMZ - Create Temp Host for Workloads
   ansible.builtin.import_playbook: toolbox_add_temp_host_to_group.yml
   vars:
     host: bastion
@@ -34,7 +34,7 @@
   tags:
     - workload_dmz_temp_host_workloads
 
-- name: "Workload DMZ - Create Network for Workloads"
+- name: Workload DMZ - Create Network for Workloads
   ansible.builtin.import_playbook: function_azure_network_create.yml
   when:
     - bootstrap_target is defined
@@ -44,7 +44,7 @@
   tags:
     - workload_dmz_network_create_workloads
 
-- name: "Workload DMZ - Create Images for Workloads"
+- name: Workload DMZ - Create Images for Workloads
   ansible.builtin.import_playbook: function_imagebuilder_create.yml
   vars:
     host: temp_host_workload_servers_dmz

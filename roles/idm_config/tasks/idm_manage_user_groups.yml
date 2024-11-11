@@ -1,35 +1,35 @@
 ---
-- name: "Create defined user groups on IdM"
-  redhat.rhel_idm.ipagroup:
-    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
-    ipaadmin_password: "{{ ipaadmin_password }}"
-    description: "{{ idmusergroups_var.desc }}"
-    name: "{{ idmusergroups_var.name }}"
+- name: Create defined user groups on IdM
   loop: "{{ idm_user_groups }}"
   loop_control:
     loop_var: idmusergroups_var
   when: idm_user_groups is defined
+  freeipa.ansible_freeipa.ipagroup:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    description: "{{ idmusergroups_var.desc }}"
+    name: "{{ idmusergroups_var.name }}"
 
-- name: "Add defined user to group on IdM"
-  redhat.rhel_idm.ipagroup:
+- name: Add defined user to group on IdM
+  loop: "{{ idm_group_users + showroom_group_users }}"
+  loop_control:
+    loop_var: idmgroupusers_var
+  when: idm_group_users is defined or showroom_group_users is defined
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ idmgroupusers_var.group }}"
     user: "{{ idmgroupusers_var.user }}"
     action: member
-  loop: "{{ idm_group_users + showroom_group_users }}"
-  loop_control:
-    loop_var: idmgroupusers_var
-  when: idm_group_users is defined or showroom_group_users is defined
 
-- name: "Add defined groups to group on IdM"
-  redhat.rhel_idm.ipagroup:
+- name: Add defined groups to group on IdM
+  loop: "{{ idm_group_groups }}"
+  loop_control:
+    loop_var: idmgroupgroups_var
+  when: idm_group_groups is defined
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ idmgroupgroups_var.name }}"
     group: "{{ idmgroupgroups_var.group }}"
     state: "{{ idmgroupgroups_var.state }}"
-  loop: "{{ idm_group_groups }}"
-  loop_control:
-    loop_var: idmgroupgroups_var
-  when: idm_group_groups is defined

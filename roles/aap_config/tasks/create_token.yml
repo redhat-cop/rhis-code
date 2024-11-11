@@ -1,7 +1,7 @@
 ---
 - name: Check if admin token exists
   ansible.builtin.uri:
-    url: "https://{{ controller_hostname | regex_replace('(/+)$') }}/api/v2/tokens/?search={{ __controller_tokens.application.split()[0] }}"
+    url: https://{{ controller_hostname | regex_replace('(/+)$') }}/api/v2/tokens/?search={{ __controller_tokens.application.split()[0] }}
     method: GET
     validate_certs: true
     user: "{{ controller_username }}"
@@ -11,7 +11,9 @@
   register: __aap_token
 
 - name: Create a new token using username/password
-  ansible.controller.token:
+  register: aap_token_output
+  when: __aap_token.json.count < 1
+  awx.awx.token:
     application: "{{ __controller_tokens.application }}"
     description: "{{ __controller_tokens.description | default(omit, true) }}"
     scope: "{{ __controller_tokens.scope | default(omit, true) }}"
@@ -19,13 +21,11 @@
     controller_host: "{{ controller_hostname }}"
     controller_username: "{{ controller_username }}"
     controller_password: "{{ controller_password }}"
-  register: aap_token_output
-  when: __aap_token.json.count < 1
 
 - name: Copy Token to a file for a backup
   become: true
   ansible.builtin.copy:
     content: "{{ aap_token_output.ansible_facts.controller_token.token }}"
-    dest: "/root//{{ __controller_tokens.application.split()[0] + '.token' }}"
+    dest: /root//{{ __controller_tokens.application.split()[0] + '.token' }}
     mode: "0600"
   when: __aap_token.json.count < 1

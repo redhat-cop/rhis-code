@@ -2,8 +2,8 @@
 public_certificate_acme_version: 2
 public_certificate_acme_directory: https://acme-v02.api.letsencrypt.org/directory
 public_certificate_acme_challenge_type: dns-01
-public_certificate_acme_challenge_subdomain: "_acme-challenge.{{ azure_dns_private_dnz_zone_subdomain }}"
-public_certificate_letsencrypt_dir: "/etc/letsencrypt"
+public_certificate_acme_challenge_subdomain: _acme-challenge.{{ azure_dns_private_dnz_zone_subdomain }}
+public_certificate_letsencrypt_dir: /etc/letsencrypt
 
 public_certificate_letsencrypt_account_key_path: "{{ public_certificate_letsencrypt_dir }}/account.key"
 public_certificate_letsencrypt_ssl_key_path: "{{ public_certificate_letsencrypt_dir }}/{{ inventory_hostname }}.key"

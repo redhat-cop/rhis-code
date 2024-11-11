@@ -1,6 +1,6 @@
 ---
-- name: "Ensure the state of global parameter - {{ global_parameter.name }}"
-  redhat.satellite.global_parameter:
+- name: Ensure the state of global parameter - {{ global_parameter.name }}
+  theforeman.foreman.global_parameter:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"

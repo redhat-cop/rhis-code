@@ -1,6 +1,6 @@
 ---
 - name: RH Satellite - Publish CVs
-  hosts: "satellite"
+  hosts: satellite
   gather_facts: false
 
   tasks:

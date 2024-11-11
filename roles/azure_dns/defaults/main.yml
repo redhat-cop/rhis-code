@@ -1,3 +1,3 @@
 ---
-azure_dns_zone_state: "present"
+azure_dns_zone_state: present
 azure_dns_registration_enabled: true

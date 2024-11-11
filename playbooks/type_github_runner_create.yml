@@ -1,5 +1,5 @@
 ---
-- name: "Github Runner VM - Create"
+- name: Github Runner VM - Create
   ansible.builtin.import_playbook: function_azure_vm_create.yml
   when:
     - bootstrap_target is defined
@@ -9,21 +9,21 @@
   tags:
     - github_runner_vm_create
 
-- name: "Github Runner VM - Check if Reachable"
+- name: Github Runner VM - Check if Reachable
   ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
   vars:
     host: github_runner
   tags:
     - github_runner_vm_create
 
-- name: "Github Runner VM - Post Configure"
+- name: Github Runner VM - Post Configure
   ansible.builtin.import_playbook: function_vm_post_configure.yml
   vars:
     host: github_runner
   tags:
     - github_runner_vm_post_conf
 
-- name: "Github Runner VM -  Create Github Runner"
+- name: Github Runner VM -  Create Github Runner
   ansible.builtin.import_playbook: function_github_runner_create.yml
   vars:
     host: github_runner

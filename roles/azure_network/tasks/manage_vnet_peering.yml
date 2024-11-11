@@ -9,8 +9,7 @@
     resource_group: "{{ vnet_peer_var.azure_rg | default(omit) }}"
     virtual_network: "{{ vnet_peer_var.azure_vnet | default(omit) }}"
     name: "{{ vnet_peer_var.azure_vnet_peer | default(omit) }}"
-    remote_virtual_network: "/subscriptions/{{ azure_subscription_id }}/resourceGroups/\
-      {{ azure_rg }}/providers/Microsoft.Network/virtualNetworks/{{ azure_vnet }}"
+    remote_virtual_network: /subscriptions/{{ azure_subscription_id }}/resourceGroups/{{ azure_rg }}/providers/Microsoft.Network/virtualNetworks/{{ azure_vnet }}
     allow_virtual_network_access: "{{ azure_network_allow_virtual_network_access }}"
     allow_forwarded_traffic: "{{ azure_network_allow_forwarded_traffic }}"
 

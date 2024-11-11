@@ -81,6 +81,6 @@
 
     - name: Create cron job to ensure Docker socket link at boot
       ansible.builtin.cron:
-        name: "Ensure Docker socket link at boot"
+        name: Ensure Docker socket link at boot
         special_time: reboot
         job: "{{ ansible_env.HOME }}/create-docker-sock-link.sh"

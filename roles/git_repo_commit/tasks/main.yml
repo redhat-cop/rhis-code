@@ -1,5 +1,5 @@
 ---
-- name: "Set Repo absolute path"
+- name: Set Repo absolute path
   ansible.builtin.set_fact:
     __repo_absolute_path: "{{ git_repo_commit_repo_path }}/{{ git_repo_commit_repository }}"
 
@@ -9,12 +9,12 @@
     name:
       - git
       - pinentry
-    state: "present"
+    state: present
   when: ansible_distribution == "RedHat"
 
 - name: Ensure the repository is cloned
   ansible.builtin.git:
-    repo: "https://{{ git_repo_commit_github_pat }}@github.com/{{ git_repo_commit_repository }}"
+    repo: https://{{ git_repo_commit_github_pat }}@github.com/{{ git_repo_commit_repository }}
     dest: "{{ __repo_absolute_path }}"
     version: "{{ git_repo_commit_branch }}"
     update: true
@@ -31,7 +31,7 @@
     remote_src: true
 
 - name: Stage files # noqa: command-instead-of-module
-  ansible.builtin.command: "git add -A"
+  ansible.builtin.command: git add -A
   args:
     chdir: "{{ __repo_absolute_path }}"
   register: __return
@@ -39,7 +39,7 @@
   changed_when: __return.changed
 
 - name: Commit changes # noqa: command-instead-of-module
-  ansible.builtin.command: "git commit -S -m '{{ git_repo_commit_commit_message }}'"
+  ansible.builtin.command: git commit -S -m '{{ git_repo_commit_commit_message }}'
   args:
     chdir: "{{ __repo_absolute_path }}"
   register: __return
@@ -47,7 +47,7 @@
   changed_when: __return.changed
 
 - name: Push changes # noqa: command-instead-of-module
-  ansible.builtin.command: "git push"
+  ansible.builtin.command: git push
   args:
     chdir: "{{ __repo_absolute_path }}"
   register: __return

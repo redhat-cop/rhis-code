@@ -1,7 +1,8 @@
 ---
 # tasks file for satellite_host_deploy
-- name: "Create a Satellite Host"
-  redhat.satellite.host:
+- name: Create a Satellite Host
+  when: ( satellite_host_deploy_state is defined and satellite_host_deploy_state == "present" ) or (satellite_host_deploy_state is not defined)
+  awx.awx.host:
     username: "{{ hostvars[groups['satellite'][0]]['satellite_username'] }}"
     password: "{{ hostvars[groups['satellite'][0]]['satellite_password'] }}"
     server_url: "{{ hostvars[groups['satellite'][0]]['satellite_server_url'] }}"
@@ -14,13 +15,12 @@
     image: "{{ satellite_host_deploy_image }}"
     state: "{{ satellite_host_deploy_state | default(omit) }}"
     compute_profile: "{{ satellite_host_compute_profile }}"
-  when: ( satellite_host_deploy_state is defined and satellite_host_deploy_state == "present" ) or (satellite_host_deploy_state is not defined)
 
-- name: "Delete a Satellite Host"
-  redhat.satellite.host:
+- name: Delete a Satellite Host
+  when: satellite_host_deploy_state is defined and satellite_host_deploy_state == "absent"
+  awx.awx.host:
     username: "{{ hostvars[groups['satellite'][0]]['satellite_username'] }}"
     password: "{{ hostvars[groups['satellite'][0]]['satellite_password'] }}"
     server_url: "{{ hostvars[groups['satellite'][0]]['satellite_server_url'] }}"
     name: "{{ inventory_hostname }}"
     state: "{{ satellite_host_deploy_state }}"
-  when: satellite_host_deploy_state is defined and satellite_host_deploy_state == "absent"
