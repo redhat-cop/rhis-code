@@ -1,20 +1,20 @@
 ---
-- name: "Retrieve a new access token"
+- name: Retrieve a new access token
   ansible.builtin.include_tasks: retrieve_composer_access_token.yml
 
-- name: "Wait for console build to complete"
+- name: Wait for console build to complete
   block:
-    - name: "Set or increment retry count"
+    - name: Set or increment retry count
       ansible.builtin.set_fact:
         __compose_retry_count: "{{ 0 if __compose_retry_count is undefined else __compose_retry_count | int + 1 }}"
 
-    - name: "Watch for finished image compose"
+    - name: Watch for finished image compose
       ansible.builtin.uri:
         url: "{{ imagebuilder_status_url }}{{ __compose_result.json.id }}"
-        method: "GET"
+        method: GET
         headers:
-          Authorization: "Bearer {{ __access_token }}"
-          Content-Type: "application/json"
+          Authorization: Bearer {{ __access_token }}
+          Content-Type: application/json
         validate_certs: true
         return_content: true
       register: __compose_status
@@ -25,19 +25,19 @@
       retries: 60
       delay: 10
 
-    - name: "Finished build"
+    - name: Finished build
       ansible.builtin.set_fact:
         __composer_done: true
 
   rescue:
-    - name: "Retry count exceeded, time to fail"
+    - name: Retry count exceeded, time to fail
       ansible.builtin.fail:
-        msg: "Maximum retry count exceeded, have tried {{ __compose_retry_count }} times"
+        msg: Maximum retry count exceeded, have tried {{ __compose_retry_count }} times
       when: __compose_retry_count|int == 10
 
-    - name: "Still waiting..."
+    - name: Still waiting...
       ansible.builtin.debug:
-        msg: "Still waiting, retry count {{ __compose_retry_count }} of 10, retrying..."
+        msg: Still waiting, retry count {{ __compose_retry_count }} of 10, retrying...
 
-    - name: "Retry"
+    - name: Retry
       ansible.builtin.include_tasks: compose_wait.yml

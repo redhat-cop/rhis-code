@@ -6,8 +6,8 @@
 - name: Add include rhis-config
   ansible.builtin.lineinfile:
     path: ~/.ssh/config
-    line: "Include rhis-config"
-    regexp: "^Include rhis-config"
+    line: Include rhis-config
+    regexp: ^Include rhis-config
     mode: "0644"
     insertbefore: BOF
     state: present
@@ -23,26 +23,26 @@
   ansible.builtin.import_role:
     name: vault_string
   vars:
-    vault_string_filepath: "~/.ssh/id_rsa_{{ vm_user }}"
-    vault_string_variable_name: "vm_user_private_key"
+    vault_string_filepath: ~/.ssh/id_rsa_{{ vm_user }}
+    vault_string_variable_name: vm_user_private_key
 
 - name: Import git_repo_commit
   ansible.builtin.import_role:
     name: git_repo_commit
   vars:
     git_repo_commit_repository: "{{ github_inventory_repo_path }}"
-    git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: "group_vars/all/" }
+    git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: group_vars/all/ }
 
 - name: Import vault_string
   ansible.builtin.import_role:
     name: vault_string
   vars:
-    vault_string_filepath: "~/.ssh/id_rsa_{{ vm_user }}.pub"
-    vault_string_variable_name: "vm_user_public_key"
+    vault_string_filepath: ~/.ssh/id_rsa_{{ vm_user }}.pub
+    vault_string_variable_name: vm_user_public_key
 
 - name: Import git_repo_commit
   ansible.builtin.import_role:
     name: git_repo_commit
   vars:
     git_repo_commit_repository: "{{ github_inventory_repo_path }}"
-    git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: "group_vars/all/" }
+    git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: group_vars/all/ }

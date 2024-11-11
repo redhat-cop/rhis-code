@@ -1,33 +1,33 @@
 ---
-- name: "Get the file repository info"
-  redhat.satellite.repository_info:
+- name: Get the file repository info
+  register: __result
+  theforeman.foreman.repository_info:
     username: "{{ hostvars[groups.satellite | first]['satellite_username'] }}"
     password: "{{ hostvars[groups.satellite | first]['satellite_password'] }}"
-    server_url: "https://{{ groups.satellite | first }}"
+    server_url: https://{{ groups.satellite | first }}
     organization: "{{ hostvars[groups.satellite | first]['satellite_initial_organization'] }}"
     name: "{{ aap_install_repo_name }}"
     product: "{{ aap_install_product }}"
-  register: __result
 
-- name: "Determine the base url"
+- name: Determine the base url
   ansible.builtin.set_fact:
     __software_baseurl: "{{ __result.repository.full_path }}"
 
-- name: "Get the name of the bundle file"
-  redhat.satellite.resource_info:
+- name: Get the name of the bundle file
+  register: __files
+  theforeman.foreman.resource_info:
     username: "{{ hostvars[groups.satellite | first]['satellite_username'] }}"
     password: "{{ hostvars[groups.satellite | first]['satellite_password'] }}"
-    server_url: "https://{{ groups.satellite | first }}"
+    server_url: https://{{ groups.satellite | first }}
     organization: "{{ hostvars[groups.satellite | first]['satellite_initial_organization'] }}"
     resource: file_units
     search: "{{ aap_install_search_param }}"
-  register: __files
 
-- name: "Set the path for the download"
+- name: Set the path for the download
   ansible.builtin.set_fact:
     __download_path: "{{ __software_baseurl }}/{{ __files.resources[0].name }}"
 
-- name: "Ensure the destination directory exists"
+- name: Ensure the destination directory exists
   become: true
   ansible.builtin.file:
     path: "{{ aap_install_destination_dir }}"
@@ -36,7 +36,7 @@
     group: "{{ vm_user }}"
     mode: "0750"
 
-- name: "Clean up any failed downloads"
+- name: Clean up any failed downloads
   ansible.builtin.file:
     path: "{{ aap_install_destination_dir }}/{{ aap_install_aap_bundle_file }}"
     state: absent

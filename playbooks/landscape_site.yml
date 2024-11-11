@@ -1,26 +1,26 @@
 ---
-- name: "Phase 1 - Create Bastion VM"
+- name: Phase 1 - Create Bastion VM
   ansible.builtin.import_playbook: type_bastion_create.yml
 
-- name: "Phase 2 - Create RootCA VM"
+- name: Phase 2 - Create RootCA VM
   ansible.builtin.import_playbook: type_rootca_create.yml
 
-- name: "Phase 3 - Create Github Runner VM"
+- name: Phase 3 - Create Github Runner VM
   ansible.builtin.import_playbook: type_github_runner_create.yml
 
-- name: "Phase 4.1 - Create IdM ipaserver"
+- name: Phase 4.1 - Create IdM ipaserver
   ansible.builtin.import_playbook: type_ipaserver_create.yml
 
-- name: "Phase 4.2 - Create IdM ipareplicas"
+- name: Phase 4.2 - Create IdM ipareplicas
   ansible.builtin.import_playbook: type_ipareplicas_create.yml
 
-- name: "Phase 4.3 - Configure IdM"
+- name: Phase 4.3 - Configure IdM
   ansible.builtin.import_playbook: type_ipa_config.yml
 
-- name: "Phase 5.1 - Install Satellite"
+- name: Phase 5.1 - Install Satellite
   ansible.builtin.import_playbook: type_satellite_install.yml
 
-- name: "Phase Intermediary -  Deploy Azure Resources for Workload Intra"
+- name: Phase Intermediary -  Deploy Azure Resources for Workload Intra
   ansible.builtin.import_playbook: type_workload_intra_resources_create.yml
 
 # RHIS project currently not deploying workload resources in DMZ.
@@ -28,23 +28,23 @@
 # - name: "Phase Intermediary -  Deploy Azure Resources for Workload Intra"
 #   ansible.builtin.import_playbook: type_workload_dmz_resources_create.yml
 
-- name: "Phase 5.2 - Configure Satellite"
+- name: Phase 5.2 - Configure Satellite
   ansible.builtin.import_playbook: type_satellite_configure.yml
 
-- name: "Phase 6.1 - Create AAP VMs"
+- name: Phase 6.1 - Create AAP VMs
   ansible.builtin.import_playbook: type_aap_create_infrastructure.yml
 
-- name: "Phase Intermediary -  Register Management VMs to IdM and Satellite"
+- name: Phase Intermediary -  Register Management VMs to IdM and Satellite
   ansible.builtin.import_playbook: type_idm_satellite_register.yml
 
-- name: "Phase 6.2 - Install AAP"
+- name: Phase 6.2 - Install AAP
   ansible.builtin.import_playbook: type_aap_install.yml
 
-- name: "Phase 6.2 - Configure AAP"
+- name: Phase 6.2 - Configure AAP
   ansible.builtin.import_playbook: type_aap_configure.yml
 
-- name: "Phase 7 - Create Reverse Proxy"
+- name: Phase 7 - Create Reverse Proxy
   ansible.builtin.import_playbook: type_reverse_proxy_create.yml
 
-- name: "Phase X - Enforce CIS on all hosts"
+- name: Phase X - Enforce CIS on all hosts
   ansible.builtin.import_playbook: type_cis_enforce.yml

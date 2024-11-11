@@ -1,6 +1,10 @@
 ---
-- name: "Create Password Policies"
-  redhat.rhel_idm.ipapwpolicy:
+- name: Create Password Policies
+  loop: "{{ idm_password_policy }}"
+  loop_control:
+    loop_var: idmpwpolicy_var
+  when: idm_password_policy is defined
+  freeipa.ansible_freeipa.ipapwpolicy:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ idmpwpolicy_var.name | default(omit) }}"
@@ -19,7 +23,3 @@
     usercheck: "{{ idmpwpolicy_var.usercheck | default(omit) }}"
     gracelimit: "{{ idmpwpolicy_var.gracelimit | default(omit) }}"
     priority: "{{ idmpwpolicy_var.priority | default(omit) }}"
-  loop: "{{ idm_password_policy }}"
-  loop_control:
-    loop_var: idmpwpolicy_var
-  when: idm_password_policy is defined

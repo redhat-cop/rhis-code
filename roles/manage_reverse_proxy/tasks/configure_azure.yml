@@ -35,21 +35,21 @@
     resource_group: "{{ azure_rg | default(omit) }}"
     name: "{{ azure_subnet_nsg | default(omit) }}"
     rules:
-      - name: "AllowHTTPInBound"
+      - name: AllowHTTPInBound
         protocol: Tcp
         direction: Inbound
         priority: 400
         access: Allow
-        source_address_prefix: "Internet"
+        source_address_prefix: Internet
         source_port_range: "*"
         destination_address_prefix: "{{ azure_vnet_address_prefix }}"
         destination_port_range: "80"
-      - name: "AllowHTTPSInbound"
+      - name: AllowHTTPSInbound
         protocol: Tcp
         direction: Inbound
         priority: 401
         access: Allow
-        source_address_prefix: "Internet"
+        source_address_prefix: Internet
         source_port_range: "*"
         destination_address_prefix: "{{ azure_vnet_address_prefix }}"
         destination_port_range: "443"

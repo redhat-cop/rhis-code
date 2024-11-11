@@ -1,7 +1,7 @@
 ---
-aap_install_repo_name: "Red Hat Ansible Automation Platform 2.4 for RHEL 9 x86_64 Files"
-aap_install_product: "Red Hat Ansible Automation Platform"
-aap_install_search_param: "name ~ platform-setup"
-aap_install_destination_dir: "/var/aap-install"
+aap_install_repo_name: Red Hat Ansible Automation Platform 2.4 for RHEL 9 x86_64 Files
+aap_install_product: Red Hat Ansible Automation Platform
+aap_install_search_param: name ~ platform-setup
+aap_install_destination_dir: /var/aap-install
 aap_install_certs_dir: "{{ aap_install_destination_dir }}/certs"
-aap_install_aap_bundle_file: "ansible-automation-platform-setup-2.4-7.tar.gz"
+aap_install_aap_bundle_file: ansible-automation-platform-setup-2.4-7.tar.gz

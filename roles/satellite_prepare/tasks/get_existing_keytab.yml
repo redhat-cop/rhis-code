@@ -1,6 +1,6 @@
 ---
-- name: "Grant access to the service keytab"
-  redhat.rhel_idm.ipaservice:
+- name: Grant access to the service keytab
+  freeipa.ansible_freeipa.ipaservice:
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ __target_service }}"
     allow_retrieve_keytab_user:
@@ -9,8 +9,8 @@
       - "{{ inventory_hostname }}"
     action: member
 
-- name: "Grant access to the host keytab"
-  redhat.rhel_idm.ipahost:
+- name: Grant access to the host keytab
+  freeipa.ansible_freeipa.ipahost:
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ inventory_hostname }}"
     state: present
@@ -19,7 +19,7 @@
     managedby_host: "{{ inventory_hostname }}"
     action: member
 
-- name: "Ensure foreman-proxy owns the /etc/foreman-proxy/freeipa.keytab"
+- name: Ensure foreman-proxy owns the /etc/foreman-proxy/freeipa.keytab
   ansible.builtin.file:
     path: "{{ satellite_prepare_keytab_path }}"
     owner: foreman-proxy

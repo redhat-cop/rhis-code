@@ -44,7 +44,7 @@
         incremental: true
         creation_data:
           create_option: Copy
-          source_id: /subscriptions/{{ azure_subscription_id }}/resourceGroups/{{ azure_rg }}/providers/Microsoft.Compute/disks/{{ inventory_hostname_short }}-osdisk  # noqa yaml[line-length]
+          source_id: /subscriptions/{{ azure_subscription_id }}/resourceGroups/{{ azure_rg }}/providers/Microsoft.Compute/disks/{{ inventory_hostname_short }}-osdisk # noqa yaml[line-length]
 
 - name: Delete the snapshots
   when: azure_snapshot_state is defined and azure_snapshot_state == 'absent'

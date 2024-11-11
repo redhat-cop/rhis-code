@@ -1,26 +1,26 @@
 ---
 # tasks file for imagebuilder
-- name: "Retrieve an access token"
+- name: Retrieve an access token
   ansible.builtin.include_tasks: retrieve_composer_access_token.yml
 
-- name: "Setting __imagebuilder_image_type to azure bootstrap target"
+- name: Setting __imagebuilder_image_type to azure bootstrap target
   ansible.builtin.set_fact:
-    __imagebuilder_image_type: "azure"
+    __imagebuilder_image_type: azure
   when: imagebuilder_bootstrap_target == "azure"
 
-- name: "Create the build configuration from template"
+- name: Create the build configuration from template
   ansible.builtin.template:
-    src: "template.request-base-image.json.j2"
+    src: template.request-base-image.json.j2
     dest: "{{ imagebuilder_file_directory }}/{{ imagebuilder_image_definition_file }}"
     mode: "0644"
 
-- name: "Create the image from the configuration"
+- name: Create the image from the configuration
   ansible.builtin.uri:
     url: "{{ imagebuilder_url }}"
-    method: "POST"
+    method: POST
     headers:
-      Authorization: "Bearer {{ __access_token }}"
-      Content-Type: "application/json"
+      Authorization: Bearer {{ __access_token }}
+      Content-Type: application/json
     body: "{{ lookup('ansible.builtin.file', '{{ imagebuilder_file_directory }}/{{ imagebuilder_image_definition_file }}') }}"
     body_format: json
     status_code: 201
@@ -28,30 +28,30 @@
     return_content: true
   register: __compose_result
 
-- name: "Assert success"
+- name: Assert success
   ansible.builtin.assert:
     that:
       - __compose_result.failed == false
       - __compose_result.json.id is defined
 
-- name: "Watch for finished image compose"
+- name: Watch for finished image compose
   ansible.builtin.include_tasks:
     file: compose_wait.yml
 
-- name: "Assert that the build was successful"
+- name: Assert that the build was successful
   ansible.builtin.assert:
     that:
       - __compose_status.json.image_status.status == "success"
 
-- name: "Azure image-specific handling block"
+- name: Azure image-specific handling block
   when: __imagebuilder_image_type == "azure"
   block:
-    - name: "Assert that the build uploaded to Azure"
+    - name: Assert that the build uploaded to Azure
       ansible.builtin.assert:
         that:
           - __compose_status.json.image_status.upload_status.options.image_name is defined
           - __compose_status.json.image_status.upload_status.status == "success"
 
-    - name: "Retrieve VHD name from Azure imagebuild"
+    - name: Retrieve VHD name from Azure imagebuild
       ansible.builtin.set_fact:
         imagebuilder_vhd: "{{ __compose_status.json.image_status.upload_status.options.image_name }}"

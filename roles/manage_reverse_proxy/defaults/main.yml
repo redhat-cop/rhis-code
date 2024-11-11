@@ -1,4 +1,4 @@
 ---
-manage_reverse_proxy_letsencrypt_dir: "/etc/letsencrypt"
+manage_reverse_proxy_letsencrypt_dir: /etc/letsencrypt
 manage_reverse_proxy_ssl_key_path: "{{ manage_reverse_proxy_letsencrypt_dir }}/{{ inventory_hostname }}.key"
 manage_reverse_proxy_crt_path: "{{ manage_reverse_proxy_letsencrypt_dir }}/{{ inventory_hostname }}.crt"

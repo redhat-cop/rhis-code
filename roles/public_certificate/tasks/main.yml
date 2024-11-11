@@ -1,5 +1,5 @@
 ---
-- name: "Create let's encrypt directory"
+- name: Create let's encrypt directory
   ansible.builtin.file:
     path: "{{ public_certificate_letsencrypt_dir }}"
     state: directory
@@ -27,7 +27,7 @@
     privatekey_path: "{{ public_certificate_letsencrypt_ssl_key_path }}"
     common_name: "{{ public_certificate_common_name }}"
 
-- name: "Begin Let's Encrypt challenges"
+- name: Begin Let's Encrypt challenges
   community.crypto.acme_certificate:
     acme_directory: "{{ public_certificate_acme_directory }}"
     acme_version: "{{ public_certificate_acme_version }}"
@@ -71,7 +71,7 @@
         - bootstrap_target is defined
         - bootstrap_target == "azure"
 
-    - name: "Complete Let's Encrypt challenges"
+    - name: Complete Let's Encrypt challenges
       community.crypto.acme_certificate:
         acme_directory: "{{ public_certificate_acme_directory }}"
         acme_version: "{{ public_certificate_acme_version }}"

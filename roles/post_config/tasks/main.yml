@@ -29,19 +29,19 @@
     state: present
   when: post_config_packages is defined
 
-- name: "Configure kernel parameters" # noqa var-naming[no-role-prefix]
+- name: Configure kernel parameters # noqa var-naming[no-role-prefix]
   become: true
   ansible.builtin.import_role:
     name: redhat.rhel_system_roles.kernel_settings
   when: kernel_settings_sysctl is defined
 
-- name: "Configure Cron for RH Offline Token Refresh"
+- name: Configure Cron for RH Offline Token Refresh
   ansible.builtin.include_tasks: refresh_token.yml
   loop: "{{ rh_offline_tokens }}"
   loop_control:
     loop_var: token
   when: rh_offline_tokens is defined
 
-- name: "Configure httpd"
+- name: Configure httpd
   ansible.builtin.include_tasks: httpd_deploy.yml
   when: httpd_deploy | bool()
