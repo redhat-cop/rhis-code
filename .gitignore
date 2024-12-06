@@ -22,4 +22,3 @@ tests/junit_xml/*.xml
 .vault-password
 imported/
 collections/ansible_collections/
-ansible.cfg
