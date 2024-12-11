@@ -5,10 +5,18 @@ on:
   schedule:
     - cron: "0 12 1,15 * *"  # run 12pm on the 1st and 15th of the month
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
-  refresh:
-    uses: ansible/team-devtools/.github/workflows/ah_token_refresh.yml@main
-    with:
-      environment: release
-    secrets:
-      ah_token: ${{ secrets.RH_AUTOMATION_HUB_TOKEN }}
+refresh:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Refresh the automation hub token
+      run: >-
+        curl https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        -d grant_type=refresh_token
+        -d client_id=cloud-services
+        -d refresh_token="${{ secrets.RH_AUTOMATION_HUB_TOKEN }}"
+        --fail --silent --show-error --output /dev/null
