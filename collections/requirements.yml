@@ -5,7 +5,7 @@ collections:
   - name: ansible.utils
     version: '5.0.0'
   - name: ansible.eda
-    version: '1.4.7'
+    version: '2.3.0'
   - name: ansible.netcommon
     version: '7.0.0'
   - name: ansible.controller
