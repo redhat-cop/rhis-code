@@ -17,7 +17,7 @@ collections:
   - name: community.dns
     version: '3.0.1'
   - name: azure.azcollection
-    version: '2.4.0'
+    version: '3.1.0'
   - name: redhat.rhel_idm
     version: '1.12.1'
   - name: redhat.rhel_system_roles
