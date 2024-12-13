@@ -13,6 +13,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Populate ansible config
+        env:
+          RH_AUTOMATION_HUB_TOKEN: ${{ secrets.RH_AUTOMATION_HUB_TOKEN }}
         run: |
           cat <<EOF > ansible.cfg
           [defaults]
@@ -25,12 +27,12 @@ jobs:
           [galaxy_server.automation_hub_published]
           url=https://console.redhat.com/api/automation-hub/content/published/
           auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-          token=${{ secrets.RH_AUTOMATION_HUB_TOKEN }}
+          token= $RH_AUTOMATION_HUB_TOKEN
 
           [galaxy_server.automation_hub_validated]
           url=https://console.redhat.com/api/automation-hub/content/validated/
           auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-          token=${{ secrets.RH_AUTOMATION_HUB_TOKEN }}
+          token= $RH_AUTOMATION_HUB_TOKEN
 
           [galaxy_server.galaxy]
           url=https://galaxy.ansible.com/
