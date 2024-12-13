@@ -9,3 +9,5 @@ exclude_paths:
 warn_list:
   - name[template]
   - run-once[play]
+
+verbosity: 3
