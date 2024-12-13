@@ -15,7 +15,7 @@ collections:
   - name: community.general
     version: '8.3.0'
   - name: community.dns
-    version: '3.0.1'
+    version: '3.1.0'
   - name: azure.azcollection
     version: '2.4.0'
   - name: redhat.rhel_idm
