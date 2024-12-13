@@ -19,7 +19,7 @@ collections:
   - name: azure.azcollection
     version: '2.4.0'
   - name: redhat.rhel_idm
-    version: '1.12.1'
+    version: '1.14.0'
   - name: redhat.rhel_system_roles
     version: '1.23.0'
   - name: redhat.satellite_operations
