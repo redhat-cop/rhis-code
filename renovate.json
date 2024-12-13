@@ -3,5 +3,22 @@
   "extends": [
     "config:best-practices",
     "schedule:earlyMondays"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "galaxy-collection"
+      ],
+      "registryUrls": [
+        "https://console.redhat.com/api/automation-hub/content/published/"
+      ]
+    }
+  ],
+  "hostRules": [
+    {
+      "matchHost": "https://console.redhat.com/api/automation-hub/content/published/",
+      "hostType": "galaxy-collection",
+      "token": "{{ secrets.ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN }}"
+    }
   ]
 }
