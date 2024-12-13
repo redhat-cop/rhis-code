@@ -9,7 +9,7 @@ collections:
   - name: ansible.netcommon
     version: '7.0.0'
   - name: ansible.controller
-    version: '4.5.7'
+    version: '4.6.3'
   - name: community.crypto
     version: '2.20.0'
   - name: community.general
