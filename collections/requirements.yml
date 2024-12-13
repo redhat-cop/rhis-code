@@ -25,7 +25,7 @@ collections:
   - name: redhat.satellite_operations
     version: '3.0.0'
   - name: redhat.satellite
-    version: '4.0.0'
+    version: '4.2.0'
   - name: infra.aap_utilities
     version: '2.5.1'
   - name: infra.controller_configuration
