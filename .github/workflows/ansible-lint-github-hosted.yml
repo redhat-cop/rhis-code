@@ -3,7 +3,11 @@ name: Ansible Lint on GitHub-Hosted Runner
 run-name: ansible-lint validation on PR-${{ github.event.pull_request.number }}
 on:
   pull_request:
-    branches: ["main", "devel"]
+    branches: ["main"]
+
+permissions:
+  contents: read
+
 jobs:
   ansible-lint:
     name: Ansible Lint
