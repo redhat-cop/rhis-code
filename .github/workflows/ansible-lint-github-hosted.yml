@@ -36,5 +36,8 @@ jobs:
           url=https://galaxy.ansible.com/
           EOF
 
+      - name: Show ansible config
+        run: cat ansible.cfg
+
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
