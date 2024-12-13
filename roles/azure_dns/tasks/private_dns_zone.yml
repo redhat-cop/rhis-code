@@ -9,4 +9,4 @@
     resource_group: "{{ azure_rg | default(omit) }}"
     name: "{{ azure_dns_private_dns_zone | default(omit) }}"
   register: __output
-  failed_when: "__output.msg is defined and 'Another operation is pending for requested object.' not in __output.msg"
+  failed_when: __output.msg is defined and 'Another operation is pending for requested object.' not in __output.msg

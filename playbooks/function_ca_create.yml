@@ -20,4 +20,4 @@
       tags: git_repo_commit
       vars:
         git_repo_commit_repository: "{{ github_inventory_repo_path }}"
-        git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: "group_vars/all/" }
+        git_repo_commit_file: { src: "{{ __path_file_encrypted }}", dest: group_vars/all/ }

@@ -1,6 +1,6 @@
 ---
 - name: RH Satellite - Promote CCV to Lifecycle
-  hosts: "satellite"
+  hosts: satellite
   gather_facts: false
 
   tasks:

@@ -3,7 +3,7 @@
   ansible.builtin.dnf:
     name:
       - nginx
-    state: "present"
+    state: present
 
 - name: Get IP - "{{ groups.ipaserver | first }}"
   ansible.builtin.setup:

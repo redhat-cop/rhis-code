@@ -1,17 +1,17 @@
 ---
 - name: Find out IP address for A record
-  ansible.builtin.command: "dig {{ __a_records_var.nameserver }} +short"
+  ansible.builtin.command: dig {{ __a_records_var.nameserver }} +short
   register: __ip_a_records_var
   changed_when: __ip_a_records_var.failed
   tags: idm_dns_records
 
-- name: "Ensure PTR records for the existing A Records"
-  redhat.rhel_idm.ipadnsrecord:
+- name: Ensure PTR records for the existing A Records
+  tags: idm_dns_records
+  freeipa.ansible_freeipa.ipadnsrecord:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     zone_name: "{{ idm_default_dns_zone }}"
     record_name: "{{ __a_records_var.nameserver | split('.') | first }}"
     record_value: "{{ __ip_a_records_var.stdout }}"
-    record_type: "A"
+    record_type: A
     create_reverse: true
-  tags: idm_dns_records

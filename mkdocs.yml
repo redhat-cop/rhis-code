@@ -25,36 +25,36 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!%20python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!%20python/name:material.extensions.emoji.to_svg
 nav:
   - Home:
-    - index.md
-    - where_to_start.md
+      - index.md
+      - where_to_start.md
   - Infrastructure:
-    - Identity Management: idm_architecture.md
-    - Ansible Automation Platform: aap_architecture.md
-    - Red Hat Satellite: satellite_architecture.md
+      - Identity Management: idm_architecture.md
+      - Ansible Automation Platform: aap_architecture.md
+      - Red Hat Satellite: satellite_architecture.md
   - RHEL:
-    - live_kernel.md
+      - live_kernel.md
   - Ansible:
-    - ansible_practices.md
-    - manage_credentials.md
-    - gitops_ansible.md
-    - azure_ansible_integration.md
+      - ansible_practices.md
+      - manage_credentials.md
+      - gitops_ansible.md
+      - azure_ansible_integration.md
   - Azure:
-    - network_design.md
-    - cost_estimation.md
-    - azure_rhib_integration.md
-    - azure_start_stop_function.md
+      - network_design.md
+      - cost_estimation.md
+      - azure_rhib_integration.md
+      - azure_start_stop_function.md
   - General:
-    - general_guidelines.md
-    - onboarding.md
-    - subscriptions.md
-    - git_cheat_sheet.md
-    - github_user.md
-    - sign_commits.md
-    - branch_standards.md
-    - naming_scheme.md
-    - configure_workstation_for_bastion.md
-    - slack_integration.md
+      - general_guidelines.md
+      - onboarding.md
+      - subscriptions.md
+      - git_cheat_sheet.md
+      - github_user.md
+      - sign_commits.md
+      - branch_standards.md
+      - naming_scheme.md
+      - configure_workstation_for_bastion.md
+      - slack_integration.md

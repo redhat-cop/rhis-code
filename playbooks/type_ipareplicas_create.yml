@@ -1,5 +1,5 @@
 ---
-- name: "IDM replicas VM - Create"
+- name: IDM replicas VM - Create
   ansible.builtin.import_playbook: function_azure_vm_create.yml
   when:
     - bootstrap_target is defined
@@ -9,21 +9,21 @@
   tags:
     - idm_vm_create
 
-- name: "IDM VM - Check if Reachable"
+- name: IDM VM - Check if Reachable
   ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
   vars:
     host: ipareplicas
   tags:
     - idm_vm_create
 
-- name: "IDM VM - Post Configure"
+- name: IDM VM - Post Configure
   ansible.builtin.import_playbook: function_vm_post_configure.yml
   vars:
     host: ipareplicas
   tags:
     - idm_vm_post_conf
 
-- name: "IDM VM - IDM Deploy Replica"
+- name: IDM VM - IDM Deploy Replica
   ansible.builtin.import_playbook: function_idm_ipareplicas_install.yml
   vars:
     host: ipareplicas

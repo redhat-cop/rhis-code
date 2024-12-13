@@ -1,18 +1,18 @@
 ---
-- name: "Ensure that firewalld is installed"
+- name: Ensure that firewalld is installed
   ansible.builtin.dnf:
     name: firewalld
     state: present
 
-- name: "Ensure that the Firewalld service is enabled and running"
+- name: Ensure that the Firewalld service is enabled and running
   ansible.builtin.systemd:
     name: firewalld
     state: started
     enabled: true
     masked: false
 
-- name: "Configure Firewalld services and ports for Satellite" # noqa var-naming[no-role-prefix]
+- name: Configure Firewalld services and ports for Satellite # noqa var-naming[no-role-prefix]
   ansible.builtin.include_role:
-    name: "redhat.rhel_system_roles.firewall"
+    name: redhat.rhel_system_roles.firewall
   vars:
     firewall: "{{ satellite_firewall }}"

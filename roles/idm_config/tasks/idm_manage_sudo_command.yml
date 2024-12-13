@@ -1,12 +1,12 @@
 ---
-- name: "Create Sudo Commands"
-  redhat.rhel_idm.ipasudocmd:
+- name: Create Sudo Commands
+  loop: "{{ idm_sudo_commands }}"
+  loop_control:
+    loop_var: idmsudocommand_var
+  when: idm_sudo_commands is defined
+  freeipa.ansible_freeipa.ipasudocmd:
     ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ idmsudocommand_var.name }}"
     description: "{{ idmsudocommand_var.description | default(omit) }}"
     state: "{{ idmsudocommand_var.state }}"
-  loop: "{{ idm_sudo_commands }}"
-  loop_control:
-    loop_var: idmsudocommand_var
-  when: idm_sudo_commands is defined

@@ -1,23 +1,23 @@
 ---
-- name: "Unregister from Red Hat CDN"
-  redhat.rhel_system_roles.redhat_subscription:
+- name: Unregister from Red Hat CDN
+  community.general.redhat_subscription:
     state: absent
 
-- name: "Run subscription-manager clean for cleanup stuff incl. SSL certs"
+- name: Run subscription-manager clean for cleanup stuff incl. SSL certs
   ansible.builtin.command: subscription-manager clean
   register: __result
   changed_when: __result.changed
   failed_when: __result.failed
 
-- name: "Generate registration command"
+- name: Generate registration command
   redhat.satellite.registration_command:
     username: "{{ hostvars[groups.satellite | first]['satellite_username'] }}"
     password: "{{ hostvars[groups.satellite | first]['satellite_password'] }}"
-    server_url: "https://{{ groups.satellite | first }}"
+    server_url: https://{{ groups.satellite | first }}
     hostgroup: "{{ satellite_hostgroup }}"
   register: registration_command
 
-- name: "Perform registration" # noqa command-instead-of-shell
+- name: Perform registration # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ registration_command.registration_command }}"
   register: __result
   changed_when: __result.changed

@@ -1,6 +1,10 @@
 ---
 - name: Create a user group
-  redhat.satellite.usergroup:
+  loop: "{{ satellite_config_usergroups }}"
+  loop_control:
+    loop_var: usergroups
+  when: satellite_config_usergroups is defined
+  theforeman.foreman.usergroup:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"
@@ -10,13 +14,13 @@
     admin: "{{ usergroups.admin | default(omit) }}"
     users: "{{ usergroups.users | default(omit) }}"
     usergroups: "{{ usergroups.usergroups | default(omit) }}"
-  loop: "{{ satellite_config_usergroups }}"
-  loop_control:
-    loop_var: usergroups
-  when: satellite_config_usergroups is defined
 
 - name: Map external user groups
-  redhat.satellite.external_usergroup:
+  loop: "{{ satellite_config_external_usergroups }}"
+  loop_control:
+    loop_var: external_usergroup
+  when: satellite_config_external_usergroups is defined
+  theforeman.foreman.external_usergroup:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"
@@ -24,7 +28,3 @@
     auth_source: "{{ external_usergroup.auth_source | default(omit) }}"
     state: "{{ external_usergroup.state | default(omit) }}"
     usergroup: "{{ external_usergroup.usergroup | default(omit) }}"
-  loop: "{{ satellite_config_external_usergroups }}"
-  loop_control:
-    loop_var: external_usergroup
-  when: satellite_config_external_usergroups is defined

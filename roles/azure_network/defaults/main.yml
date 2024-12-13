@@ -1,7 +1,7 @@
 ---
-azure_network_vnet_state: "present"
-azure_network_vnet_peering_state: "present"
-azure_network_subnet_state: "present"
+azure_network_vnet_state: present
+azure_network_vnet_peering_state: present
+azure_network_subnet_state: present
 
 azure_network_allow_virtual_network_access: true
 azure_network_allow_forwarded_traffic: false

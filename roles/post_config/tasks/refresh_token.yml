@@ -1,3 +1,4 @@
+---
 - name: Block for create a cronjob for token refresh
   become: true
   block:
@@ -15,5 +16,5 @@
 
     - name: Update cron file permission
       ansible.builtin.file:
-        path: "/etc/cron.d/rh-token-refresh-{{ token.name }}"
+        path: /etc/cron.d/rh-token-refresh-{{ token.name }}
         mode: "0644"

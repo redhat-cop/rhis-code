@@ -1,25 +1,25 @@
 ---
-- name: "Clean up old keytabs"
+- name: Clean up old keytabs
   ansible.builtin.file:
     path: "{{ satellite_prepare_keytab_path }}"
     state: absent
 
-- name: "Setup satellite realm user"
+- name: Setup satellite realm user
   ansible.builtin.shell: >-
     set -o pipefail && echo '{{ ipaadmin_password }}' | kinit {{ ipaadmin_principal }};
     echo '{{ ipaadmin_password }}' | /usr/sbin/foreman-prepare-realm admin
     {{ satellite_prepare_foreman_proxy_realm_principal }}
   args:
-    chdir: "/etc/foreman-proxy/"
+    chdir: /etc/foreman-proxy/
   register: __result
   changed_when: __result.changed
   failed_when: __result.failed
 
-- name: "Wait for keytab generation and retrieval"
+- name: Wait for keytab generation and retrieval
   ansible.builtin.wait_for:
     path: "{{ satellite_prepare_keytab_path }}"
 
-- name: "Ensure foreman-proxy owns the /etc/foreman-proxy/freeipa.keytab"
+- name: Ensure foreman-proxy owns the /etc/foreman-proxy/freeipa.keytab
   ansible.builtin.file:
     path: "{{ satellite_prepare_keytab_path }}"
     owner: foreman-proxy
@@ -27,13 +27,13 @@
     mode: "0644"
     state: file
 
-- name: "Test the new keytab"
-  ansible.builtin.command: "kinit -kt {{ satellite_prepare_keytab_path }} {{ satellite_prepare_foreman_proxy_realm_principal }}"
+- name: Test the new keytab
+  ansible.builtin.command: kinit -kt {{ satellite_prepare_keytab_path }} {{ satellite_prepare_foreman_proxy_realm_principal }}
   register: __result
   changed_when: __result.changed
   failed_when: __result.failed
 
-- name: "Copy the ipa ca-certificates to the trust directory"
+- name: Copy the ipa ca-certificates to the trust directory
   ansible.builtin.copy:
     src: "{{ satellite_prepare_ipa_server_ca_path }}"
     dest: "{{ satellite_prepare_ipa_client_trust_path }}"
@@ -42,34 +42,33 @@
     group: root
     mode: "0644"
 
-- name: "Enable the trust"
-  ansible.builtin.command: "update-ca-trust enable"
+- name: Enable the trust
+  ansible.builtin.command: update-ca-trust enable
   register: __result
   changed_when: __result.changed
   failed_when: __result.failed
 
-- name: "Update the trust"
-  ansible.builtin.command: "update-ca-trust"
+- name: Update the trust
+  ansible.builtin.command: update-ca-trust
   register: __result
   changed_when: __result.changed
   failed_when: __result.failed
 
-- name: "Grant Satellite to update reverse dns zones"
-  redhat.rhel_idm.ipadnszone:
-    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
-    ipaadmin_password: "{{ ipaadmin_password }}"
-    name_from_ip: "{{ subnets_var.subnet }}"
-    update_policy: >-
-      grant {{ ipaclient_realm }} krb5-subdomain
-      {{ subnets_var.subnet.split('.')[2] }}.{{ subnets_var.subnet.split('.')[1] }}.{{ subnets_var.subnet.split('.')[0] }}.in-addr.arpa.
-      PTR; grant {{ satellite_prepare_foreman_proxy_realm_principal }}\\@{{ ipaclient_realm }} wildcard * ANY;
+- name: Grant Satellite to update reverse dns zones
   loop: "{{ satellite_config_reverse_dns_networks }}"
   loop_control:
     loop_var: subnets_var
   when: satellite_config_reverse_dns_networks | length()
+  freeipa.ansible_freeipa.ipadnszone:
+    ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name_from_ip: "{{ subnets_var.subnet }}"
+    update_policy: >-
+      grant {{ ipaclient_realm }} krb5-subdomain {{ subnets_var.subnet.split('.')[2] }}.{{ subnets_var.subnet.split('.')[1] }}.{{ subnets_var.subnet.split('.')[0]
+      }}.in-addr.arpa. PTR; grant {{ satellite_prepare_foreman_proxy_realm_principal }}\\@{{ ipaclient_realm }} wildcard * ANY;
 
-- name: "Set up IdM forward lookup zone to allow foreman proxy to update DNS"
-  redhat.rhel_idm.ipadnszone:
+- name: Set up IdM forward lookup zone to allow foreman proxy to update DNS
+  freeipa.ansible_freeipa.ipadnszone:
     ipaadmin_principal: "{{ ipaadmin_principal }}"
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ satellite_prepare_ipaclient_domain }}"

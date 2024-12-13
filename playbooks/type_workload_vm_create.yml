@@ -1,9 +1,9 @@
 ---
-- name: "Workload Intra VM - Create"
+- name: Workload Intra VM - Create
   ansible.builtin.import_playbook: function_satellite_vm_deploy.yml
 
-- name: "Workload Intra VM - Check if Reachable"
+- name: Workload Intra VM - Check if Reachable
   ansible.builtin.import_playbook: toolbox_vm_wait_response.yml
 
-- name: "Workload Intra VM - Run Post Configuration"
+- name: Workload Intra VM - Run Post Configuration
   ansible.builtin.import_playbook: function_vm_post_configure.yml

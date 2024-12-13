@@ -1,2 +1,2 @@
 ---
-azure_vm_lock_state: "present"
+azure_vm_lock_state: present

@@ -1,5 +1,5 @@
 ---
-- name: "Workload Intra - Create Temp Host"
+- name: Workload Intra - Create Temp Host
   ansible.builtin.import_playbook: toolbox_add_temp_host_to_group.yml
   vars:
     host: bastion
@@ -8,7 +8,7 @@
   tags:
     - workload_intra_temp_host
 
-- name: "Workload Intra - Create Network"
+- name: Workload Intra - Create Network
   ansible.builtin.import_playbook: function_azure_network_create.yml
   when:
     - bootstrap_target is defined
@@ -18,7 +18,7 @@
   tags:
     - workload_intra_network_create
 
-- name: "Workload Intra - Create Images"
+- name: Workload Intra - Create Images
   ansible.builtin.import_playbook: function_imagebuilder_create.yml
   vars:
     host: temp_host_workload_servers_intra
