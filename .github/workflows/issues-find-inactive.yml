@@ -6,12 +6,18 @@ on:
   schedule:
     - cron: "0 5 * * *"
 
+permissions:
+  contents: read
+
 jobs:
   check-inactive:
+    permissions:
+      issues: write  # for actions-cool/issues-helper to update issues
+      pull-requests: write  # for actions-cool/issues-helper to update PRs
     runs-on: ubuntu-latest
     steps:
       - name: check-inactive
-        uses: actions-cool/issues-helper@v3
+        uses: actions-cool/issues-helper@a610082f8ac0cf03e357eb8dd0d5e2ba075e017e # v3
         with:
           actions: 'check-inactive'
           token: ${{ secrets.GITHUB_TOKEN }}

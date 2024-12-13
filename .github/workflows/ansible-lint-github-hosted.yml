@@ -3,14 +3,18 @@ name: Ansible Lint on GitHub-Hosted Runner
 run-name: ansible-lint validation on PR-${{ github.event.pull_request.number }}
 on:
   pull_request:
-    branches: ["main", "devel"]
+    branches: ["main"]
+
+permissions:
+  contents: read
+
 jobs:
   ansible-lint:
     name: Ansible Lint
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Populate ansible config
         run: |
