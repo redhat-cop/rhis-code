@@ -7,7 +7,7 @@ collections:
   - name: ansible.eda
     version: '1.4.7'
   - name: ansible.netcommon
-    version: '7.0.0'
+    version: '7.1.0'
   - name: ansible.controller
     version: '4.5.7'
   - name: community.crypto
