@@ -29,10 +29,8 @@ peers=execution_nodes
 [automationhub]
 {% for item in groups['aap_pah'] %}{{ item + '\n'}}{% endfor %}
 
-# [automationedacontroller]
-{#
-# {% for item in groups['Ansible_Automation_Eda_Controller'] %}{{ item + '\n'}}{% endfor %}
-#}
+[automationedacontroller]
+{% for item in groups['aap_eda'] %}{{ item + '\n'}}{% endfor %}
 
 [database]
 {% for item in groups['aap_db'] %}{{ item + '\n'}}{% endfor %}
@@ -205,22 +203,22 @@ automationhub_ldap_group_search_base_dn = "cn=groups,cn=accounts,{{ ldap_domain_
 # Automation EDA Controller Configuration
 #
 
-{#
-# automationedacontroller_admin_password='{{ automationedacontroller_password }}'
+#
+automationedacontroller_admin_password='{{ automationedacontroller_password }}'
 
 
-# automationedacontroller_pg_host='{{ groups['Ansible_Automation_Postgresql_Database'][0] }}'
-# automationedacontroller_pg_port=5432
+automationedacontroller_pg_host='{{ groups['aap_db'][0] }}'
+automationedacontroller_pg_port=5432
 
-# automationedacontroller_pg_database='automationedacontroller'
-# automationedacontroller_pg_username='automationedacontroller'
-# automationedacontroller_pg_password='{{ automationedacontroller_pg_password }}'
-# automationedacontroller_pg_sslmode='prefer'
+automationedacontroller_pg_database='automationedacontroller'
+automationedacontroller_pg_username='automationedacontroller'
+automationedacontroller_pg_password='{{ automationedacontroller_pg_password }}'
+automationedacontroller_pg_sslmode='prefer'
 
-# Certificate and key to install in Automation EDa Controller
-# automationedacontroller_ssl_cert='{{ aap_setup_base_dir }}/{{ groups['Ansible_Automation_Eda_Controller'][0] }}.cert.pem'
-# automationedacontroller_ssl_key='{{ aap_setup_base_dir }}/{{ groups['Ansible_Automation_Eda_Controller'][0] }}.key'
-#}
+# Certificate and key to install in Automation EDA Controller
+automationedacontroller_ssl_cert='{{ aap_install_certs_dir }}/{{ groups['aap_eda'][0] }}.cert.pem'
+automationedacontroller_ssl_key='{{ aap_install_certs_dir }}/{{ groups['aap_eda'][0] }}.key'
+#
 # The full routeable URL used by EDA to connect to a controller host.
 # This URL is required if there is no Automation Controller configured
 # in inventory.
@@ -232,7 +230,7 @@ automationhub_ldap_group_search_base_dn = "cn=groups,cn=accounts,{{ ldap_domain_
 # Boolean flag used to verify Automation Controller's
 # web certificates when making calls from Automation EDA Controller.
 #
-# automationedacontroller_controller_verify_ssl = True
+automationedacontroller_controller_verify_ssl = True
 
 # The default install will generate self-signed certificates for the Automation
 # Hub service. If you are providing valid certificate via automationhub_ssl_cert
@@ -262,7 +260,7 @@ postgres_ssl_key='{{ aap_install_certs_dir }}/{{ groups['aap_db'][0] }}.key'
 
 # Keystore file to install in SSO node
 {#
-# sso_custom_keystore_file='{{ aap_setup_base_dir }}/ansible-automation-platform.jks'
+# sso_custom_keystore_file='{{ aap_install_certs_dir }}/ansible-automation-platform.jks'
 
 # The default install will deploy SSO with sso_use_https=True
 # Keystore password is required for https enabled SSO
