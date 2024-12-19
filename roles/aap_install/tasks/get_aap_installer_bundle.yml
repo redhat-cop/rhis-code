@@ -25,7 +25,7 @@
 
 - name: "Set the path for the download"
   ansible.builtin.set_fact:
-    __download_path: "{{ __software_baseurl }}/{{ __files.resources[0].name }}"
+    __download_path: "{{ __software_baseurl }}{{ __files.resources[0].name }}"
 
 - name: "Ensure the destination directory exists"
   become: true
