@@ -37,7 +37,7 @@ collections:
   - name: infra.leapp
     version: '1.3.1'
   - name: containers.podman
-    version: '1.13.0'
+    version: '1.16.3'
 
 roles:
   - name: RedHatOfficial.rhel9_cis
