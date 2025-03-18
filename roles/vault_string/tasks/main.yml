@@ -23,6 +23,6 @@
   become: true
   register: __return
 
-- name: "Set encrypted file path"
+- name: Set encrypted file path
   ansible.builtin.set_fact:
     __path_file_encrypted: "{{ __return.dest }}"

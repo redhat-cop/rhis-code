@@ -1,10 +1,10 @@
 ---
-- name: "Ensure certificates are generated"
+- name: Ensure certificates are generated
   ansible.builtin.import_tasks: generate_certs.yml
   when: generate_certs | bool()
   tags: generate_certs
 
-- name: "Ensure CA trust updated"
+- name: Ensure CA trust updated
   ansible.builtin.import_tasks: update_ca_trust.yml
   when: update_ca_trust | bool()
   tags: update_ca_trust

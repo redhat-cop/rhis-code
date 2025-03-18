@@ -1,6 +1,6 @@
 ---
-- name: "Ensure discovery rules"
-  redhat.satellite.discovery_rule:
+- name: Ensure discovery rules
+  theforeman.foreman.discovery_rule:
     username: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_server_url }}"

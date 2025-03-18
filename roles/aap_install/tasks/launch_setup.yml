@@ -1,8 +1,8 @@
 ---
 - name: Run Setup Ansible Automation Platform
-  ansible.builtin.shell: "./setup.sh -e @ldapextras.yml" # noqa: command-instead-of-shell
+  ansible.builtin.shell: ./setup.sh -e @ldapextras.yml # noqa: command-instead-of-shell
   environment:
-    ANSIBLE_BECOME_METHOD: "sudo"
+    ANSIBLE_BECOME_METHOD: sudo
     ANSIBLE_BECOME: "true"
     ANSIBLE_HOST_KEY_CHECKING: "false"
   args:

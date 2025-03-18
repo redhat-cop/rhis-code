@@ -2,7 +2,7 @@
 - name: Handle SSL certificates
   become: true
   block:
-    - name: "Ensure the destination directory exists"
+    - name: Ensure the destination directory exists
       ansible.builtin.file:
         path: "{{ aap_install_certs_dir }}"
         state: directory
@@ -12,7 +12,7 @@
 
     - name: Read host SSL cert
       ansible.builtin.slurp:
-        src: "/etc/ipa/private/{{ delegated_host }}.crt"
+        src: /etc/ipa/private/{{ delegated_host }}.crt
       delegate_to: "{{ delegated_host }}"
       register: __host_ssl_cert
 
@@ -26,7 +26,7 @@
 
     - name: Read host SSL key
       ansible.builtin.slurp:
-        src: "/etc/ipa/private/{{ delegated_host }}.key"
+        src: /etc/ipa/private/{{ delegated_host }}.key
       delegate_to: "{{ delegated_host }}"
       register: __host_ssl_key
 

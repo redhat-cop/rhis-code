@@ -1,5 +1,5 @@
 ---
-- name: "Clone the repositories locally" # noqa: latest[git]
+- name: Clone the repositories locally # noqa: latest[git]
   become: true
   ansible.builtin.git:
     repo: "{{ git_repo.repository }}"
@@ -11,17 +11,17 @@
   loop_control:
     loop_var: git_repo
 
-- name: "Call the Satellite ansible import API"
+- name: Call the Satellite ansible import API
   ansible.builtin.uri:
     url: "{{ satellite_server_url }}/ansible/api/ansible_roles/sync"
-    method: "PUT"
+    method: PUT
     user: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     force_basic_auth: true
     body:
-      proxy_id: "1-{{ inventory_hostname }}"
+      proxy_id: 1-{{ inventory_hostname }}
       role_names: "{{ satellite_config_ansible_roles | to_json() }}"
-    body_format: "json"
+    body_format: json
     status_code: [200, 201]
     timeout: 300
   register: __result
