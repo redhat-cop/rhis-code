@@ -27,7 +27,7 @@ collections:
   - name: redhat.satellite
     version: '4.0.0'
   - name: infra.aap_utilities
-    version: '2.5.1'
+    version: '2.6.0'
   - name: infra.controller_configuration
     version: '2.7.1'
   - name: infra.ee_utilities
