@@ -41,4 +41,4 @@ jobs:
           EOF
 
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
+        uses: ansible/ansible-lint@b74fb6f73d234bf92672372cb1c10768e4018d16 # main
